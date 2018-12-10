@@ -2,15 +2,15 @@ library(leaflet)
 
 # Choices for drop-downs
 vars <- c(
-  "Is SuperZIP?" = "superzip",
-  "Centile score" = "centile",
-  "College education" = "college",
-  "Median income" = "income",
-  "Population" = "adultpop"
+  "What species?" = "species",
+  "What Equipment?" = "equipment",
+  "Sea Surface Temperature (C)" = "SST",
+  "Bathymetry (m)" = "BATHY",
+  "Seed Distance" = "SeedDist"
 )
 
 
-navbarPage("Superzip", id="nav",
+navbarPage("DMR Aquaculture Leases", id="nav",
 
   tabPanel("Interactive map",
     div(class="outer",
@@ -29,21 +29,21 @@ navbarPage("Superzip", id="nav",
         draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
         width = 330, height = "auto",
 
-        h2("ZIP explorer"),
+        h2("Lease Site Explorer"),
 
         selectInput("color", "Color", vars),
-        selectInput("size", "Size", vars, selected = "adultpop"),
-        conditionalPanel("input.color == 'superzip' || input.size == 'superzip'",
-          # Only prompt for threshold when coloring or sizing by superzip
-          numericInput("threshold", "SuperZIP threshold (top n percentile)", 5)
+        selectInput("size", "Size", vars, selected = "SST"),
+        conditionalPanel("input.color == 'species' || input.size == 'species'",
+          # Only prompt for threshold when coloring or sizing by species
+          numericInput("threshold", "Species threshold (top n percentile)", 5)
         ),
 
-        plotOutput("histCentile", height = 200),
-        plotOutput("scatterCollegeIncome", height = 250)
+        plotOutput("histTemp", height = 200),
+        plotOutput("scatterBathy", height = 250)
       ),
 
       tags$div(id="cite",
-        'Data compiled for ', tags$em('Coming Apart: The State of White America, 1960–2010'), ' by Charles Murray (Crown Forum, 2012).'
+        'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).'
       )
     )
   ),
