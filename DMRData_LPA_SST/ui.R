@@ -33,7 +33,7 @@ navbarPage("DMR Aquaculture Leases", id="nav",
 
         selectInput("color", "Color", vars),
         selectInput("size", "Size", vars, selected = "SST"),
-        conditionalPanel("input.color == 'species' || input.size == 'species'",
+        conditionalPanel("input.color == 'species' || input.size == 'SST'",
           # Only prompt for threshold when coloring or sizing by species
           numericInput("threshold", "Species threshold (top n percentile)", 5)
         ),
