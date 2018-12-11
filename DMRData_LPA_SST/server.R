@@ -74,18 +74,18 @@ function(input, output, session) {
       # OK, so in here I have to present special use-case catgeorical coloring rules based on what variable is selected.
       # equipment, species, and site_id are fine and do not require any special use-case.
       ## I picked these categorical breaks based on quantiles 25% and 75%.
-      colorData <- cut(LPAdata$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
-      #colorData <- ifelse(LPAdata$SST >= (100 - input$threshold), "yes", "no")
+      #colorData <- cut(LPAdata$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
+      colorData <- ifelse(LPAdata$SST >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
     } else if (colorBy == "BATHY") {
-      colorData <- cut(LPAdata$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
-      #colorData <- ifelse(LPAdata$BATHY >= (100 - input$threshold), "yes", "no")
+      #colorData <- cut(LPAdata$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
+      colorData <- ifelse(LPAdata$BATHY >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
     } else if (colorBy == "SeedDist") {
-      colorData <- cut(LPAdata$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
-      #colorData <- ifelse(LPAdata$SeedDist >= (100 - input$threshold), "yes", "no")
+      #colorData <- cut(LPAdata$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
+      colorData <- ifelse(LPAdata$SeedDist >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
     } else {
@@ -96,10 +96,13 @@ function(input, output, session) {
     if (sizeBy == "species") {
       # OK, so in here I have to present special use-case continuous sizing rules based on what variable is selected
       ## equipment, species, and site_id are categorical. Hmmm
+      #radius <- 10*(as.numeric(as.factor(LPAdata$species)))
       radius <- ifelse(LPAdata$species >= (100 - input$threshold), 30000, 3000)
     } else if (sizeBy == "equipment") {
+      #radius <- as.numeric(as.factor(LPAdata$equipment))
       radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
     } else if (sizeBy == "SITE_ID") {
+      #radius <- as.numeric(as.factor(LPAdata$SITE_ID))
       radius <- ifelse(LPAdata$SITE_ID >= (100 - input$threshold), 30000, 3000)
     } else {
       radius <- LPAdata[[sizeBy]] / max(LPAdata[[sizeBy]]) * 30000
