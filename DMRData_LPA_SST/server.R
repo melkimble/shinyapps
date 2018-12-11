@@ -39,6 +39,8 @@ function(input, output) {
     subset(DMRData,
            latitude >= latRng[1] & latitude <= latRng[2] &
              longitude >= lngRng[1] & longitude <= lngRng[2])
+    
+    print(bounds)
   })
 
   # Precalculate the breaks we'll need for the two histograms
