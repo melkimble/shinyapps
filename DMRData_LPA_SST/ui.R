@@ -47,20 +47,24 @@ navbarPage("DMR Aquaculture Leases", id="nav",
       )
     )
   ),
-
+  
+  ## Data Explorer ###########################################
+  #Actual (ID,SITE_ID zipcode,latitude,longitude,species states,equipment cities,SST,BATHY,SeedDist)
+  #cleantable (Id, SiteId, Lat, Long, Species, Equipment City, SST, Bathymetry, SeedDistance)
+  
   tabPanel("Data explorer",
     fluidRow(
       column(3,
-        selectInput("states", "States", c("All states"="", structure(state.abb, names=state.name), "Washington, DC"="DC"), multiple=TRUE)
+        selectInput("species", "Species", c("All species"="", structure(state.abb, names=state.name), "ShellFish, Floating trays"="Floating trays"), multiple=TRUE)
       ),
       column(3,
-        conditionalPanel("input.states",
-          selectInput("cities", "Cities", c("All cities"=""), multiple=TRUE)
+        conditionalPanel("input.species",
+          selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE)
         )
       ),
       column(3,
-        conditionalPanel("input.states",
-          selectInput("zipcodes", "Zipcodes", c("All zipcodes"=""), multiple=TRUE)
+        conditionalPanel("input.species",
+          selectInput("SITE_ID", "SiteId", c("All SITE_ID"=""), multiple=TRUE)
         )
       )
     ),
@@ -73,7 +77,7 @@ navbarPage("DMR Aquaculture Leases", id="nav",
       )
     ),
     hr(),
-    DT::dataTableOutput("ziptable")
+    DT::dataTableOutput("siteTable")
   ),
 
   conditionalPanel("false", icon("crosshair"))
