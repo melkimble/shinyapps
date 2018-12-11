@@ -51,13 +51,30 @@ function(input, output) {
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
     
-    hist(leasesInBounds()$SST,
-      breaks = tempBreaks,
-      main = "Sea Surface Temperature (visible sites)",
-      xlab = "Temperature (C)",
-      xlim = range(DMRData$SST),
-      col = '#00DD00',
-      border = 'white')
+#    hist(leasesInBounds()$SST,
+#      breaks = tempBreaks,
+#      main = "Sea Surface Temperature (visible sites)",
+#      xlab = "Temperature (C)",
+#      xlim = range(DMRData$SST),
+#      col = '#00DD00',
+#      border = 'white')
+    
+    TheTitle=paste("Sea Surface Temp (Mean:",round(mean(na_rmv$SST),digits=2),") at Aquaculture Sites",sep="")
+    
+    gghistTemp<-ggplot(leasesInBounds(), aes(x=SST)) +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),
+            panel.background = element_blank()) +
+      scale_x_continuous(limits = range(DMRData$SST)) +
+      geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
+      geom_vline(aes(xintercept=mean(SST)),
+                 color="blue", linetype="dashed", size=1) +
+      ggtitle(TheTitle) +
+      xlab("Temperature (C)") +
+      ylab("Frequency")
+    
+    print(PlotTitle)
   })
 
   output$boxSpeciesTemp <- renderPlot({
