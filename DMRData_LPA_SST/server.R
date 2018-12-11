@@ -74,7 +74,7 @@ function(input, output) {
       geom_boxplot() +
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            panel_border = element_blank(),
+            panel.border = element_blank(),
             panel.background = element_blank())
     print(ggbox)
     
