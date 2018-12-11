@@ -99,12 +99,13 @@ function(input, output) {
   })
 
   # Show a popup at the given location
-  showSitePopup <- function(SITE_ID, lat, lng) {
-    selectedSite <- DMRData[DMRData$SITE_ID == SITE_ID,]
+  ## later grab SITE_ID from this group and calculate aggregates based on it
+  showSitePopup <- function(ID, lat, lng) {
+    selectedSite <- DMRData[DMRData$ID == ID,]
     content <- as.character(tagList(
-      tags$h4("Score:", selectedSite$SITE_ID),
+      tags$h4("Score:", selectedSite$ID),
       tags$strong(HTML(sprintf("%s, %s %s",
-        selectedSite$species, selectedSite$equipment, selectedSite$SITE_ID
+        selectedSite$species, selectedSite$equipment, selectedSite$ID
       ))), tags$br(),
       sprintf("Median household income: %s", dollar(selectedSite$BATHY * 1000)), tags$br(),
       sprintf("Percent of adults with BA: %s%%", as.integer(selectedSite$SeedDist)), tags$br(),
