@@ -1,11 +1,11 @@
 library(dplyr)
 
 DMRData <- readRDS("data/TestData.rds")
-DMRData$SITE_ID
+DMRData$SITE_ID <- as.character(DMRData$SITE_ID)
 DMRData$latitude 
 DMRData$longitude 
-DMRData$species 
-DMRData$equipment 
+DMRData$species <- as.character(DMRData$species )
+DMRData$equipment <- as.character(DMRData$equipment )
 DMRData$SST 
 DMRData$BATHY
 DMRData$SeedDist
