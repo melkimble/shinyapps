@@ -23,6 +23,8 @@ function(input, output) {
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
       setView(lng = -67.709946, lat = 44.146299, zoom = 8)
+    bounds <- input$map_bounds
+    print(bounds)
   })
 
   # A reactive expression that returns the set of zips that are
