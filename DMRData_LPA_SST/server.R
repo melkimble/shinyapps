@@ -59,14 +59,15 @@ function(input, output) {
 #      col = '#00DD00',
 #      border = 'white')
     
-    TheTitle=paste("Sea Surface Temp (Mean:",round(mean(leasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+    TheTitle=paste("Sea Surface Temp (Mean:",round(mean(leasesInBounds()$SST),digits=2),") \nat Aquaculture Sites",sep="")
     
     gghistTemp<-ggplot(leasesInBounds(), aes(x=SST)) +
-      theme(panel.grid.major = element_blank(),
+      theme(plot.title=element_text(hjust=0.5),
+            panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
             panel.background = element_blank()) +
-      scale_x_continuous(limits = range(DMRData$SST)) +
+#      scale_x_continuous(limits = range(DMRData$SST)) +
       geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
       geom_vline(aes(xintercept=mean(SST)),
                  color="blue", linetype="dashed", size=1) +
@@ -89,11 +90,12 @@ function(input, output) {
 #            data = leasesInBounds())
     ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
       geom_boxplot() +
-      theme(panel.grid.major = element_blank(),
+      theme(plot.title=element_text(hjust=0.5),
+            panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
             panel.background = element_blank()) +
-      ggtitle("Temp. by Species") +
+      ggtitle("Temperature by Species") +
       ylab("Temperature (C)")
     print(ggboxTemp)
     
@@ -105,7 +107,8 @@ function(input, output) {
       return(NULL)
     ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=BATHY, fill=species)) +
       geom_boxplot() +
-      theme(panel.grid.major = element_blank(),
+      theme(plot.title=element_text(hjust=0.5),
+            panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
             panel.background = element_blank()) +
