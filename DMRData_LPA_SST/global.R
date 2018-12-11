@@ -11,7 +11,7 @@ DMRData$BATHY
 DMRData$SeedDist
 #row.names(DMRData) <- DMRData$zipcode
 
-cleantable <- allzips %>%
+cleantable <- DMRData %>%
   select(
     SiteId = SITE_ID,
     Species = species,
