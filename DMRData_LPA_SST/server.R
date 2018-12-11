@@ -74,7 +74,7 @@ function(input, output) {
       xlab("Temperature (C)") +
       ylab("Frequency")
     
-    print(PlotTitle)
+    print(gghistTemp)
   })
 
   output$boxSpeciesTemp <- renderPlot({
