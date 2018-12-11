@@ -66,7 +66,8 @@ function(input, output) {
     
     boxplot(SST ~ species, 
             main = "SST By Species (visible sites)",
-            xlab="Temperature (C)",
+            ylab ="Temperature (C)",
+            col = species,
             data = leasesInBounds())
   })
 
