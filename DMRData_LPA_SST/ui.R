@@ -34,9 +34,7 @@ navbarPage("DMR Aquaculture Leases", id="nav",
 
         selectInput("color", "Color", vars),
         selectInput("size", "Size", vars, selected = "SST"),
-        conditionalPanel("input.color == 'species' || input.size == 'SST'",
-          # Only prompt for threshold when coloring or sizing by species
-          numericInput("threshold", "Species threshold (top n percentile)", 5)
+        conditionalPanel("input.color == 'species' || input.size == 'SST'"
         ),
 
         plotOutput("histTemp", height = 200),
@@ -67,14 +65,6 @@ navbarPage("DMR Aquaculture Leases", id="nav",
         conditionalPanel("input.species",
           selectInput("SITE_ID", "SiteId", c("All SITE_ID"=""), multiple=TRUE)
         )
-      )
-    ),
-    fluidRow(
-      column(1,
-        numericInput("minScore", "Min score", min=0, max=100, value=0)
-      ),
-      column(1,
-        numericInput("maxScore", "Max score", min=0, max=100, value=100)
       )
     ),
     hr(),

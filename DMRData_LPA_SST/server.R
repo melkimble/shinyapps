@@ -49,8 +49,8 @@ function(input, output, session) {
 
     hist(leasesInBounds()$SST,
       breaks = tempBreaks,
-      main = "Temperature C (visible leases)",
-      xlab = "Percentile",
+      main = "Temperature Values (visible leases)",
+      xlab = "Temperature (C)",
       xlim = range(LPAdata$SST, na.rm=TRUE),
       col = '#00DD00',
       border = 'white')
@@ -61,7 +61,7 @@ function(input, output, session) {
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
 
-    print(boxplot(BATHY ~ species, data = leasesInBounds()))
+    print(boxplot(BATHY ~ species, data = leasesInBounds(), na.rm=TRUE))
   })
 
   # This observer is responsible for maintaining the circles and legend,
@@ -76,7 +76,7 @@ function(input, output, session) {
       ## I picked these categorical breaks based on quantiles 25% and 75%.
       #colorData <- cut(LPAdata$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
       colorData <- ifelse(LPAdata$SST >= (100 - input$threshold), "yes", "no")
-      
+ 
       pal <- colorFactor("viridis", colorData)
     } else if (colorBy == "BATHY") {
       #colorData <- cut(LPAdata$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
