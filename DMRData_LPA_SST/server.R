@@ -64,7 +64,10 @@ function(input, output) {
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
     
-    boxplot(SST ~ species, data = leasesInBounds())
+    boxplot(SST ~ species, 
+            main = "SST By Species (visible sites)",
+            xlab="Temperature (C)",
+            data = leasesInBounds())
   })
 
   # This observer is responsible for maintaining the circles and legend,
