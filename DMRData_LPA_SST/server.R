@@ -119,16 +119,22 @@ function(input, output, session) {
   # Show a popup at the given location
   showSiteIDPopup <- function(SITE_ID, lat, lng) {
     selectedLeases <- LPAdata[LPAdata$SITE_ID == SITE_ID,]
+    
+    
+    SST_Agg <- aggregate(selectedLeases["SST"], list(selectedLeases$SITE_ID), na.rm=TRUE,mean)
+    BathyAgg <- aggregate(selectedLeases["BATHY"], list(selectedLeases$SITE_ID), na.rm=TRUE,mean)
+    SeedAgg <- aggregate(selectedLeases["SeedDist"], list(selectedLeases$SITE_ID), na.rm=TRUE,mean)
+    
     content <- as.character(tagList(
-      tags$h4("Site ID:", as.integer(selectedLeases$SST)),
+      tags$h4("Site ID:", as.character(selectedLeases$SITE_ID)),
       ## The original is formatted as City, State Zipcode. It might be useful
       ## to put the gear in here or seed location.
       tags$strong(HTML(sprintf("%s, %s, %s",
         selectedLeases$SITE_ID, selectedLeases$species, selectedLeases$equipment
       ))), tags$br(),
-      sprintf("Average Temperature: %s", aggregate(selectedLeases["SST"], list(selectedLeases$SITE_ID),na.rm=TRUE,mean)), tags$br(),
-      sprintf("Average Bathymetry: %s%%", aggregate(selectedLeases["BATHY"], list(selectedLeases$SITE_ID),na.rm=TRUE,mean)), tags$br(),
-      sprintf("Average Distance to Seed: %s", aggregate(selectedLeases["SeedDist"], list(selectedLeases$SITE_ID),na.rm=TRUE,mean)), tags$br()
+      sprintf("Average Temperature: %s", SST_Agg$SST[SST_Agg$Group.1==SITE_ID]), tags$br(),
+      sprintf("Average Bathymetry: %s%%", BathyAgg$BATHY[BathyAgg$Group.1==SITE_ID]), tags$br(),
+      sprintf("Average Distance to Seed: %s", SeedAgg$SeedDist[SeedAgg$Group.1==SITE_ID]), tags$br()
     ))
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = SITE_ID)
   }
