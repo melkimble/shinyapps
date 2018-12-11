@@ -67,13 +67,16 @@ function(input, output) {
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
   observe({
+    ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
     sizeBy <- input$size
 
     if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
-      colorData <- cut(DMRData$SST, breaks=c(-10, -5.050, 5.025, 10.000), labels=c("low","medium","high"))
+      ## this input$threshold is from the ui.R script, it grabs the value input by the user
+      ## and adjusts the threshold on the size of the icons based on the threshold.
+      colorData <- as.character(cut(DMRData$SST, breaks=c(-10.000, -5.050, 5.025, 10.000 ), labels=c("Low","Med","High")))
       pal <- colorFactor("viridis", colorData)
     } else {
       colorData <- DMRData[[colorBy]]
