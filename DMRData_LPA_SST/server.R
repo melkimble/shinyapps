@@ -22,7 +22,7 @@ function(input, output) {
         urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
-      setView(lng = -68.87, lat = 44.92, zoom = 8)
+      setView(lng = -67.709946, lat = 44.146299, zoom = 8)
   })
 
   # A reactive expression that returns the set of zips that are
@@ -33,7 +33,10 @@ function(input, output) {
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
-
+    print(latRng[1])
+    print(latRng[2])
+    print(lngRng[1])
+    print(lngRng[2])
     subset(DMRData,
       latitude >= latRng[1] & latitude <= latRng[2] &
         longitude >= lngRng[1] & longitude <= lngRng[2])
