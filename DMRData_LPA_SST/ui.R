@@ -2,8 +2,8 @@ library(leaflet)
 
 # Choices for drop-downs
 vars <- c(
-  "What species is it?" = "species",
-  "What equipment is used?" = "equipment",
+  "Species" = "species",
+  "Equipment" = "equipment",
   "Sea Surface Temperature" = "SST",
   "Bathymetry" = "BATHY",
   "Seed Distance" = "SeedDist"
