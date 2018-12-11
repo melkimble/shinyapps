@@ -73,7 +73,7 @@ function(input, output) {
     if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
-      colorData <- ifelse(DMRData$SST >= (100 - input$threshold), "yes", "no")
+      colorData <- cut(DMRData$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("low","medium","high"))
       pal <- colorFactor("viridis", colorData)
     } else {
       colorData <- DMRData[[colorBy]]
@@ -82,7 +82,7 @@ function(input, output) {
 
     if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <- ifelse(DMRData$SST >= (100 - input$threshold), 30000, 3000)
+      radius <- 10*(as.numeric(as.factor(DMRData$species)))
     } else {
       radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
     }
