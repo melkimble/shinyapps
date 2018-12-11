@@ -22,7 +22,7 @@ function(input, output) {
         urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
-      setView(lng = -67.7100, lat = 44.14630, zoom = 8)
+      setView(lng = -67.71, lat = 44.15, zoom = 8)
   })
 
   # A reactive expression that returns the set of zips that are
