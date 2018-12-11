@@ -59,7 +59,7 @@ function(input, output) {
 #      col = '#00DD00',
 #      border = 'white')
     
-    TheTitle=paste("Sea Surface Temp (Mean:",round(mean(na_rmv$SST),digits=2),") at Aquaculture Sites",sep="")
+    TheTitle=paste("Sea Surface Temp (Mean:",round(mean(leasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
     
     gghistTemp<-ggplot(leasesInBounds(), aes(x=SST)) +
       theme(panel.grid.major = element_blank(),
