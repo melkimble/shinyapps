@@ -33,10 +33,10 @@ function(input, output) {
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
-    print(latRng[1])
-    print(latRng[2])
-    print(lngRng[1])
-    print(lngRng[2])
+    
+    print(latRng)
+    print(lngRng)
+    
     subset(DMRData,
       latitude >= latRng[1] & latitude <= latRng[2] &
         longitude >= lngRng[1] & longitude <= lngRng[2])

@@ -10,6 +10,7 @@ DMRData$equipment <- as.character(DMRData$equipment )
 DMRData$SST<-round(DMRData$SST,2) 
 DMRData$BATHY<-round(DMRData$BATHY,2)
 DMRData$SeedDist<-round(DMRData$SeedDist,2)
+
 #row.names(DMRData) <- DMRData$zipcode
 
 #cleantable <- DMRData %>%
