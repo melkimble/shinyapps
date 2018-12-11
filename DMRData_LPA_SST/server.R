@@ -54,11 +54,11 @@ function(input, output) {
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            panel.border = element_blank(),
+            #panel.border = element_blank(),
             panel.background = element_blank()) +
       xlim(range(DMRData$SST)) +
       geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-      geom_vline(aes(xintercept=mean(SST)),
+      geom_vline(aes(xintercept=mean(leasesInBounds$SST)),
                  color="blue", linetype="dashed", size=1) +
       ggtitle(TheTitle) +
       xlab("Temperature (C)") +
@@ -78,7 +78,7 @@ function(input, output) {
             plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            panel.border = element_blank(),
+            #panel.border = element_blank(),
             panel.background = element_blank()) +
       ggtitle("Temperature by Species") +
       ylab("Temperature (C)")
@@ -96,7 +96,7 @@ function(input, output) {
             plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            panel.border = element_blank(),
+            #panel.border = element_blank(),
             panel.background = element_blank()) +
       ggtitle("Bathymetry by Species") +
       ylab("Bathymetry (m)")
