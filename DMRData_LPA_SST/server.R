@@ -73,7 +73,7 @@ function(input, output) {
     if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
-      colorData <- cut(DMRData$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("low","medium","high"))
+      colorData <- cut(DMRData$SST, breaks=c(-10, -5.050, 5.025, 10.000), labels=c("low","medium","high"))
       pal <- colorFactor("viridis", colorData)
     } else {
       colorData <- DMRData[[colorBy]]
