@@ -51,7 +51,7 @@ function(input, output) {
       breaks = tempBreaks,
       main = "Sea Surface Temperature (visible sites)",
       xlab = "Temperature (C)",
-      xlim = range(DMRData$SST),
+#      xlim = range(DMRData$SST, na.rm=TRUE),
       col = '#00DD00',
       border = 'white')
   })
