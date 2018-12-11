@@ -37,8 +37,8 @@ navbarPage("DMR Aquaculture Leases", id="nav",
         conditionalPanel("input.color == 'species' || input.size == 'SST'"
         ),
 
-        plotOutput("histTemp", height = 200),
-        plotOutput("boxBathy", height = 250)
+        plotOutput("histTemp", height = 200)
+#        plotOutput("boxBathy", height = 250)
       ),
 
       tags$div(id="cite",
