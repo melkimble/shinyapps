@@ -90,7 +90,8 @@ function(input, output) {
 #            data = leasesInBounds())
     ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
       geom_boxplot() +
-      theme(plot.title=element_text(hjust=0.5),
+      theme(legend.position="none",
+            plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
@@ -107,7 +108,8 @@ function(input, output) {
       return(NULL)
     ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=BATHY, fill=species)) +
       geom_boxplot() +
-      theme(plot.title=element_text(hjust=0.5),
+      theme(legend.position="none",
+            plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
