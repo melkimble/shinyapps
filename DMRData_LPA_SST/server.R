@@ -10,8 +10,8 @@ library(dplyr)
 # By ordering by centile, we ensure that the (comparatively rare) SuperZIPs
 # will be drawn last and thus be easier to see
 #zipdata <- zipdata[order(zipdata$centile),]
-
-function(input, output, session) {
+# , session
+function(input, output) {
 
   ## Interactive Map ###########################################
 
@@ -46,7 +46,7 @@ function(input, output, session) {
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
-
+    
     hist(leasesInBounds()$SST,
       breaks = tempBreaks,
       main = "Sea Surface Temperature (visible sites)",
@@ -60,7 +60,7 @@ function(input, output, session) {
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
-
+    
     boxplot(SST ~ species, data = leasesInBounds())
   })
 
