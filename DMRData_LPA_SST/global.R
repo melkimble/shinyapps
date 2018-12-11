@@ -1,6 +1,7 @@
 library(dplyr)
 
 DMRData <- readRDS("data/TestData.rds")
+DMRData$ID
 DMRData$SITE_ID <- as.character(DMRData$SITE_ID)
 DMRData$latitude 
 DMRData$longitude 

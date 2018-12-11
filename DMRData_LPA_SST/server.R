@@ -89,7 +89,7 @@ function(input, output) {
 
     leafletProxy("map", data = DMRData) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~SITE_ID,
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
         stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
         layerId="colorLegend")
@@ -107,7 +107,7 @@ function(input, output) {
       sprintf("Percent of adults with BA: %s%%", as.integer(selectedSite$SeedDist)), tags$br(),
       sprintf("Adult population: %s", selectedSite$SST)
     ))
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = SITE_ID)
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
 
   # When map is clicked, show a popup with city info
