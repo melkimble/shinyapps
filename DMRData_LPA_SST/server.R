@@ -3,6 +3,7 @@ library(RColorBrewer)
 library(scales)
 library(lattice)
 library(dplyr)
+library(ggplot2)
 
 # Leaflet bindings are a bit slow; for now we'll just sample to compensate
 #set.seed(100)
@@ -64,11 +65,19 @@ function(input, output) {
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
     
-    boxplot(SST ~ species, 
-            main = "SST By Species (visible sites)",
-            ylab ="Temperature (C)",
-            col = species,
-            data = leasesInBounds())
+#    boxplot(SST ~ species, 
+#            main = "SST By Species (visible sites)",
+#            ylab ="Temperature (C)",
+#            col = species,
+#            data = leasesInBounds())
+    ggbox<-ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
+      geom_boxplot() +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel_border = element_blank(),
+            panel.background = element_blank())
+    print(ggbox)
+    
   })
 
   # This observer is responsible for maintaining the circles and legend,
