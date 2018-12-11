@@ -27,19 +27,19 @@ function(input, output) {
 
   # A reactive expression that returns the set of zips that are
   # in bounds right now
-#  leasesInBounds <- reactive({
+  leasesInBounds <- reactive({
 #    bounds <- input$map_bounds
 #    print(bounds)
-#    if (is.null(input$map_bounds))
-#      return(DMRData[FALSE,])
-#    bounds <- input$map_bounds
-#    latRng <- range(bounds$north, bounds$south)
-#    lngRng <- range(bounds$east, bounds$west)
+    if (is.null(input$map_bounds))
+      return(DMRData[FALSE,])
+    bounds <- input$map_bounds
+    latRng <- range(bounds$north, bounds$south)
+    lngRng <- range(bounds$east, bounds$west)
     
-#    subset(DMRData,
-#      latitude >= latRng[1] & latitude <= latRng[2] &
-#        longitude >= lngRng[1] & longitude <= lngRng[2])
-#  })
+    subset(DMRData,
+      latitude >= latRng[1] & latitude <= latRng[2] &
+        longitude >= lngRng[1] & longitude <= lngRng[2])
+  })
 
   # Precalculate the breaks we'll need for the two histograms
 #  tempBreaks <- hist(plot = FALSE, DMRData$SST, breaks = 20)$breaks
