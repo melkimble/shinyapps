@@ -74,13 +74,19 @@ function(input, output, session) {
       # OK, so in here I have to present special use-case catgeorical coloring rules based on what variable is selected.
       # equipment, species, and site_id are fine and do not require any special use-case.
       ## I picked these categorical breaks based on quantiles 25% and 75%.
-      colorData <- cut(dmrLpaSST$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
+      #colorData <- cut(dmrLpaSST$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
+      colorData <- ifelse(dmrLpaSST$SST >= (100 - input$threshold), "yes", "no")
+      
       pal <- colorFactor("viridis", colorData)
     } else if (sizeBy == "BATHY") {
-      colorData <- cut(dmrLpaSST$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
+      #colorData <- cut(dmrLpaSST$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
+      colorData <- ifelse(dmrLpaSST$BATHY >= (100 - input$threshold), "yes", "no")
+      
       pal <- colorFactor("viridis", colorData)
     } else if (sizeBy == "SeedDist") {
-      colorData <- cut(dmrLpaSST$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
+      #colorData <- cut(dmrLpaSST$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
+      colorData <- ifelse(dmrLpaSST$SeedDist >= (100 - input$threshold), "yes", "no")
+      
       pal <- colorFactor("viridis", colorData)
     } else {
       colorData <- dmrLpaSST[[colorBy]]
