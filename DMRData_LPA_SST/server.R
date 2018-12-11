@@ -28,8 +28,8 @@ function(input, output) {
   # A reactive expression that returns the set of zips that are
   # in bounds right now
   leasesInBounds <- reactive({
-    bounds <- input$map_bounds
-    print(bounds)
+#    bounds <- input$map_bounds
+#    print(bounds)
     if (is.null(input$map_bounds))
       return(DMRData[FALSE,])
     bounds <- input$map_bounds

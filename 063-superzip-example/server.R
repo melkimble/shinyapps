@@ -28,8 +28,6 @@ function(input, output, session) {
   # A reactive expression that returns the set of zips that are
   # in bounds right now
   zipsInBounds <- reactive({
-    bounds <- input$map_bounds
-    print(bounds)
     if (is.null(input$map_bounds))
       return(zipdata[FALSE,])
     bounds <- input$map_bounds
@@ -39,6 +37,8 @@ function(input, output, session) {
     subset(zipdata,
       latitude >= latRng[1] & latitude <= latRng[2] &
         longitude >= lngRng[1] & longitude <= lngRng[2])
+   bounds <- input$map_bounds
+   print(bounds)
   })
 
   # Precalculate the breaks we'll need for the two histograms
@@ -49,7 +49,7 @@ function(input, output, session) {
     if (nrow(zipsInBounds()) == 0)
       return(NULL)
 
-    hist(zipsInBounds()$centile,
+    hist(zipsInBounds()$centileeeee,
       breaks = centileBreaks,
       main = "SuperZIP score (visible zips)",
       xlab = "Percentile",
