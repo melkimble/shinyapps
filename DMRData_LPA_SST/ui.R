@@ -31,9 +31,9 @@ navbarPage("DMR Lease Data", id="nav",
         h2("Site Explorer"),
 
         selectInput("color", "Color", vars),
-        selectInput("size", "Size", vars, selected = "SST")
+        selectInput("size", "Size", vars, selected = "SST"),
 
-#        plotOutput("histTemp", height = 200)
+        plotOutput("histTemp", height = 200)
 #        plotOutput("boxSpecies", height = 250)
       ),
 

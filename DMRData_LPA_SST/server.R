@@ -43,21 +43,21 @@ function(input, output) {
   })
 
   # Precalculate the breaks we'll need for the two histograms
-#  tempBreaks <- hist(plot = FALSE, DMRData$SST, breaks = 20)$breaks
+  tempBreaks <- hist(plot = FALSE, DMRData$SST, breaks = 20)$breaks
 
-#  output$histTemp <- renderPlot({
+  output$histTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
-#    if (nrow(leasesInBounds()) == 0)
-#      return(NULL)
+    if (nrow(leasesInBounds()) == 0)
+      return(NULL)
     
-#    hist(leasesInBounds()$SST,
-#      breaks = tempBreaks,
-#      main = "Sea Surface Temperature (visible sites)",
-#      xlab = "Temperature (C)",
-#      xlim = range(DMRData$SST),
-#      col = '#00DD00',
-#      border = 'white')
-#  })
+    hist(leasesInBounds()$SST,
+      breaks = tempBreaks,
+      main = "Sea Surface Temperature (visible sites)",
+      xlab = "Temperature (C)",
+      xlim = range(DMRData$SST),
+      col = '#00DD00',
+      border = 'white')
+  })
 
 #  output$boxSpecies <- renderPlot({
 #    # If no zipcodes are in view, don't plot
