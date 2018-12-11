@@ -59,13 +59,13 @@ function(input, output) {
       border = 'white')
   })
 
-#  output$boxSpecies <- renderPlot({
-#    # If no zipcodes are in view, don't plot
-#    if (nrow(leasesInBounds()) == 0)
-#      return(NULL)
+  output$boxSpecies <- renderPlot({
+    # If no zipcodes are in view, don't plot
+    if (nrow(leasesInBounds()) == 0)
+      return(NULL)
     
-#    boxplot(SST ~ species, data = leasesInBounds())
-#  })
+    boxplot(SST ~ species, data = leasesInBounds())
+  })
 
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
