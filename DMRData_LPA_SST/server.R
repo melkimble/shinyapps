@@ -70,22 +70,31 @@ function(input, output, session) {
     colorBy <- input$color
     sizeBy <- input$size
 
-    if (colorBy == "species") {
-      # Color and palette are treated specially in the "species" case, because
-      # the values are categorical instead of continuous.
-      # my species data is already categorical, so this is unnecessary
-      colorData <- dmrLpaSST$species
+    if (colorBy == "SST") {
+      # OK, so in here I have to present special use-case catgeorical coloring rules based on what variable is selected.
+      # equipment, species, and site_id are fine and do not require any special use-case.
+      ## I picked these categorical breaks based on quantiles 25% and 75%.
+      colorData <- cut(dmrLpaSST$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
+      pal <- colorFactor("viridis", colorData)
+    } else if (sizeBy == "BATHY") {
+      colorData <- cut(dmrLpaSST$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
+      pal <- colorFactor("viridis", colorData)
+    } else if (sizeBy == "SeedDist") {
+      colorData <- cut(dmrLpaSST$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
       pal <- colorFactor("viridis", colorData)
     } else {
       colorData <- dmrLpaSST[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
 
-    if (sizeBy == "SST") {
-      # Radius is treated specially in the "SST" case.
-      # I dont' think I'll have to adjust this because the values are actually similar
-      # the only issue are negative values
-      radius <- ifelse(dmrLpaSST$SST >= (100 - input$threshold), 30000, 3000)
+    if (sizeBy == "species") {
+      # OK, so in here I have to present special use-case continuous sizing rules based on what variable is selected
+      ## equipment, species, and site_id are categorical. Hmmm
+      radius <- seq(from = 1, to = 2*(nrow(dmrLpaSST$species)), by=2)
+    } else if (sizeBy == "equipment") {
+      radius <- seq(from = 1, to = 2*(nrow(dmrLpaSST$equipment)), by=2)
+    } else if (sizeBy == "site_id") {
+      radius <- seq(from = 1, to = 2*(nrow(dmrLpaSST$site_id)), by=2)
     } else {
       radius <- dmrLpaSST[[sizeBy]] / max(dmrLpaSST[[sizeBy]]) * 30000
     }
