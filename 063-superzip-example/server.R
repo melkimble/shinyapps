@@ -97,6 +97,7 @@ function(input, output, session) {
 
   # Show a popup at the given location
   showZipcodePopup <- function(zipcode, lat, lng) {
+    print(zipcode)
     selectedZip <- allzips[allzips$zipcode == zipcode,]
     content <- as.character(tagList(
       tags$h4("Score:", as.integer(selectedZip$centile)),
