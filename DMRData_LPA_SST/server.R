@@ -85,9 +85,9 @@ function(input, output, session) {
       # Radius is treated specially in the "SST" case.
       # I dont' think I'll have to adjust this because the values are actually similar
       # the only issue are negative values
-      radius <- ifelse(dmrLpaSST$SST >= (100 - input$threshold), 300, 30)
+      radius <- ifelse(dmrLpaSST$SST >= (10 - input$threshold), 3000, 300)
     } else {
-      radius <- dmrLpaSST[[sizeBy]] / max(dmrLpaSST[[sizeBy]]) * 300
+      radius <- dmrLpaSST[[sizeBy]] / max(dmrLpaSST[[sizeBy]]) * 3000
     }
 
     leafletProxy("map", data = dmrLpaSST) %>%
