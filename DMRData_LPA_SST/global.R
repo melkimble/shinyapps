@@ -3,8 +3,8 @@ library(dplyr)
 DMRData <- readRDS("data/TestData.rds")
 DMRData$ID
 DMRData$SITE_ID <- as.character(DMRData$SITE_ID)
-DMRData$latitude 
-DMRData$longitude 
+DMRData$latitude <- as.numeric(DMRData$latitude)
+DMRData$longitude <- as.numeric(DMRData$longitude)
 DMRData$species <- as.character(DMRData$species )
 DMRData$equipment <- as.character(DMRData$equipment )
 DMRData$SST<-round(DMRData$SST,2) 

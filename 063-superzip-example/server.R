@@ -37,8 +37,8 @@ function(input, output, session) {
     subset(zipdata,
       latitude >= latRng[1] & latitude <= latRng[2] &
         longitude >= lngRng[1] & longitude <= lngRng[2])
-   bounds <- input$map_bounds
-   print(bounds)
+    #    bounds <- input$map_bounds
+    #    print(bounds)
   })
 
   # Precalculate the breaks we'll need for the two histograms
@@ -49,7 +49,7 @@ function(input, output, session) {
     if (nrow(zipsInBounds()) == 0)
       return(NULL)
 
-    hist(zipsInBounds()$centileeeee,
+    hist(zipsInBounds()$centile,
       breaks = centileBreaks,
       main = "SuperZIP score (visible zips)",
       xlab = "Percentile",
