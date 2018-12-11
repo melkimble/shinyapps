@@ -119,23 +119,23 @@ function(input, output) {
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
-      colorData <- ifelse(zipdata$centile >= (100 - input$threshold), "yes", "no")
+      colorData <- ifelse(DMRData$SST >= (100 - input$threshold), "yes", "no")
       pal <- colorFactor("viridis", colorData)
     } else {
-      colorData <- zipdata[[colorBy]]
+      colorData <- DMRData[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
     
     if (sizeBy == "superzip") {
       # Radius is treated specially in the "species" case.
-      radius <- ifelse(zipdata$centile >= (100 - input$threshold), 30000, 3000)
+      radius <- ifelse(DMRData$SST >= (100 - input$threshold), 30000, 3000)
     } else {
-      radius <- zipdata[[sizeBy]] / max(zipdata[[sizeBy]]) * 30000
+      radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
     }
     
-    leafletProxy("map", data = zipdata) %>%
+    leafletProxy("map", data = DMRData) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~zipcode,
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
