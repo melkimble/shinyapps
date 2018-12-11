@@ -90,11 +90,11 @@ function(input, output, session) {
     if (sizeBy == "species") {
       # OK, so in here I have to present special use-case continuous sizing rules based on what variable is selected
       ## equipment, species, and site_id are categorical. Hmmm
-      radius <- seq(from = 1, to = 2*(nrow(dmrLpaSST$species)), by=2)
+      radius <- 10*(as.numeric(as.factor(dmrLpaSST$species)))
     } else if (sizeBy == "equipment") {
-      radius <- seq(from = 1, to = 2*(nrow(dmrLpaSST$equipment)), by=2)
+      radius <- as.numeric(as.factor(dmrLpaSST$equipment))
     } else if (sizeBy == "site_id") {
-      radius <- seq(from = 1, to = 2*(nrow(dmrLpaSST$site_id)), by=2)
+      radius <- as.numeric(as.factor(dmrLpaSST$site_id))
     } else {
       radius <- dmrLpaSST[[sizeBy]] / max(dmrLpaSST[[sizeBy]]) * 30000
     }
