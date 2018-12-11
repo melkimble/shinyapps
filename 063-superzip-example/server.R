@@ -14,8 +14,7 @@ zipdata <- zipdata[order(zipdata$centile),]
 function(input, output, session) {
 
   ## Interactive Map ###########################################
-  bounds <- input$map_bounds
-  print(bounds)
+
   # Create the map
   output$map <- renderLeaflet({
     leaflet() %>%
@@ -24,6 +23,8 @@ function(input, output, session) {
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
       setView(lng = -68.87, lat = 44.92, zoom = 8)
+    bounds <- input$map_bounds
+    print(bounds)
   })
 
   # A reactive expression that returns the set of zips that are
