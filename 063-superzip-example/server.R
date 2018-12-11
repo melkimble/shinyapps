@@ -14,7 +14,8 @@ zipdata <- zipdata[order(zipdata$centile),]
 function(input, output, session) {
 
   ## Interactive Map ###########################################
-
+  bounds <- input$map_bounds
+  print(bounds)
   # Create the map
   output$map <- renderLeaflet({
     leaflet() %>%
@@ -37,11 +38,6 @@ function(input, output, session) {
     subset(zipdata,
       latitude >= latRng[1] & latitude <= latRng[2] &
         longitude >= lngRng[1] & longitude <= lngRng[2])
-    print(latRng[1])
-    print(latRng[2])
-    
-    print(lngRng[1])
-    print(lngRng[2])
   })
 
   # Precalculate the breaks we'll need for the two histograms

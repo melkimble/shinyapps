@@ -14,7 +14,8 @@ library(dplyr)
 function(input, output) {
 
   ## Interactive Map ###########################################
-
+  bounds <- input$map_bounds
+  print(bounds)
   # Create the map
   output$map <- renderLeaflet({
     leaflet() %>%
@@ -33,9 +34,6 @@ function(input, output) {
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
-    
-    print(latRng)
-    print(lngRng)
     
     subset(DMRData,
       latitude >= latRng[1] & latitude <= latRng[2] &
