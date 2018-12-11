@@ -80,7 +80,7 @@ function(input, output) {
             panel.grid.minor = element_blank(),
             #panel.border = element_blank(),
             panel.background = element_blank(),
-            axis_text.x=element_blank()) +
+            axis.title.x=element_blank()) +
       ggtitle("Temperature by Species") +
       ylab("Temperature (C)")
     print(ggboxTemp)
@@ -99,7 +99,7 @@ function(input, output) {
             panel.grid.minor = element_blank(),
             #panel.border = element_blank(),
             panel.background = element_blank(),
-            axis_text.x=element_blank()) +
+            axis.title.x=element_blank()) +
       ggtitle("Bathymetry by Species") +
       ylab("Bathymetry (m)")
     print(ggboxTemp)
