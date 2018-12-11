@@ -56,12 +56,12 @@ function(input, output, session) {
       border = 'white')
   })
 
-  output$scatterBathy <- renderPlot({
+  output$boxBathy <- renderPlot({
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
 
-    print(xyplot(species ~ BATHY, data = leasesInBounds(), xlim = range(LPAdata$BATHY), ylim = range(LPAdata$species)))
+    print(BATHY ~ species, data = leasesInBounds())
   })
 
   # This observer is responsible for maintaining the circles and legend,

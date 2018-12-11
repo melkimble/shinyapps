@@ -40,7 +40,7 @@ navbarPage("DMR Aquaculture Leases", id="nav",
         ),
 
         plotOutput("histTemp", height = 200),
-        plotOutput("scatterBathy", height = 250)
+        plotOutput("boxBathy", height = 250)
       ),
 
       tags$div(id="cite",
