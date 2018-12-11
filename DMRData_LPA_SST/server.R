@@ -27,19 +27,19 @@ function(input, output) {
 
   # A reactive expression that returns the set of zips that are
   # in bounds right now
-  leasesInBounds <- reactive({
+#  leasesInBounds <- reactive({
 #    bounds <- input$map_bounds
 #    print(bounds)
-    if (is.null(input$map_bounds))
-      return(DMRData[FALSE,])
-    bounds <- input$map_bounds
-    latRng <- range(bounds$north, bounds$south)
-    lngRng <- range(bounds$east, bounds$west)
+#    if (is.null(input$map_bounds))
+#      return(DMRData[FALSE,])
+#    bounds <- input$map_bounds
+#    latRng <- range(bounds$north, bounds$south)
+#    lngRng <- range(bounds$east, bounds$west)
     
-    subset(DMRData,
-      latitude >= latRng[1] & latitude <= latRng[2] &
-        longitude >= lngRng[1] & longitude <= lngRng[2])
-  })
+#    subset(DMRData,
+#      latitude >= latRng[1] & latitude <= latRng[2] &
+#        longitude >= lngRng[1] & longitude <= lngRng[2])
+#  })
 
   # Precalculate the breaks we'll need for the two histograms
 #  tempBreaks <- hist(plot = FALSE, DMRData$SST, breaks = 20)$breaks
@@ -68,65 +68,65 @@ function(input, output) {
 
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
-  observe({
+#  observe({
     ## user inputs based on what is selected from the drop down menu
-    colorBy <- input$color
-    sizeBy <- input$size
+#    colorBy <- input$color
+#    sizeBy <- input$size
 
-    if (colorBy == "SST") {
+#    if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
-      colorData <- as.character(cut(DMRData$SST, breaks=c(-10.000, -5.050, 5.025, 10.000 ), labels=c("Low","Med","High")))
-      pal <- colorFactor("viridis", colorData)
-    } else {
-      colorData <- DMRData[[colorBy]]
-      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
-    }
+#      colorData <- as.character(cut(DMRData$SST, breaks=c(-10.000, -5.050, 5.025, 10.000 ), labels=c("Low","Med","High")))
+#      pal <- colorFactor("viridis", colorData)
+#    } else {
+#      colorData <- DMRData[[colorBy]]
+#      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+#    }
 
-    if (sizeBy == "species") {
+#    if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <- 10*(as.numeric(as.factor(DMRData$species)))
-    } else {
-      radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
-    }
+#      radius <- 10*(as.numeric(as.factor(DMRData$species)))
+#    } else {
+#      radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
+#    }
 
-    leafletProxy("map", data = DMRData) %>%
-      clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
-        stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
-      addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
-        layerId="colorLegend")
-  })
+#    leafletProxy("map", data = DMRData) %>%
+#      clearShapes() %>%
+#      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
+#        stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
+#      addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
+#        layerId="colorLegend")
+#  })
 
   # Show a popup at the given location
   ## later grab SITE_ID from this group and calculate aggregates based on
-  showSitePopup <- function(ID, lat, lng) {
-    selectedSite <- DMRData[DMRData$ID == ID,]
-    content <- as.character(tagList(
-      tags$h4("Score:", selectedSite$ID),
-      tags$strong(HTML(sprintf("%s, %s %s",
-        selectedSite$species, selectedSite$equipment, selectedSite$ID
-      ))), tags$br(),
-      sprintf("Median household income: %s", selectedSite$BATHY), tags$br(),
-      sprintf("Percent of adults with BA: %s%%", as.integer(selectedSite$SeedDist)), tags$br(),
-      sprintf("Adult population: %s%%", as.integer(selectedSite$SST))
-    ))
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
-  }
+#  showSitePopup <- function(ID, lat, lng) {
+#    selectedSite <- DMRData[DMRData$ID == ID,]
+#    content <- as.character(tagList(
+#      tags$h4("Score:", selectedSite$ID),
+#      tags$strong(HTML(sprintf("%s, %s %s",
+#        selectedSite$species, selectedSite$equipment, selectedSite$ID
+#      ))), tags$br(),
+#      sprintf("Median household income: %s", selectedSite$BATHY), tags$br(),
+#      sprintf("Percent of adults with BA: %s%%", as.integer(selectedSite$SeedDist)), tags$br(),
+#      sprintf("Adult population: %s%%", as.integer(selectedSite$SST))
+#    ))
+#    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
+#  }
 
   # When map is clicked, show a popup with city info
-  observe({
-    leafletProxy("map") %>% clearPopups()
-    event <- input$map_shape_click
-    if (is.null(event))
-      return()
+#  observe({
+#    leafletProxy("map") %>% clearPopups()
+#    event <- input$map_shape_click
+ #   if (is.null(event))
+#      return()
 
-    isolate({
-      showSitePopup(event$id, event$lat, event$lng)
-    })
-  })
+#    isolate({
+#      showSitePopup(event$id, event$lat, event$lng)
+#    })
+#  })
 
 
   ## Data Explorer ###########################################
