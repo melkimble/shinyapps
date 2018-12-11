@@ -93,8 +93,8 @@ function(input, output, session) {
       radius <- 10*(as.numeric(as.factor(dmrLpaSST$species)))
     } else if (sizeBy == "equipment") {
       radius <- as.numeric(as.factor(dmrLpaSST$equipment))
-    } else if (sizeBy == "site_id") {
-      radius <- as.numeric(as.factor(dmrLpaSST$site_id))
+    } else if (sizeBy == "SITE_ID") {
+      radius <- as.numeric(as.factor(dmrLpaSST$SITE_ID))
     } else {
       radius <- dmrLpaSST[[sizeBy]] / max(dmrLpaSST[[sizeBy]]) * 30000
     }
