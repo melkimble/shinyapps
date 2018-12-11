@@ -114,7 +114,7 @@ function(input, output) {
     colorBy <- input$color
     sizeBy <- input$size
     
-    if (colorBy == "superzip") {
+    if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
@@ -126,9 +126,9 @@ function(input, output) {
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
     
-    if (sizeBy == "superzip") {
+    if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <- ifelse(DMRData$SST >= (100 - input$threshold), 30000, 3000)
+      radius <- ifelse(DMRData$species >= (100 - input$threshold), 30000, 3000)
     } else {
       radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
     }
