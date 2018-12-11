@@ -40,7 +40,7 @@ function(input, output, session) {
   })
 
   # Precalculate the breaks we'll need for the two histograms
-  tempBreaks <- hist(plot = FALSE, dmrLpaSST$SST, breaks = 20)$breaks
+  tempBreaks <- hist(plot = FALSE, LPAdata$SST, breaks = 20)$breaks
 
   output$histTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
@@ -51,7 +51,7 @@ function(input, output, session) {
       breaks = tempBreaks,
       main = "Temperature C (visible leases)",
       xlab = "Percentile",
-      xlim = range(dmrLpaSST$SST),
+      xlim = range(LPAdata$SST),
       col = '#00DD00',
       border = 'white')
   })
@@ -61,7 +61,7 @@ function(input, output, session) {
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
 
-    print(xyplot(species ~ BATHY, data = leasesInBounds(), xlim = range(dmrLpaSST$BATHY), ylim = range(dmrLpaSST$species)))
+    print(xyplot(species ~ BATHY, data = leasesInBounds(), xlim = range(LPAdata$BATHY), ylim = range(LPAdata$species)))
   })
 
   # This observer is responsible for maintaining the circles and legend,
@@ -74,38 +74,38 @@ function(input, output, session) {
       # OK, so in here I have to present special use-case catgeorical coloring rules based on what variable is selected.
       # equipment, species, and site_id are fine and do not require any special use-case.
       ## I picked these categorical breaks based on quantiles 25% and 75%.
-      colorData <- cut(dmrLpaSST$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
-      #colorData <- ifelse(dmrLpaSST$SST >= (100 - input$threshold), "yes", "no")
+      colorData <- cut(LPAdata$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
+      #colorData <- ifelse(LPAdata$SST >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
     } else if (colorBy == "BATHY") {
-      colorData <- cut(dmrLpaSST$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
-      #colorData <- ifelse(dmrLpaSST$BATHY >= (100 - input$threshold), "yes", "no")
+      colorData <- cut(LPAdata$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
+      #colorData <- ifelse(LPAdata$BATHY >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
     } else if (colorBy == "SeedDist") {
-      colorData <- cut(dmrLpaSST$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
-      #colorData <- ifelse(dmrLpaSST$SeedDist >= (100 - input$threshold), "yes", "no")
+      colorData <- cut(LPAdata$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
+      #colorData <- ifelse(LPAdata$SeedDist >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
     } else {
-      colorData <- dmrLpaSST[[colorBy]]
+      colorData <- LPAdata[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
 
     if (sizeBy == "species") {
       # OK, so in here I have to present special use-case continuous sizing rules based on what variable is selected
       ## equipment, species, and site_id are categorical. Hmmm
-      radius <- ifelse(dmrLpaSST$species >= (100 - input$threshold), 30000, 3000)
+      radius <- ifelse(LPAdata$species >= (100 - input$threshold), 30000, 3000)
     } else if (sizeBy == "equipment") {
-      radius <- ifelse(dmrLpaSST$equipment >= (100 - input$threshold), 30000, 3000)
+      radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
     } else if (sizeBy == "SITE_ID") {
-      radius <- ifelse(dmrLpaSST$SITE_ID >= (100 - input$threshold), 30000, 3000)
+      radius <- ifelse(LPAdata$SITE_ID >= (100 - input$threshold), 30000, 3000)
     } else {
-      radius <- dmrLpaSST[[sizeBy]] / max(dmrLpaSST[[sizeBy]]) * 30000
+      radius <- LPAdata[[sizeBy]] / max(LPAdata[[sizeBy]]) * 30000
     }
 
-    leafletProxy("map", data = dmrLpaSST) %>%
+    leafletProxy("map", data = LPAdata) %>%
       clearShapes() %>%
       addCircles(~longitude, ~latitude, radius=radius, layerId=~species,
         stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
@@ -115,7 +115,7 @@ function(input, output, session) {
 
   # Show a popup at the given location
   showSiteIDPopup <- function(SITE_ID, lat, lng) {
-    selectedLeases <- dmrLpaSST[dmrLpaSST$SITE_ID == SITE_ID,]
+    selectedLeases <- LPAdata[LPAdata$SITE_ID == SITE_ID,]
     content <- as.character(tagList(
       tags$h4("Site ID:", as.integer(selectedLeases$SST)),
       ## The original is formatted as City, State Zipcode. It might be useful
