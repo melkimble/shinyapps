@@ -51,7 +51,7 @@ function(input, output, session) {
       breaks = tempBreaks,
       main = "Temperature C (visible leases)",
       xlab = "Percentile",
-      xlim = range(LPAdata$SST),
+      xlim = range(LPAdata$SST, na.rm=TRUE),
       col = '#00DD00',
       border = 'white')
   })
