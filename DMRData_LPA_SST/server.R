@@ -58,7 +58,7 @@ function(input, output) {
             panel.background = element_blank()) +
       xlim(range(DMRData$SST)) +
       geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-      geom_vline(aes(xintercept=mean(leasesInBounds$SST)),
+      geom_vline(aes(xintercept=mean(leasesInBounds()$SST)),
                  color="blue", linetype="dashed", size=1) +
       ggtitle(TheTitle) +
       xlab("Temperature (C)") +
