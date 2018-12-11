@@ -14,11 +14,11 @@ DMRData$SeedDist
 cleantable <- DMRData %>%
   select(
     SiteId = SITE_ID,
+    Lat = latitude,
+    Long = longitude,
     Species = species,
     Equipment = equipment,
     SeaSurfaceTemp = SST,
     Bathymetry = BATHY,
-    SeedDist = SeedDist,
-    Lat = latitude,
-    Long = longitude
+    SeedDist = SeedDist
   )
