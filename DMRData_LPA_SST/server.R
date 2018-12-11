@@ -49,8 +49,8 @@ function(input, output) {
       return(NULL)
     
     TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(leasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
-    
-    gghistTemp<-ggplot(leasesInBounds(), aes(x=SST)) +
+    #gghistTemp<-
+    ggplot(leasesInBounds(), aes(x=SST)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
@@ -64,15 +64,15 @@ function(input, output) {
       xlab("Temperature (C)") +
       ylab("Frequency")
     
-    print(gghistTemp)
+    #print(gghistTemp)
   })
 
   output$boxSpeciesTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
-    
-    ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
+    #ggboxTemp<-
+    ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
       geom_boxplot() +
       theme(legend.position="none",
             plot.title=element_text(hjust=0.5),
@@ -83,7 +83,7 @@ function(input, output) {
             axis.title.x=element_blank()) +
       ggtitle("Temperature by Species") +
       ylab("Temperature (C)")
-    print(ggboxTemp)
+    #print(ggboxTemp)
     
   })
 
@@ -91,7 +91,8 @@ function(input, output) {
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
-    ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=BATHY, fill=species)) +
+    #ggboxTemp<-
+    ggplot(leasesInBounds(), aes(x=species, y=BATHY, fill=species)) +
       geom_boxplot() +
       theme(legend.position="none",
             plot.title=element_text(hjust=0.5),
@@ -102,7 +103,7 @@ function(input, output) {
             axis.title.x=element_blank()) +
       ggtitle("Bathymetry by Species") +
       ylab("Bathymetry (m)")
-    print(ggboxTemp)
+    #print(ggboxTemp)
     
   })
   
