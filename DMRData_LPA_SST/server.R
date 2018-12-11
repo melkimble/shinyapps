@@ -117,13 +117,12 @@ function(input, output, session) {
   })
   
   # Show a popup at the given location
-  showSiteIDPopup <- function(SITE_ID, lat, lng) {
-    selectedLeases <- LPAdata[LPAdata$SITE_ID == SITE_ID,]
+  showSiteIDPopup <- function(InputSite, lat, lng) {
+    selectedLeases <- LPAdata[LPAdata$SITE_ID == InputSite,]
     
-    
-    SST_Agg <- aggregate(selectedLeases["SST"], list(selectedLeases$SITE_ID), na.rm=TRUE,mean)
-    BathyAgg <- aggregate(selectedLeases["BATHY"], list(selectedLeases$SITE_ID), na.rm=TRUE,mean)
-    SeedAgg <- aggregate(selectedLeases["SeedDist"], list(selectedLeases$SITE_ID), na.rm=TRUE,mean)
+    SST_Agg <- aggregate(LPAdata["SST"], list(LPAdata$SITE_ID), na.rm=TRUE, mean)
+    BathyAgg <- aggregate(LPAdata["BATHY"], list(LPAdata$SITE_ID), na.rm=TRUE, mean)
+    SeedAgg <- aggregate(LPAdata["SeedDist"], list(LPAdata$SITE_ID), na.rm=TRUE, mean)
     
     content <- as.character(tagList(
       tags$h4("Site ID:", as.character(selectedLeases$SITE_ID)),
@@ -132,11 +131,11 @@ function(input, output, session) {
       tags$strong(HTML(sprintf("%s, %s, %s",
         selectedLeases$SITE_ID, selectedLeases$species, selectedLeases$equipment
       ))), tags$br(),
-      sprintf("Average Temperature: %s", SST_Agg$SST[SST_Agg$Group.1==SITE_ID]), tags$br(),
-      sprintf("Average Bathymetry: %s%%", BathyAgg$BATHY[BathyAgg$Group.1==SITE_ID]), tags$br(),
-      sprintf("Average Distance to Seed: %s", SeedAgg$SeedDist[SeedAgg$Group.1==SITE_ID]), tags$br()
+      sprintf("Average Temperature: %s", SST_Agg$SST[SST_Agg$Group.1==InputSite]), tags$br(),
+      sprintf("Average Bathymetry: %s%%", BathyAgg$BATHY[BathyAgg$Group.1==InputSite]), tags$br(),
+      sprintf("Average Distance to Seed: %s", SeedAgg$SeedDist[SeedAgg$Group.1==InputSite]), tags$br()
     ))
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = SITE_ID)
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = InputSite)
   }
 
   # When map is clicked, show a popup with city info
