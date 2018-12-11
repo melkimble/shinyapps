@@ -12,14 +12,14 @@ DMRData$BATHY<-round(DMRData$BATHY,2)
 DMRData$SeedDist<-round(DMRData$SeedDist,2)
 #row.names(DMRData) <- DMRData$zipcode
 
-cleantable <- DMRData %>%
-  select(
-    SiteId = SITE_ID,
-    Lat = latitude,
-    Long = longitude,
-    Species = species,
-    Equipment = equipment,
-    SeaSurfaceTemp = SST,
-    Bathymetry = BATHY,
-    SeedDist = SeedDist
-  )
+#cleantable <- DMRData %>%
+#  select(
+#    SiteId = SITE_ID,
+#    Lat = latitude,
+#    Long = longitude,
+#    Species = species,
+#    Equipment = equipment,
+#    SeaSurfaceTemp = SST,
+#    Bathymetry = BATHY,
+#    SeedDist = SeedDist
+#  )
