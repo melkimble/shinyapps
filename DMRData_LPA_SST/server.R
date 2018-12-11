@@ -56,13 +56,13 @@ function(input, output, session) {
       border = 'white')
   })
 
-  output$boxBathy <- renderPlot({
-    # If no zipcodes are in view, don't plot
-    if (nrow(leasesInBounds()) == 0)
-      return(NULL)
+#  output$boxBathy <- renderPlot({
+#    # If no zipcodes are in view, don't plot
+#    if (nrow(leasesInBounds()) == 0)
+#      return(NULL)
 
-    print(boxplot(BATHY ~ species, data = leasesInBounds(), na.rm=TRUE))
-  })
+#    print(boxplot(BATHY ~ species, data = leasesInBounds(), na.rm=TRUE))
+#  })
 
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
@@ -98,9 +98,9 @@ function(input, output, session) {
       ## equipment, species, and site_id are categorical. Hmmm
       #radius <- 10*(as.numeric(as.factor(LPAdata$species)))
       radius <- ifelse(LPAdata$species >= (100 - input$threshold), 30000, 3000)
-    } else if (sizeBy == "equipment") {
-      #radius <- as.numeric(as.factor(LPAdata$equipment))
-      radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
+ #   } else if (sizeBy == "equipment") {
+#      #radius <- as.numeric(as.factor(LPAdata$equipment))
+#      radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
     } else if (sizeBy == "SITE_ID") {
       #radius <- as.numeric(as.factor(LPAdata$SITE_ID))
       radius <- ifelse(LPAdata$SITE_ID >= (100 - input$threshold), 30000, 3000)
@@ -129,7 +129,7 @@ function(input, output, session) {
       ## The original is formatted as City, State Zipcode. It might be useful
       ## to put the gear in here or seed location.
       tags$strong(HTML(sprintf("%s, %s, %s",
-        selectedLeases$SITE_ID, selectedLeases$species, selectedLeases$equipment
+        selectedLeases$SITE_ID, selectedLeases$species #, selectedLeases$equipment
       ))), tags$br(),
       sprintf("Average Temperature: %s", SST_Agg$SST[SST_Agg$Group.1==InputSite]), tags$br(),
       sprintf("Average Bathymetry: %s%%", BathyAgg$BATHY[BathyAgg$Group.1==InputSite]), tags$br(),
@@ -154,60 +154,60 @@ function(input, output, session) {
   ## Data Explorer ###########################################
   #Actual (ID,SITE_ID zipcode,latitude,longitude,species states,equipment cities,SST,BATHY,SeedDist)
   #cleantable (Id, SiteId, Lat, Long, Species, Equipment City, SST, Bathymetry, SeedDistance)
-  
-  observe({
-    equipment <- if (is.null(input$species)) character(0) else {
-      filter(cleantable, Species %in% input$species) %>%
-        `$`('Equipment') %>%
-        unique() %>%
-        sort()
-    }
-    stillSelected <- isolate(input$equipment[input$equipment %in% equipment])
-    updateSelectInput(session, "equipment", choices = equipment,
-                      selected = stillSelected)
-  })
-  
-  observe({
-    SITE_ID <- if (is.null(input$species)) character(0) else {
-      cleantable %>%
-        filter(Species %in% input$species,
-               is.null(input$equipment) | Equipment %in% input$equipment) %>%
-        `$`('SiteId') %>%
-        unique() %>%
-        sort()
-    }
-    stillSelected <- isolate(input$SITE_ID[input$SITE_ID %in% SITE_ID])
-    updateSelectInput(session, "SITE_ID", choices = SITE_ID,
-                      selected = stillSelected)
-  })
-  
-  observe({
-    if (is.null(input$goto))
-      return()
-    isolate({
-      map <- leafletProxy("map")
-      map %>% clearPopups()
-      dist <- 0.5
-      sid <- input$goto$sid
-      lat <- input$goto$lat
-      lng <- input$goto$lng
-      showSiteIDPopup(sid, lat, lng)
-      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
-    })
-  })
-  
-  output$siteTable <- DT::renderDataTable({
-    df <- cleantable %>%
-      filter(
-        Score >= input$minScore,
-        Score <= input$maxScore,
-        is.null(input$species) | Species %in% input$species,
-        is.null(input$equipment) | Equipment %in% input$equipment,
-        is.null(input$SITE_ID) | SiteId %in% input$SITE_ID
-      ) %>%
-      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-sid="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
-    action <- DT::dataTableAjax(session, df)
-    
-    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
-  })
+#  
+#  observe({
+#    equipment <- if (is.null(input$species)) character(0) else {
+#      filter(cleantable, Species %in% input$species) %>%
+#        `$`('Equipment') %>%
+#        unique() %>%
+#        sort()
+#    }
+#    stillSelected <- isolate(input$equipment[input$equipment %in% equipment])
+#    updateSelectInput(session, "equipment", choices = equipment,
+#                      selected = stillSelected)
+#  })
+#  
+#  observe({
+#    SITE_ID <- if (is.null(input$species)) character(0) else {
+#      cleantable %>%
+#        filter(Species %in% input$species,
+#               is.null(input$equipment) | Equipment %in% input$equipment) %>%
+#        `$`('SiteId') %>%
+#        unique() %>%
+#        sort()
+#    }
+#    stillSelected <- isolate(input$SITE_ID[input$SITE_ID %in% SITE_ID])
+#    updateSelectInput(session, "SITE_ID", choices = SITE_ID,
+#                      selected = stillSelected)
+#  })
+#  
+#  observe({
+#    if (is.null(input$goto))
+#      return()
+#    isolate({
+#      map <- leafletProxy("map")
+#      map %>% clearPopups()
+#      dist <- 0.5
+#      sid <- input$goto$sid
+#      lat <- input$goto$lat
+#      lng <- input$goto$lng
+#      showSiteIDPopup(sid, lat, lng)
+#      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
+#    })
+#  })
+#  
+#  output$siteTable <- DT::renderDataTable({
+#    df <- cleantable %>%
+#      filter(
+#        Score >= input$minScore,
+#        Score <= input$maxScore,
+#        is.null(input$species) | Species %in% input$species,
+#        is.null(input$equipment) | Equipment %in% input$equipment,
+#        is.null(input$SITE_ID) | SiteId %in% input$SITE_ID
+#      ) %>%
+#      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-sid="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+#    action <- DT::dataTableAjax(session, df)
+#    
+#    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
+#  })
 }

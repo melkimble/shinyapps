@@ -4,7 +4,7 @@ library(leaflet)
 vars <- c(
   "What species?" = "species",
   "What site?" = "SITE_ID",
-  "What Equipment?" = "equipment",
+#  "What Equipment?" = "equipment",
   "Sea Surface Temperature (C)" = "SST",
   "Bathymetry (m)" = "BATHY",
   "Seed Distance" = "SeedDist"
@@ -45,31 +45,31 @@ navbarPage("DMR Aquaculture Leases", id="nav",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).'
       )
     )
-  ),
+  ) #,
   
   ## Data Explorer ###########################################
   #Actual (ID,SITE_ID zipcode,latitude,longitude,species states,equipment cities,SST,BATHY,SeedDist)
   #cleantable (Id, SiteId, Lat, Long, Species, Equipment City, SST, Bathymetry, SeedDistance)
-  
-  tabPanel("Data explorer",
-    fluidRow(
-      column(3,
-        selectInput("species", "Species", c("All species"="", structure(state.abb, names=state.name), "ShellFish, Floating trays"="Floating trays"), multiple=TRUE)
-      ),
-      column(3,
-        conditionalPanel("input.species",
-          selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE)
-        )
-      ),
-      column(3,
-        conditionalPanel("input.species",
-          selectInput("SITE_ID", "SiteId", c("All SITE_ID"=""), multiple=TRUE)
-        )
-      )
-    ),
-    hr(),
-    DT::dataTableOutput("siteTable")
-  ),
-
-  conditionalPanel("false", icon("crosshair"))
+#  
+#  tabPanel("Data explorer",
+#    fluidRow(
+#      column(3,
+#        selectInput("species", "Species", c("All species"="", structure(state.abb, names=state.name), "ShellFish, YOU415"="YOU415"), multiple=TRUE)
+#      ),
+#      column(3,
+#        conditionalPanel("input.species",
+#          selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE)
+#        )
+#      ),
+#      column(3,
+#        conditionalPanel("input.species",
+#          selectInput("SITE_ID", "SiteId", c("All SITE_ID"=""), multiple=TRUE)
+#        )
+#      )
+#    ),
+#    hr(),
+#    DT::dataTableOutput("siteTable")
+#  ),
+#
+#  conditionalPanel("false", icon("crosshair"))
 )

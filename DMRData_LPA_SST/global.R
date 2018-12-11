@@ -7,7 +7,7 @@ dmrLpaSST$SITE_ID
 dmrLpaSST$latitude
 dmrLpaSST$longitude
 dmrLpaSST$species
-dmrLpaSST$equipment
+#dmrLpaSST$equipment
 dmrLpaSST$SST
 dmrLpaSST$BATHY
 dmrLpaSST$SeedDist
@@ -24,7 +24,7 @@ cleantable <- dmrLpaSST %>%
     Lat = latitude,
     Long = longitude,
     Species = species,
-    Equipment = equipment,
+#    Equipment = equipment,
     SST = SST,
     Bathymetry = BATHY,
     SeedDistance = SeedDist
