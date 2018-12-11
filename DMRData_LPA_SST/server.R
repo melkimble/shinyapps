@@ -60,7 +60,7 @@ function(input, output) {
       border = 'white')
   })
 
-  output$boxSpecies <- renderPlot({
+  output$boxSpeciesTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
@@ -70,16 +70,34 @@ function(input, output) {
 #            ylab ="Temperature (C)",
 #            col = species,
 #            data = leasesInBounds())
-    ggbox<-ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
+    ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
       geom_boxplot() +
       theme(panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.border = element_blank(),
-            panel.background = element_blank())
-    print(ggbox)
+            panel.background = element_blank()) +
+      ggtitle("Temp. by Species") +
+      ylab("Temperature (C)")
+    print(ggboxTemp)
     
   })
 
+  output$boxSpeciesBathy <- renderPlot({
+    # If no zipcodes are in view, don't plot
+    if (nrow(leasesInBounds()) == 0)
+      return(NULL)
+    ggboxTemp<-ggplot(leasesInBounds(), aes(x=species, y=BATHY, fill=species)) +
+      geom_boxplot() +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            panel.border = element_blank(),
+            panel.background = element_blank()) +
+      ggtitle("Bathymetry by Species") +
+      ylab("Bathymetry (m)")
+    print(ggboxTemp)
+    
+  })
+  
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
 #  observe({
