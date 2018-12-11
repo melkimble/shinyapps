@@ -61,7 +61,7 @@ function(input, output, session) {
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
 
-    print(BATHY ~ species, data = leasesInBounds())
+    print(boxplot(BATHY ~ species, data = leasesInBounds()))
   })
 
   # This observer is responsible for maintaining the circles and legend,
