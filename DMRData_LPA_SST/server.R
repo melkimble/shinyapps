@@ -78,12 +78,12 @@ function(input, output, session) {
       colorData <- ifelse(dmrLpaSST$SST >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
-    } else if (sizeBy == "BATHY") {
+    } else if (colorBy == "BATHY") {
       #colorData <- cut(dmrLpaSST$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
       colorData <- ifelse(dmrLpaSST$BATHY >= (100 - input$threshold), "yes", "no")
       
       pal <- colorFactor("viridis", colorData)
-    } else if (sizeBy == "SeedDist") {
+    } else if (colorBy == "SeedDist") {
       #colorData <- cut(dmrLpaSST$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
       colorData <- ifelse(dmrLpaSST$SeedDist >= (100 - input$threshold), "yes", "no")
       
