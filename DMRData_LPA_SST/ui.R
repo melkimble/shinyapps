@@ -34,7 +34,7 @@ navbarPage("DMR Lease Data", id="nav",
         selectInput("size", "Size", vars, selected = "SST"),
 
         plotOutput("histTemp", height = 200),
-        plotOutput("boxSpecies", height = 250)
+#        plotOutput("boxSpecies", height = 250)
       ),
 
       tags$div(id="cite",
