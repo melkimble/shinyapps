@@ -5,11 +5,11 @@ library(lattice)
 library(dplyr)
 
 # Leaflet bindings are a bit slow; for now we'll just sample to compensate
-#set.seed(100)
-LPAdata <- dmrLpaSST
+set.seed(100)
+zipdata <- allzips[sample.int(nrow(allzips), 10000),]
 # By ordering by centile, we ensure that the (comparatively rare) SuperZIPs
 # will be drawn last and thus be easier to see
-#zipdata <- zipdata[order(zipdata$centile),]
+zipdata <- zipdata[order(zipdata$centile),]
 
 function(input, output, session) {
 
@@ -22,47 +22,47 @@ function(input, output, session) {
         urlTemplate = "//{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
         attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
       ) %>%
-      setView(lng = -67.709946, lat = 44.146299, zoom = 8)
+      setView(lng = -68.87, lat = 44.92, zoom = 8)
   })
 
   # A reactive expression that returns the set of zips that are
   # in bounds right now
-  leasesInBounds <- reactive({
+  zipsInBounds <- reactive({
     if (is.null(input$map_bounds))
-      return(LPAdata[FALSE,])
+      return(zipdata[FALSE,])
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
 
-    subset(LPAdata,
+    subset(zipdata,
       latitude >= latRng[1] & latitude <= latRng[2] &
         longitude >= lngRng[1] & longitude <= lngRng[2])
   })
 
   # Precalculate the breaks we'll need for the two histograms
-  tempBreaks <- hist(plot = FALSE, LPAdata$SST, breaks = 20)$breaks
+  centileBreaks <- hist(plot = FALSE, allzips$centile, breaks = 20)$breaks
 
-  output$histTemp <- renderPlot({
+  output$histCentile <- renderPlot({
     # If no zipcodes are in view, don't plot
-    if (nrow(leasesInBounds()) == 0)
+    if (nrow(zipsInBounds()) == 0)
       return(NULL)
 
-    hist(leasesInBounds()$SST,
-      breaks = tempBreaks,
-      main = "Temperature Values (visible leases)",
-      xlab = "Temperature (C)",
-      xlim = range(LPAdata$SST, na.rm=TRUE),
+    hist(zipsInBounds()$centile,
+      breaks = centileBreaks,
+      main = "SuperZIP score (visible zips)",
+      xlab = "Percentile",
+      xlim = range(allzips$centile),
       col = '#00DD00',
       border = 'white')
   })
 
-#  output$boxBathy <- renderPlot({
-#    # If no zipcodes are in view, don't plot
-#    if (nrow(leasesInBounds()) == 0)
-#      return(NULL)
+  output$scatterCollegeIncome <- renderPlot({
+    # If no zipcodes are in view, don't plot
+    if (nrow(zipsInBounds()) == 0)
+      return(NULL)
 
-#    print(boxplot(BATHY ~ species, data = leasesInBounds(), na.rm=TRUE))
-#  })
+    print(xyplot(income ~ college, data = zipsInBounds(), xlim = range(allzips$college), ylim = range(allzips$income)))
+  })
 
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
@@ -70,72 +70,44 @@ function(input, output, session) {
     colorBy <- input$color
     sizeBy <- input$size
 
-    if (colorBy == "SST") {
-      # OK, so in here I have to present special use-case catgeorical coloring rules based on what variable is selected.
-      # equipment, species, and site_id are fine and do not require any special use-case.
-      ## I picked these categorical breaks based on quantiles 25% and 75%.
-      #colorData <- cut(LPAdata$SST, breaks=c(-Inf, 7.3600, 19.5675, Inf), labels=c("Low","Med","High"))
-      colorData <- ifelse(LPAdata$SST >= (100 - input$threshold), "yes", "no")
- 
+    if (colorBy == "superzip") {
+      # Color and palette are treated specially in the "superzip" case, because
+      # the values are categorical instead of continuous.
+      colorData <- ifelse(zipdata$centile >= (100 - input$threshold), "yes", "no")
       pal <- colorFactor("viridis", colorData)
-#    } else if (colorBy == "BATHY") {
-      #colorData <- cut(LPAdata$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
-#      colorData <- ifelse(LPAdata$BATHY >= (100 - input$threshold), "yes", "no")
-      
-#      pal <- colorFactor("viridis", colorData)
-#    } else if (colorBy == "SeedDist") {
-      #colorData <- cut(LPAdata$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
-#      colorData <- ifelse(LPAdata$SeedDist >= (100 - input$threshold), "yes", "no")
-      
-#      pal <- colorFactor("viridis", colorData)
     } else {
-      colorData <- LPAdata[[colorBy]]
+      colorData <- zipdata[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
 
-    if (sizeBy == "species") {
-      # OK, so in here I have to present special use-case continuous sizing rules based on what variable is selected
-      ## equipment, species, and site_id are categorical. Hmmm
-      #radius <- 10*(as.numeric(as.factor(LPAdata$species)))
-      radius <- ifelse(LPAdata$species >= (100 - input$threshold), 30000, 3000)
- #   } else if (sizeBy == "equipment") {
-#      #radius <- as.numeric(as.factor(LPAdata$equipment))
-#      radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
-#    } else if (sizeBy == "SITE_ID") {
-      #radius <- as.numeric(as.factor(LPAdata$SITE_ID))
-#      radius <- ifelse(LPAdata$SITE_ID >= (100 - input$threshold), 30000, 3000)
+    if (sizeBy == "superzip") {
+      # Radius is treated specially in the "superzip" case.
+      radius <- ifelse(zipdata$centile >= (100 - input$threshold), 30000, 3000)
     } else {
-      radius <- LPAdata[[sizeBy]] / max(LPAdata[[sizeBy]]) * 30000
+      radius <- zipdata[[sizeBy]] / max(zipdata[[sizeBy]]) * 30000
     }
-    
-    leafletProxy("map", data = LPAdata) %>%
+
+    leafletProxy("map", data = zipdata) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~SITE_ID,
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~zipcode,
         stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
         layerId="colorLegend")
   })
-  
+
   # Show a popup at the given location
-  showSiteIDPopup <- function(InputSite, lat, lng) {
-    selectedLeases <- LPAdata[LPAdata$SITE_ID == InputSite,]
-    
-    SST_Agg <- aggregate(LPAdata["SST"], list(LPAdata$SITE_ID), na.rm=TRUE, mean)
-    BathyAgg <- aggregate(LPAdata["BATHY"], list(LPAdata$SITE_ID), na.rm=TRUE, mean)
-    SeedAgg <- aggregate(LPAdata["SeedDist"], list(LPAdata$SITE_ID), na.rm=TRUE, mean)
-    
+  showZipcodePopup <- function(zipcode, lat, lng) {
+    selectedZip <- allzips[allzips$zipcode == zipcode,]
     content <- as.character(tagList(
-      tags$h4("Site ID:", as.character(selectedLeases$SITE_ID)),
-      ## The original is formatted as City, State Zipcode. It might be useful
-      ## to put the gear in here or seed location.
-      tags$strong(HTML(sprintf("%s, %s, %s",
-        selectedLeases$SITE_ID, selectedLeases$species #, selectedLeases$equipment
+      tags$h4("Score:", as.integer(selectedZip$centile)),
+      tags$strong(HTML(sprintf("%s, %s %s",
+        selectedZip$city.x, selectedZip$state.x, selectedZip$zipcode
       ))), tags$br(),
-      sprintf("Average Temperature: %s", SST_Agg$SST[SST_Agg$Group.1==InputSite]), tags$br(),
-      sprintf("Average Bathymetry: %s%%", BathyAgg$BATHY[BathyAgg$Group.1==InputSite]), tags$br(),
-      sprintf("Average Distance to Seed: %s", SeedAgg$SeedDist[SeedAgg$Group.1==InputSite]), tags$br()
+      sprintf("Median household income: %s", dollar(selectedZip$income * 1000)), tags$br(),
+      sprintf("Percent of adults with BA: %s%%", as.integer(selectedZip$college)), tags$br(),
+      sprintf("Adult population: %s", selectedZip$adultpop)
     ))
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = InputSite)
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = zipcode)
   }
 
   # When map is clicked, show a popup with city info
@@ -146,68 +118,66 @@ function(input, output, session) {
       return()
 
     isolate({
-      showSiteIDPopup(event$id, event$lat, event$lng)
+      showZipcodePopup(event$id, event$lat, event$lng)
     })
   })
 
 
   ## Data Explorer ###########################################
-  #Actual (ID,SITE_ID zipcode,latitude,longitude,species states,equipment cities,SST,BATHY,SeedDist)
-  #cleantable (Id, SiteId, Lat, Long, Species, Equipment City, SST, Bathymetry, SeedDistance)
-#  
-#  observe({
-#    equipment <- if (is.null(input$species)) character(0) else {
-#      filter(cleantable, Species %in% input$species) %>%
-#        `$`('Equipment') %>%
-#        unique() %>%
-#        sort()
-#    }
-#    stillSelected <- isolate(input$equipment[input$equipment %in% equipment])
-#    updateSelectInput(session, "equipment", choices = equipment,
-#                      selected = stillSelected)
-#  })
-#  
-#  observe({
-#    SITE_ID <- if (is.null(input$species)) character(0) else {
-#      cleantable %>%
-#        filter(Species %in% input$species,
-#               is.null(input$equipment) | Equipment %in% input$equipment) %>%
-#        `$`('SiteId') %>%
-#        unique() %>%
-#        sort()
-#    }
-#    stillSelected <- isolate(input$SITE_ID[input$SITE_ID %in% SITE_ID])
-#    updateSelectInput(session, "SITE_ID", choices = SITE_ID,
-#                      selected = stillSelected)
-#  })
-#  
-#  observe({
-#    if (is.null(input$goto))
-#      return()
-#    isolate({
-#      map <- leafletProxy("map")
-#      map %>% clearPopups()
-#      dist <- 0.5
-#      sid <- input$goto$sid
-#      lat <- input$goto$lat
-#      lng <- input$goto$lng
-#      showSiteIDPopup(sid, lat, lng)
-#      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
-#    })
-#  })
-#  
-#  output$siteTable <- DT::renderDataTable({
-#    df <- cleantable %>%
-#      filter(
-#        Score >= input$minScore,
-#        Score <= input$maxScore,
-#        is.null(input$species) | Species %in% input$species,
-#        is.null(input$equipment) | Equipment %in% input$equipment,
-#        is.null(input$SITE_ID) | SiteId %in% input$SITE_ID
-#      ) %>%
-#      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-sid="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
-#    action <- DT::dataTableAjax(session, df)
-#    
-#    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
-#  })
+
+  observe({
+    cities <- if (is.null(input$states)) character(0) else {
+      filter(cleantable, State %in% input$states) %>%
+        `$`('City') %>%
+        unique() %>%
+        sort()
+    }
+    stillSelected <- isolate(input$cities[input$cities %in% cities])
+    updateSelectInput(session, "cities", choices = cities,
+      selected = stillSelected)
+  })
+
+  observe({
+    zipcodes <- if (is.null(input$states)) character(0) else {
+      cleantable %>%
+        filter(State %in% input$states,
+          is.null(input$cities) | City %in% input$cities) %>%
+        `$`('Zipcode') %>%
+        unique() %>%
+        sort()
+    }
+    stillSelected <- isolate(input$zipcodes[input$zipcodes %in% zipcodes])
+    updateSelectInput(session, "zipcodes", choices = zipcodes,
+      selected = stillSelected)
+  })
+
+  observe({
+    if (is.null(input$goto))
+      return()
+    isolate({
+      map <- leafletProxy("map")
+      map %>% clearPopups()
+      dist <- 0.5
+      zip <- input$goto$zip
+      lat <- input$goto$lat
+      lng <- input$goto$lng
+      showZipcodePopup(zip, lat, lng)
+      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
+    })
+  })
+
+  output$ziptable <- DT::renderDataTable({
+    df <- cleantable %>%
+      filter(
+        Score >= input$minScore,
+        Score <= input$maxScore,
+        is.null(input$states) | State %in% input$states,
+        is.null(input$cities) | City %in% input$cities,
+        is.null(input$zipcodes) | Zipcode %in% input$zipcodes
+      ) %>%
+      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-zip="', Zipcode, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+    action <- DT::dataTableAjax(session, df)
+
+    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
+  })
 }

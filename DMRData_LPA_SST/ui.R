@@ -2,16 +2,15 @@ library(leaflet)
 
 # Choices for drop-downs
 vars <- c(
-  "What species?" = "species",
-  "What site?" = "SITE_ID",
-#  "What Equipment?" = "equipment",
-  "Sea Surface Temperature (C)" = "SST",
-  "Bathymetry (m)" = "BATHY",
-  "Seed Distance" = "SeedDist"
+  "Is SuperZIP?" = "superzip",
+  "Centile score" = "centile",
+  "College education" = "college",
+  "Median income" = "income",
+  "Population" = "adultpop"
 )
 
 
-navbarPage("DMR Aquaculture Leases", id="nav",
+navbarPage("Superzip", id="nav",
 
   tabPanel("Interactive map",
     div(class="outer",
@@ -30,46 +29,52 @@ navbarPage("DMR Aquaculture Leases", id="nav",
         draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
         width = 330, height = "auto",
 
-        h2("Lease Site Explorer"),
+        h2("ZIP explorer"),
 
         selectInput("color", "Color", vars),
-        selectInput("size", "Size", vars, selected = "SST"),
-        conditionalPanel("input.color == 'species' || input.size == 'SST'"
+        selectInput("size", "Size", vars, selected = "adultpop"),
+        conditionalPanel("input.color == 'superzip' || input.size == 'superzip'",
+          # Only prompt for threshold when coloring or sizing by superzip
+          numericInput("threshold", "SuperZIP threshold (top n percentile)", 5)
         ),
 
-        plotOutput("histTemp", height = 200)
-#        plotOutput("boxBathy", height = 250)
+        plotOutput("histCentile", height = 200),
+        plotOutput("scatterCollegeIncome", height = 250)
       ),
 
       tags$div(id="cite",
-        'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).'
+        'Data compiled for ', tags$em('Coming Apart: The State of White America, 1960–2010'), ' by Charles Murray (Crown Forum, 2012).'
       )
     )
-  ) #,
-  
-  ## Data Explorer ###########################################
-  #Actual (ID,SITE_ID zipcode,latitude,longitude,species states,equipment cities,SST,BATHY,SeedDist)
-  #cleantable (Id, SiteId, Lat, Long, Species, Equipment City, SST, Bathymetry, SeedDistance)
-#  
-#  tabPanel("Data explorer",
-#    fluidRow(
-#      column(3,
-#        selectInput("species", "Species", c("All species"="", structure(state.abb, names=state.name), "ShellFish, YOU415"="YOU415"), multiple=TRUE)
-#      ),
-#      column(3,
-#        conditionalPanel("input.species",
-#          selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE)
-#        )
-#      ),
-#      column(3,
-#        conditionalPanel("input.species",
-#          selectInput("SITE_ID", "SiteId", c("All SITE_ID"=""), multiple=TRUE)
-#        )
-#      )
-#    ),
-#    hr(),
-#    DT::dataTableOutput("siteTable")
-#  ),
-#
-#  conditionalPanel("false", icon("crosshair"))
+  ),
+
+  tabPanel("Data explorer",
+    fluidRow(
+      column(3,
+        selectInput("states", "States", c("All states"="", structure(state.abb, names=state.name), "Washington, DC"="DC"), multiple=TRUE)
+      ),
+      column(3,
+        conditionalPanel("input.states",
+          selectInput("cities", "Cities", c("All cities"=""), multiple=TRUE)
+        )
+      ),
+      column(3,
+        conditionalPanel("input.states",
+          selectInput("zipcodes", "Zipcodes", c("All zipcodes"=""), multiple=TRUE)
+        )
+      )
+    ),
+    fluidRow(
+      column(1,
+        numericInput("minScore", "Min score", min=0, max=100, value=0)
+      ),
+      column(1,
+        numericInput("maxScore", "Max score", min=0, max=100, value=100)
+      )
+    ),
+    hr(),
+    DT::dataTableOutput("ziptable")
+  ),
+
+  conditionalPanel("false", icon("crosshair"))
 )

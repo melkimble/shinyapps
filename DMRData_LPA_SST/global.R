@@ -1,32 +1,23 @@
 library(dplyr)
 
-dmrLpaSST <- readRDS("data/TestData.rds")
-#names(dmrLpaSST)
-dmrLpaSST$ID 
-dmrLpaSST$SITE_ID 
-dmrLpaSST$latitude
-dmrLpaSST$longitude
-dmrLpaSST$species
-#dmrLpaSST$equipment
-dmrLpaSST$SST
-dmrLpaSST$BATHY
-dmrLpaSST$SeedDist
+allzips <- readRDS("data/superzip.rds")
+allzips$latitude <- jitter(allzips$latitude)
+allzips$longitude <- jitter(allzips$longitude)
+allzips$college <- allzips$college * 100
+allzips$zipcode <- formatC(allzips$zipcode, width=5, format="d", flag="0")
+row.names(allzips) <- allzips$zipcode
 
-
-
-
-row.names(dmrLpaSST) <- dmrLpaSST$ID 
-
-cleantable <- dmrLpaSST %>%
+cleantable <- allzips %>%
   select(
-    Id = ID,
-    SiteId = SITE_ID,
+    City = city.x,
+    State = state.x,
+    Zipcode = zipcode,
+    Rank = rank,
+    Score = centile,
+    Superzip = superzip,
+    Population = adultpop,
+    College = college,
+    Income = income,
     Lat = latitude,
-    Long = longitude,
-    Species = species,
-#    Equipment = equipment,
-    SST = SST,
-    Bathymetry = BATHY,
-    SeedDistance = SeedDist
+    Long = longitude
   )
-
