@@ -113,32 +113,32 @@ function(input, output) {
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
     sizeBy <- input$size
-
-    if (colorBy == "SST") {
+    
+    if (colorBy == "superzip") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
-      colorData <- as.character(cut(DMRData$SST, breaks=c(-10.000, -5.050, 5.025, 10.000 ), labels=c("Low","Med","High")))
+      colorData <- ifelse(zipdata$centile >= (100 - input$threshold), "yes", "no")
       pal <- colorFactor("viridis", colorData)
     } else {
-      colorData <- DMRData[[colorBy]]
+      colorData <- zipdata[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
-
-    if (sizeBy == "species") {
+    
+    if (sizeBy == "superzip") {
       # Radius is treated specially in the "species" case.
-      radius <- 10*(as.numeric(as.factor(DMRData$species)))
+      radius <- ifelse(zipdata$centile >= (100 - input$threshold), 30000, 3000)
     } else {
-      radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
+      radius <- zipdata[[sizeBy]] / max(zipdata[[sizeBy]]) * 30000
     }
-
-    leafletProxy("map", data = DMRData) %>%
+    
+    leafletProxy("map", data = zipdata) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
-        stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~zipcode,
+                 stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
-        layerId="colorLegend")
+                layerId="colorLegend")
   })
 
   # Show a popup at the given location
