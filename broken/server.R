@@ -56,13 +56,13 @@ function(input, output, session) {
       border = 'white')
   })
 
-#  output$boxBathy <- renderPlot({
-#    # If no zipcodes are in view, don't plot
-#    if (nrow(leasesInBounds()) == 0)
-#      return(NULL)
+  output$boxBathy <- renderPlot({
+    # If no zipcodes are in view, don't plot
+    if (nrow(leasesInBounds()) == 0)
+      return(NULL)
 
-#    print(boxplot(BATHY ~ species, data = leasesInBounds(), na.rm=TRUE))
-#  })
+    print(boxplot(BATHY ~ species, data = leasesInBounds(), na.rm=TRUE))
+  })
 
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
@@ -78,16 +78,16 @@ function(input, output, session) {
       colorData <- ifelse(LPAdata$SST >= (100 - input$threshold), "yes", "no")
  
       pal <- colorFactor("viridis", colorData)
-#    } else if (colorBy == "BATHY") {
+    } else if (colorBy == "BATHY") {
       #colorData <- cut(LPAdata$BATHY, breaks=c(-Inf, -5.100, 4.795, Inf), labels=c("Low","Med","High"))
-#      colorData <- ifelse(LPAdata$BATHY >= (100 - input$threshold), "yes", "no")
+      colorData <- ifelse(LPAdata$BATHY >= (100 - input$threshold), "yes", "no")
       
-#      pal <- colorFactor("viridis", colorData)
-#    } else if (colorBy == "SeedDist") {
+      pal <- colorFactor("viridis", colorData)
+    } else if (colorBy == "SeedDist") {
       #colorData <- cut(LPAdata$SeedDist, breaks=c(-Inf, 2475.165, 7516.225, Inf), labels=c("Low","Med","High"))
-#      colorData <- ifelse(LPAdata$SeedDist >= (100 - input$threshold), "yes", "no")
+      colorData <- ifelse(LPAdata$SeedDist >= (100 - input$threshold), "yes", "no")
       
-#      pal <- colorFactor("viridis", colorData)
+      pal <- colorFactor("viridis", colorData)
     } else {
       colorData <- LPAdata[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
@@ -98,12 +98,12 @@ function(input, output, session) {
       ## equipment, species, and site_id are categorical. Hmmm
       #radius <- 10*(as.numeric(as.factor(LPAdata$species)))
       radius <- ifelse(LPAdata$species >= (100 - input$threshold), 30000, 3000)
- #   } else if (sizeBy == "equipment") {
-#      #radius <- as.numeric(as.factor(LPAdata$equipment))
-#      radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
-#    } else if (sizeBy == "SITE_ID") {
+    } else if (sizeBy == "equipment") {
+      #radius <- as.numeric(as.factor(LPAdata$equipment))
+      radius <- ifelse(LPAdata$equipment >= (100 - input$threshold), 30000, 3000)
+    } else if (sizeBy == "SITE_ID") {
       #radius <- as.numeric(as.factor(LPAdata$SITE_ID))
-#      radius <- ifelse(LPAdata$SITE_ID >= (100 - input$threshold), 30000, 3000)
+      radius <- ifelse(LPAdata$SITE_ID >= (100 - input$threshold), 30000, 3000)
     } else {
       radius <- LPAdata[[sizeBy]] / max(LPAdata[[sizeBy]]) * 30000
     }
