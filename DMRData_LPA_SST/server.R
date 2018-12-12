@@ -55,7 +55,7 @@ function(input, output) {
   })
 
   # Precalculate the breaks we'll need for the two histograms
-  tempBreaks <- hist(plot = FALSE, DMRData$SST, breaks = 20)$breaks
+  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
 
   output$histTemp <- renderPlot({
     # If no zipcodes are in view, don't plot

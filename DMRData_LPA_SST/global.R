@@ -22,7 +22,6 @@ names(DMRDataMelt)<-c("SITE_ID", "LSAT8_PPPRRR", "Date", "SST", "latitude", "lon
 DMRData$BATHY<-round(DMRData$BATHY,2)
 #DMRData$SeedDist<-round(DMRData$SeedDist,2)
 
-
 DMRDataMelt$SST <- round(DMRDataMelt$SST,2)
 
 #row.names(DMRData) <- DMRData$ID
