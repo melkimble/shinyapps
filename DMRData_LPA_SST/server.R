@@ -70,7 +70,7 @@ function(input, output) {
             panel.grid.minor = element_blank(),
             #panel.border = element_blank(),
             panel.background = element_blank()) +
-      xlim(range(DMRData$SST)) +
+#      xlim(range(DMRData$SST)) +
       geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
       geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
                  color="blue", linetype="dashed", size=1) +
