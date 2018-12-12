@@ -165,9 +165,9 @@ function(input, output) {
       tags$strong(HTML(sprintf("%s, %s",
         selectedSite$species, selectedSite$equipment
       ))), tags$br(),
-      sprintf("Site Depth (m): %s", selectedSite$BATHY), tags$br(),
-      sprintf("Average Sea Surface Temp (C): %s%%", as.integer(selectedSite$SST)), tags$br(),
-      sprintf("Std Dev Temp (C): %s%%", as.integer(selectedSite$SST_StdDev))
+      sprintf("Site Depth (m): %s", round(selectedSite$BATHY, 2)), tags$br(),
+      sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
+      sprintf("Std Dev Temp (C): %s", round(selectedSite$SST_StdDev, 2))
     ))
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
