@@ -155,34 +155,34 @@ function(input, output) {
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
   })
-
+  DMRDataMeltAgg$
   # Show a popup at the given location
   ## later grab SITE_ID from this group and calculate aggregates based on
-#  showSitePopup <- function(ID, lat, lng) {
-#    selectedSite <- DMRData[DMRData$ID == ID,]
-#    content <- as.character(tagList(
-#      tags$h4("Score:", selectedSite$ID),
-#      tags$strong(HTML(sprintf("%s, %s %s",
-#        selectedSite$species, selectedSite$equipment, selectedSite$ID
-#      ))), tags$br(),
-#      sprintf("Median household income: %s", selectedSite$BATHY), tags$br(),
-#      sprintf("Percent of adults with BA: %s%%", as.integer(selectedSite$SeedDist)), tags$br(),
-#      sprintf("Adult population: %s%%", as.integer(selectedSite$SST))
-#    ))
-#    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
-#  }
+  showSitePopup <- function(ID, lat, lng) {
+    selectedSite <- DMRDataMeltAgg[DMRDataMeltAgg$ID == ID,]
+    content <- as.character(tagList(
+      tags$h4("Site ID:", selectedSite$SITE_ID),
+      tags$strong(HTML(sprintf("%s, %s %s",
+        selectedSite$species, selectedSite$equipment
+      ))), tags$br(),
+      sprintf("Site Depth (m): %s", selectedSite$BATHY), tags$br(),
+      sprintf("Average Sea Surface Temp (C): %s%%", as.integer(selectedSite$SST)), tags$br(),
+      sprintf("Std Dev Temp (C): %s%%", as.integer(selectedSite$SST_StdDev))
+    ))
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
+  }
 
   # When map is clicked, show a popup with city info
-#  observe({
-#    leafletProxy("map") %>% clearPopups()
-#    event <- input$map_shape_click
- #   if (is.null(event))
-#      return()
+  observe({
+    leafletProxy("map") %>% clearPopups()
+    event <- input$map_shape_click
+    if (is.null(event))
+      return()
 
-#    isolate({
-#      showSitePopup(event$id, event$lat, event$lng)
-#    })
-#  })
+    isolate({
+      showSitePopup(event$id, event$lat, event$lng)
+    })
+  })
 
 
   ## Data Explorer ###########################################
