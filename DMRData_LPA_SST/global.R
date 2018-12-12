@@ -1,6 +1,8 @@
 library(dplyr)
 
 DMRData <- readRDS("data/TestData.rds")
+DMRDataMelt <- readRDS("data/TestDataMelt.rds")
+
 #DMRData$ID<-as.integer(DMRData$ID)
 #DMRData$SITE_ID <- as.character(DMRData$SITE_ID)
 #DMRData$latitude <- as.numeric(DMRData$latitude)
