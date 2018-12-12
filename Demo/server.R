@@ -127,25 +127,30 @@ function(input, output) {
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
     sizeBy <- input$size
-    if (typeof(colorBy) != "character") {
+    if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
       # Precalculate the breaks we'll need for the two histograms
-      
-      colorData <- zipdata[[colorBy]]
+      colorData <- DMRDataMeltAgg[[colorBy]]
+      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+    } else if (colorBy == "BATHY") {
+      colorData <- DMRDataMeltAgg[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
       pal <- colorFactor("viridis", colorData)
     }
-  
-    if (typeof(sizeBy) == "character") {
+ 
+    if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <- as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 300
+      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
+    } else if (sizeBy == "equipment") {
+      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
     } else {
-      radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
+      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
+     # radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
     }
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
