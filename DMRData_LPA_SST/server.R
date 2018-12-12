@@ -134,7 +134,7 @@ function(input, output) {
       ## and adjusts the threshold on the size of the icons based on the threshold.
       # Precalculate the breaks we'll need for the two histograms
       
-      colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
+      colorData <- zipdata[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
