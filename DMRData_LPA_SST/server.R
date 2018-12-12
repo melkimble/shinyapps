@@ -145,11 +145,12 @@ function(input, output) {
  
     if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <- as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 10
+      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
     } else if (sizeBy == "equipment") {
-      radius <- as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 100
+      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
     } else {
-      radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
+      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
+     # radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
     }
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
