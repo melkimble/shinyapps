@@ -25,7 +25,7 @@ function(input, output) {
       ) %>%
       setView(lng = -67.709946, lat = 44.146299, zoom = 8)
   })
-
+  
   # A reactive expression that returns the set of zips that are
   # in bounds right now
   leasesInBounds <- reactive({
@@ -39,26 +39,40 @@ function(input, output) {
            latitude >= latRng[1] & latitude <= latRng[2] &
              longitude >= lngRng[1] & longitude <= lngRng[2])
   })
+  
+  # A reactive expression that returns the set of zips that are
+  # in bounds right now
+  meltLeasesInBounds <- reactive({
+    if (is.null(input$map_bounds))
+      return(DMRDataMelt[FALSE,])
+    bounds <- input$map_bounds
+    latRng <- range(bounds$north, bounds$south)
+    lngRng <- range(bounds$east, bounds$west)
+    
+    subset(DMRDataMelt,
+           latitude >= latRng[1] & latitude <= latRng[2] &
+             longitude >= lngRng[1] & longitude <= lngRng[2])
+  })
 
   # Precalculate the breaks we'll need for the two histograms
-  tempBreaks <- hist(plot = FALSE, DMRData$SST, breaks = 20)$breaks
+  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
 
   output$histTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
-    if (nrow(leasesInBounds()) == 0)
+    if (nrow(meltLeasesInBounds()) == 0)
       return(NULL)
     
-    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(leasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
     #gghistTemp<-
-    ggplot(leasesInBounds(), aes(x=SST)) +
+    ggplot(meltLeasesInBounds(), aes(x=SST)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             #panel.border = element_blank(),
             panel.background = element_blank()) +
-      xlim(range(DMRData$SST)) +
+#      xlim(range(DMRData$SST)) +
       geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-      geom_vline(aes(xintercept=mean(leasesInBounds()$SST)),
+      geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
                  color="blue", linetype="dashed", size=1) +
       ggtitle(TheTitle) +
       xlab("Temperature (C)") +
@@ -69,10 +83,10 @@ function(input, output) {
 
   output$boxSpeciesTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
-    if (nrow(leasesInBounds()) == 0)
+    if (nrow(meltLeasesInBounds()) == 0)
       return(NULL)
     #ggboxTemp<-
-    ggplot(leasesInBounds(), aes(x=species, y=SST, fill=species)) +
+    ggplot(meltLeasesInBounds(), aes(x=species, y=SST, fill=species)) +
       geom_boxplot() +
       theme(legend.position="none",
             plot.title=element_text(hjust=0.5),
@@ -113,32 +127,32 @@ function(input, output) {
     ## user inputs based on what is selected from the drop down menu
 #    colorBy <- input$color
 #    sizeBy <- input$size
-
+    
 #    if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
-#      colorData <- as.character(cut(DMRData$SST, breaks=c(-10.000, -5.050, 5.025, 10.000 ), labels=c("Low","Med","High")))
+#      colorData <- ifelse(DMRData$SST >= (100 - input$threshold), "yes", "no")
 #      pal <- colorFactor("viridis", colorData)
 #    } else {
 #      colorData <- DMRData[[colorBy]]
 #      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
 #    }
-
+    
 #    if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-#      radius <- 10*(as.numeric(as.factor(DMRData$species)))
+#      radius <- ifelse(DMRData$species >= (100 - input$threshold), 30000, 3000)
 #    } else {
 #      radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
 #    }
-
+    
 #    leafletProxy("map", data = DMRData) %>%
 #      clearShapes() %>%
 #      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
-#        stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
+#                 stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
 #      addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
-#        layerId="colorLegend")
+#                layerId="colorLegend")
 #  })
 
   # Show a popup at the given location
