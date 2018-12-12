@@ -127,16 +127,17 @@ function(input, output) {
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
     sizeBy <- input$size
-    if (typeof(colorBy) == "numeric") {
+    if (typeof(colorBy) != "character") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
       # Precalculate the breaks we'll need for the two histograms
+      
       colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
-      colorData <- DMRDataMeltAgg[[colorBy]]
+      colorData <-as.numeric(as.factor(DMRDataMeltAgg[[colorBy]]))
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
   
