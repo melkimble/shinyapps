@@ -155,7 +155,7 @@ function(input, output) {
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
   })
-  DMRDataMeltAgg$
+
   # Show a popup at the given location
   ## later grab SITE_ID from this group and calculate aggregates based on
   showSitePopup <- function(ID, lat, lng) {
@@ -172,7 +172,7 @@ function(input, output) {
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
 
-  # When map is clicked, show a popup with city info
+  # When map is clicked, show a popup with site info
   observe({
     leafletProxy("map") %>% clearPopups()
     event <- input$map_shape_click
