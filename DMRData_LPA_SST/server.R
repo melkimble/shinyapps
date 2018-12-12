@@ -137,13 +137,13 @@ function(input, output) {
       colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
-      colorData <-as.numeric(as.factor(DMRDataMeltAgg[[colorBy]]))
-      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+      colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
+      pal <- colorFactor("viridis", colorData, 7, pretty = FALSE)
     }
   
     if (typeof(sizeBy) == "character") {
       # Radius is treated specially in the "species" case.
-      radius <- as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 30000
+      radius <- as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 300
     } else {
       radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
     }
