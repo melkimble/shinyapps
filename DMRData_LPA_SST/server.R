@@ -136,7 +136,7 @@ function(input, output) {
       colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
-      colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
+      colorData <- zipdata[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
   
