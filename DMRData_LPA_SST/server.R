@@ -123,37 +123,31 @@ function(input, output) {
   
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
-#  observe({
+  observe({
     ## user inputs based on what is selected from the drop down menu
-#    colorBy <- input$color
-#    sizeBy <- input$size
+    colorBy <- input$color
+    sizeBy <- input$size
     
-#    if (colorBy == "SST") {
+    if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
-#      colorData <- ifelse(DMRData$SST >= (100 - input$threshold), "yes", "no")
-#      pal <- colorFactor("viridis", colorData)
-#    } else {
-#      colorData <- DMRData[[colorBy]]
-#      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
-#    }
+      colorData <- DMRDataMeltAgg[[colorBy]]
+      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+    }
+  
+    if (sizeBy == "species") {
+      radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
+    }
     
-#    if (sizeBy == "species") {
-      # Radius is treated specially in the "species" case.
-#      radius <- ifelse(DMRData$species >= (100 - input$threshold), 30000, 3000)
-#    } else {
-#      radius <- DMRData[[sizeBy]] / max(DMRData[[sizeBy]]) * 30000
-#    }
-    
-#    leafletProxy("map", data = DMRData) %>%
-#      clearShapes() %>%
-#      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
-#                 stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
-#      addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
-#                layerId="colorLegend")
-#  })
+    leafletProxy("map", data = DMRDataMeltAgg) %>%
+      clearShapes() %>%
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
+                 stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
+      addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
+                layerId="colorLegend")
+  })
 
   # Show a popup at the given location
   ## later grab SITE_ID from this group and calculate aggregates based on
