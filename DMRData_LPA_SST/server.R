@@ -138,7 +138,7 @@ function(input, output) {
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
-      pal <- colorFactor("viridis", colorData, 7, pretty = FALSE)
+      pal <- colorFactor("viridis", colorData)
     }
   
     if (typeof(sizeBy) == "character") {
