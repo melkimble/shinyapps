@@ -127,22 +127,22 @@ function(input, output) {
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
     sizeBy <- input$size
-    
-    if (colorBy == "SST") {
+    if (typeof(colorBy) == "numeric") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
-      colorData <- DMRDataMeltAgg[[colorBy]]
+      # Precalculate the breaks we'll need for the two histograms
+      colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
-      colorData <- DMRDataMeltAgg[[colorBy]]
+      colorData <- hist(plot = FALSE, DMRDataMeltAgg[[colorBy]], breaks = 7)$breaks
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
   
-    if (sizeBy == "species") {
+    if (typeof(sizeBy) == "character") {
       # Radius is treated specially in the "species" case.
-      radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
+      as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 30000
     } else {
       radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
     }
