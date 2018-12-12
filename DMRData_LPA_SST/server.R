@@ -162,7 +162,7 @@ function(input, output) {
     selectedSite <- DMRDataMeltAgg[DMRDataMeltAgg$ID == ID,]
     content <- as.character(tagList(
       tags$h4("Site ID:", selectedSite$SITE_ID),
-      tags$strong(HTML(sprintf("%s, %s %s",
+      tags$strong(HTML(sprintf("%s, %s",
         selectedSite$species, selectedSite$equipment
       ))), tags$br(),
       sprintf("Site Depth (m): %s", selectedSite$BATHY), tags$br(),
