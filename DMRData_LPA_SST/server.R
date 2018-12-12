@@ -143,7 +143,7 @@ function(input, output) {
   
     if (typeof(sizeBy) == "character") {
       # Radius is treated specially in the "species" case.
-      as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 30000
+      radius <- as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])) / max(as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]]))) * 30000
     } else {
       radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
     }
