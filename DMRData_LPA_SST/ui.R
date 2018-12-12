@@ -39,9 +39,9 @@ navbarPage("DMR Lease Data", id="nav",
       ),
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',
-        '\nBathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM)',
-        '\nSea Surface Temperature data obtained from the Coastal Satellite Oceanography team at the University of Maine',
-        '\nAquaculture lease data obtained from the Maine Department of Marine Resources.'
+        '<br>Bathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM)',
+        '<br>nSea Surface Temperature data obtained from the Coastal Satellite Oceanography team at the University of Maine',
+        '<br>Aquaculture lease data obtained from the Maine Department of Marine Resources.'
       )
     )
   )#,
