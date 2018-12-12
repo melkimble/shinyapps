@@ -2,6 +2,7 @@ library(dplyr)
 
 DMRData <- readRDS("data/TestData.rds")
 DMRDataMelt <- readRDS("data/TestDataMelt.rds")
+DMRDataMeltAgg <- readRDS("data/TestDataMeltAgg.rds")
 
 names(DMRData)<-c("ID", "SITE_ID", "latitude", "longitude", "species", "equipment", "LEASE_TYPE", "Status", "TheYr", "EndYr", "BATHY", 
                   "X010029_20130824", "X010029_20140115", "X010029_20140304", "X010029_20140507", "X010029_20140608", "X010029_20140827",
