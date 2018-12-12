@@ -135,9 +135,15 @@ function(input, output) {
       ## and adjusts the threshold on the size of the icons based on the threshold.
       colorData <- DMRDataMeltAgg[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+    } else {
+      colorData <- DMRDataMeltAgg[[colorBy]]
+      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     }
   
     if (sizeBy == "species") {
+      # Radius is treated specially in the "species" case.
+      radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
+    } else {
       radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 30000
     }
     
