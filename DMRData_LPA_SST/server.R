@@ -83,14 +83,12 @@ function(input, output) {
     if (nrow(meltLeasesInBounds()) == 0)
       return(NULL)
     TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
-    #gghistTemp<-
     ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.background = element_blank(),
-            axis.text.x = element_text(angle=35, hjust=1)) +
-      #      xlim(range(DMRData$SST)) +
+            axis.text.x = element_text(angle=45, hjust=1)) +
       geom_point() +
       scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
       ggtitle(TheTitle) +
