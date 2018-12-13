@@ -89,7 +89,8 @@ function(input, output) {
             panel.grid.minor = element_blank(),
             panel.background = element_blank(),
             axis.text.x = element_text(angle=45, hjust=1),
-            legend.position="top") +
+            legend.position="top",
+            legend.title=element_blank()) +
       geom_point() +
       scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
 #      ggtitle(TheTitle) +
