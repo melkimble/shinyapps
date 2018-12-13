@@ -55,8 +55,7 @@ function(input, output) {
   })
 
   # Precalculate the breaks we'll need for the two histograms
-  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
-  DMRDataMelt$Datef<-format(as.Date(as.character(DMRDataMelt$DATE), "%Y%m%d"),"%Y-%m-%d")
+#  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
   
 #  output$histTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
@@ -85,7 +84,7 @@ function(input, output) {
       return(NULL)
     TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
     #gghistTemp<-
-    ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
+    ggplot(meltLeasesInBounds(), aes(x=Datef, y=SST, color=species, shape=species)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
