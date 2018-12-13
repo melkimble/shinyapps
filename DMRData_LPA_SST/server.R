@@ -56,27 +56,47 @@ function(input, output) {
 
   # Precalculate the breaks we'll need for the two histograms
   tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
+  DMRDataMelt$Datef<-format(as.Date(as.character(DMRDataMelt$DATE), "%Y%m%d"),"%Y-%m-%d")
+  
+#  output$histTemp <- renderPlot({
+    # If no zipcodes are in view, don't plot
+#    if (nrow(meltLeasesInBounds()) == 0)
+#      return(NULL)
+    
+#    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+#    ggplot(meltLeasesInBounds(), aes(x=SST)) +
+#      theme(plot.title=element_text(hjust=0.5),
+#            panel.grid.major = element_blank(),
+#            panel.grid.minor = element_blank(),
+#            panel.background = element_blank()) +
+#      xlim(range(DMRData$SST)) +
+#      geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
+#      geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
+#                 color="blue", linetype="dashed", size=1) +
+#      ggtitle(TheTitle) +
+#      xlab("Temperature (C)") +
+#      ylab("Frequency")
+    
+#  })
 
-  output$histTemp <- renderPlot({
+  output$scatterTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
     if (nrow(meltLeasesInBounds()) == 0)
       return(NULL)
-    
-    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
     #gghistTemp<-
-    ggplot(meltLeasesInBounds(), aes(x=SST)) +
+    ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            #panel.border = element_blank(),
-            panel.background = element_blank()) +
-#      xlim(range(DMRData$SST)) +
-      geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-      geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
-                 color="blue", linetype="dashed", size=1) +
+            panel.background = element_blank(),
+            axis.text.x = element_text(angle=35, hjust=1)) +
+      #      xlim(range(DMRData$SST)) +
+      geom_point() +
+      scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
       ggtitle(TheTitle) +
-      xlab("Temperature (C)") +
-      ylab("Frequency")
+      xlab("Date") +
+      ylab("Temperature (C)")
     
     #print(gghistTemp)
   })
@@ -92,7 +112,6 @@ function(input, output) {
             plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            #panel.border = element_blank(),
             panel.background = element_blank(),
             axis.title.x=element_blank()) +
       ggtitle("Temperature by Species") +
@@ -112,7 +131,6 @@ function(input, output) {
             plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            #panel.border = element_blank(),
             panel.background = element_blank(),
             axis.title.x=element_blank()) +
       ggtitle("Bathymetry by Species") +
