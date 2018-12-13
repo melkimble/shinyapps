@@ -150,29 +150,29 @@ function(input, output) {
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
       # Precalculate the breaks we'll need for the two histograms
-      colorData <- DMRDataMeltAgg[[colorBy]]
+      colorData <- DMRDataMeltAgg2[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else if (colorBy == "BATHY") {
-      colorData <- DMRDataMeltAgg[[colorBy]]
+      colorData <- DMRDataMeltAgg2[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else {
-      colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
+      colorData <-as.factor(DMRDataMeltAgg2[[colorBy]])
       pal <- colorFactor("viridis", colorData)
     }
  
     if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
+      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg2[[sizeBy]])), breaks=7)$breaks*100
     } else if (sizeBy == "equipment") {
-      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
+      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg2[[sizeBy]])), breaks=7)$breaks*10
     } else {
-      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
+      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg2[[sizeBy]])), breaks=7)$breaks
      # radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
     }
     
-    leafletProxy("map", data = DMRDataMeltAgg) %>%
+    leafletProxy("map", data = DMRDataMeltAgg2) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~SITE_ID,
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
@@ -180,15 +180,8 @@ function(input, output) {
 
   # Show a popup at the given location
   ## later grab SITE_ID from this group and calculate aggregates based on
-  names(AggDataMeltFinal)
-  Months<-unique(AggDataMeltFinal$Month)
-  
-  test<-AggDataMeltFinal[AggDataMeltFinal$SITE_ID == "AJAG116",]
-  Months<-test$Month
-  Temps<-test$SST_Mean
   showSitePopup <- function(ID, lat, lng) {
-    selectedSiteID<-DMRDataMeltAgg$SITE_ID[DMRDataMeltAgg$ID == ID]
-    selectedSite <- DMRDataMeltAgg[DMRDataMeltAgg$SITE_ID == selectedSiteID,]
+    selectedSite <- DMRDataMeltAgg[DMRDataMeltAgg$SITE_ID == ID,]
     Months<-selectedSite$Month
     Temps<-selectedSite$SST_Mean
     SDTemps<-selectedSite$SST_StdDev

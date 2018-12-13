@@ -27,6 +27,9 @@ DMRDataMelt$SST <- round(DMRDataMelt$SST,2)
 DMRDataMelt$Datef<-format(as.Date(as.character(DMRDataMelt$Date), "%Y%m%d"),"%Y-%m-%d")
 DMRDataMelt$Month<-format(as.Date(as.character(DMRDataMelt$Date), "%Y%m%d"),"%b")
 
+DMRDataMeltAgg2 <- group_by(DMRDataMeltAgg, SITE_ID) %>% summarise(SST_Mean = mean(SST_Mean), 
+                                                                   BATHY = mean(BATHY))
+
 #row.names(DMRData) <- DMRData$ID
 
 #cleantable <- DMRData %>%
