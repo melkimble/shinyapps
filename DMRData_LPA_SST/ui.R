@@ -31,10 +31,10 @@ navbarPage("DMR Lease Data", id="nav",
 
         selectInput("color", "Color", vars),
         selectInput("size", "Size", vars, selected = "SST"),
-        plotOutput("scatterTemp", height = 175),
+        plotOutput("scatterTemp", height = 250),
 #        plotOutput("histTemp", height = 175),
-        plotOutput("boxSpeciesTemp", height = 225),
-        plotOutput("boxSpeciesBathy", height=225)
+        plotOutput("boxSpeciesTemp", height = 200),
+        plotOutput("boxSpeciesBathy", height=200)
       ),
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',
