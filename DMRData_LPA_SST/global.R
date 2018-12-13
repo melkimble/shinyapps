@@ -27,8 +27,14 @@ DMRDataMelt$SST <- round(DMRDataMelt$SST,2)
 DMRDataMelt$Datef<-format(as.Date(as.character(DMRDataMelt$Date), "%Y%m%d"),"%Y-%m-%d")
 DMRDataMelt$Month<-format(as.Date(as.character(DMRDataMelt$Date), "%Y%m%d"),"%b")
 
+#length(unique(DMRDataMeltAgg$SITE_ID))
 DMRDataMeltAgg2 <- group_by(DMRDataMeltAgg, SITE_ID) %>% summarise(SST_Mean = mean(SST_Mean), 
                                                                    BATHY = mean(BATHY))
+#length(unique(DMRData$SITE_ID))
+ColKeep<-c("SITE_ID","LATITUDE","LONGITUDE", "species", "equipment")
+DMRData_LPA_Merge_ColSub<-DMRData[,ColKeep]
+test<-DMRDataMeltAgg2 %>% left_join(DMRData_LPA_Merge_ColSub, by="SITE_ID")
+names(DMRDataMeltAgg2)<-c("SITE_ID", "LSAT8_PPPRRR", "Date", "SST", "latitude", "longitude", "species")
 
 #row.names(DMRData) <- DMRData$ID
 
