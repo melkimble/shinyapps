@@ -24,6 +24,7 @@ DMRData$BATHY<-round(DMRData$BATHY,2)
 #DMRData$SeedDist<-round(DMRData$SeedDist,2)
 
 DMRDataMelt$SST <- round(DMRDataMelt$SST,2)
+DMRDataMelt$Datef<-format(as.Date(as.character(DMRDataMelt$DATE), "%Y%m%d"),"%Y-%m-%d")
 
 #row.names(DMRData) <- DMRData$ID
 
