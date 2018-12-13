@@ -25,6 +25,7 @@ DMRData$BATHY<-round(DMRData$BATHY,2)
 
 DMRDataMelt$SST <- round(DMRDataMelt$SST,2)
 DMRDataMelt$Datef<-format(as.Date(as.character(DMRDataMelt$Date), "%Y%m%d"),"%Y-%m-%d")
+DMRDataMelt$Month<-format(as.Date(as.character(DMRDataMelt$Date), "%Y%m%d"),"%b")
 
 #row.names(DMRData) <- DMRData$ID
 
