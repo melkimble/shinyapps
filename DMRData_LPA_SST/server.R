@@ -82,17 +82,17 @@ function(input, output) {
     # If no zipcodes are in view, don't plot
     if (nrow(meltLeasesInBounds()) == 0)
       return(NULL)
-    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
+#    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
     ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
             panel.background = element_blank(),
             axis.text.x = element_text(angle=45, hjust=1),
-            legend.position="bottom") +
+            legend.position="top") +
       geom_point() +
       scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
-      ggtitle(TheTitle) +
+#      ggtitle(TheTitle) +
       xlab("Date") +
       ylab("Temperature (C)")
     
