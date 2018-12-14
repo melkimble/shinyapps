@@ -221,11 +221,11 @@ function(input, output, session) {
   observe({
     equips <- if (is.null(input$species)) character(0) else {
       filter(cleantable, Species %in% input$species) %>%
-        `$`('equipment') %>%
+        `$`('Equipment') %>%
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$equipment[input$equipment %in% equips])
+    stillSelected <- isolate(input$equipment[input$equipment %in% Equipment])
     updateSelectInput(session, "equips", choices = equips,
       selected = stillSelected)
   })
@@ -238,7 +238,7 @@ function(input, output, session) {
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% leasetypes])
+    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% LeaseTypes])
     updateSelectInput(session, "leasetypes", choices = leasetypes,
       selected = stillSelected)
   })
@@ -267,7 +267,7 @@ function(input, output, session) {
         is.null(input$equips) | Equipment %in% input$equips,
         is.null(input$leasetypes) | LeaseType %in% input$leasetypes
       ) %>%
-      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', LeaseType, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
     action <- DT::dataTableAjax(session, df)
 
     DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)

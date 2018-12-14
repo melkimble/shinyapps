@@ -58,7 +58,7 @@ navbarPage("DMR Lease Data", id="nav",
 #######################################################
 #DMRData
 #names(DMRData)
-  tabPanel("Data explorer",
+  tabPanel("Data Explorer",
     fluidRow(
       column(3, selectInput("species", "Species", c("All Species"=""), multiple=TRUE)),
       column(3, conditionalPanel("input.equipment", selectInput("Equipment", "Equipment", c("All Equipment"=""), multiple=TRUE))),
