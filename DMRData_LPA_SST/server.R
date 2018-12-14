@@ -203,7 +203,8 @@ function(input, output) {
                                          selectedSite$equipment[1]),"</strong> </br>", htmlTable(TheTable, col.rgroup = c("none", "#F9FAF0"),
                                                                                                  col.columns = c("none", "#F1F0FA"),
                                                                                                  align.header = "clcr",
-                                                                                                 align.cgroup = "lcr"))
+                                                                                                 align.cgroup = "lcr",
+                                                                                                 padding.rgroup = "&nbsp;&nbsp;"))
       
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
