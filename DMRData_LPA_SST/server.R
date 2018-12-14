@@ -145,10 +145,10 @@ function(input, output) {
       #colorBy="SST"
       
       colorData <- DMRDataMeltAgg[[colorBy]]
-      pal <- colorBin("Spectral", colorData, 7, pretty = FALSE)
+      pal <- colorBin("RdYlBu", colorData, 7, pretty = FALSE)
     } else if (colorBy == "BATHY") {
       colorData <- DMRDataMeltAgg[[colorBy]]
-      pal <- colorBin("topo.colors", colorData, 7, pretty = FALSE)
+      pal <- colorBin("Greys", colorData, 7, pretty = FALSE)
     } else {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
       pal <- colorFactor("viridis", colorData)
