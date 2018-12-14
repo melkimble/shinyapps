@@ -52,7 +52,6 @@ cleantable <- DMRData %>%
     Status = Status,
     StartYear = StartYr,
     EndYear = EndYr,
-    SeaSurfaceTemp = SST,
     Bathymetry = BATHY,
     SAT010029_20130824 = X010029_20130824, 
     SAT010029_20140115 = X010029_20140115, 

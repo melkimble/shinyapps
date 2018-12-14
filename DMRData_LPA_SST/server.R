@@ -261,8 +261,6 @@ function(input, output) {
   output$dmrTable <- DT::renderDataTable({
     df <- cleantable %>%
       filter(
-        SeaSurfaceTemp >= input$minTemp,
-        SeaSurfaceTemp <= input$maxTemp,
         Bathymetry >= input$minBathy,
         Bathymetry <= input$maxBathy,        
         is.null(input$Species) | Species %in% input$Species,

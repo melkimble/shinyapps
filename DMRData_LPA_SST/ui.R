@@ -65,10 +65,8 @@ navbarPage("DMR Lease Data", id="nav",
       column(3, conditionalPanel("input.LeaseType", selectInput("LeaseType", "Lease Type", c("All LeaseType"=""), multiple=TRUE)))
       ),
     fluidRow(
-      column(1, numericInput("minTemp", "Min Temp", min=0, max=100, value=0)),
-      column(1, numericInput("maxTemp", "Max Temp", min=0, max=100, value=100)),
-      column(2, numericInput("minBathy", "Min Bathy", min=0, max=100, value=0)),
-      column(2, numericInput("maxBathy","Max Bathy", min=0, max=100, value=100))
+      column(1, numericInput("minBathy", "Min Bathy", min=0, max=100, value=0)),
+      column(1, numericInput("maxBathy", "Max Bathy", min=0, max=100, value=100))
       ),
     hr(),
     DT::dataTableOutput("dmrTable")
