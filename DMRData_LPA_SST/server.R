@@ -57,14 +57,14 @@ function(input, output) {
   })
   print(paste(input$selectedplot, "2"))
   
-  reactive({
+  observe({
     # Precalculate the breaks we'll need for the two histograms
     # tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
     selectPlot<-input$selectedplot
     print(paste(selectPlot, "2"))
     
     if (selectPlot == "histTemp") {
-      output$histTemp <- renderPlot({
+      renderPlot({
         # If no zipcodes are in view, don't plot
         if (nrow(meltLeasesInBounds()) == 0)
           return(NULL)
@@ -84,29 +84,27 @@ function(input, output) {
           ylab("Frequency")
       })
     } else if (selectPlot == "scatterspeciesTemp") {
-      output$scatterspeciesTemp <- renderPlot({
-        # If no zipcodes are in view, don't plot
-        if (nrow(meltLeasesInBounds()) == 0)
-          return(NULL)
-    #    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
-        ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
-          theme(plot.title=element_text(hjust=0.5),
-                panel.grid.major = element_blank(),
-                panel.grid.minor = element_blank(),
-                panel.background = element_blank(),
-                axis.text.x = element_text(angle=45, hjust=1),
-                legend.position="top",
-                legend.title=element_blank()) +
-          geom_point() +
-          scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
-    #      ggtitle(TheTitle) +
-          xlab("Date") +
-          ylab("Temperature (C)")
-      
-      #print(gghistTemp)
+        renderPlot({
+          # If no zipcodes are in view, don't plot
+          if (nrow(meltLeasesInBounds()) == 0)
+            return(NULL)
+      #    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
+          ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
+            theme(plot.title=element_text(hjust=0.5),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(),
+                  axis.text.x = element_text(angle=45, hjust=1),
+                  legend.position="top",
+                  legend.title=element_blank()) +
+            geom_point() +
+            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
+      #      ggtitle(TheTitle) +
+            xlab("Date") +
+            ylab("Temperature (C)")
       })
     } else if (selectPlot == "boxSpeciesTemp") {
-      output$boxSpeciesTemp <- renderPlot({
+      renderPlot({
         # If no zipcodes are in view, don't plot
         if (nrow(meltLeasesInBounds()) == 0)
           return(NULL)
@@ -125,7 +123,7 @@ function(input, output) {
         
       })
     } else if (selectPlot == "boxSpeciesBathy") {
-      output$boxSpeciesBathy <- renderPlot({
+      renderPlot({
         # If no zipcodes are in view, don't plot
         if (nrow(leasesInBounds()) == 0)
           return(NULL)
@@ -145,7 +143,7 @@ function(input, output) {
       })
     }
     
-    plotOutput(selectPlot, height = 250)
+    #plotOutput(selectPlot, height = 250)
   })  
   
   # This observer is responsible for maintaining the circles and legend,
