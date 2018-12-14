@@ -7,7 +7,13 @@ vars <- c(
   "Sea Surface Temperature" = "SST",
   "Bathymetry" = "BATHY"
 )
-
+# Choices for plots
+plotVars <- c(
+  "Boxplot: Monthly SST by Species" = "boxSpeciesTemp",
+  "Boxplot: Bathymetry by Species" = "boxSpeciesBathy",
+  "Scatterplot: Monthly SST by Species" = "scatterspeciesTemp",
+  "Histogram: Sea Surface Temperature" = "histTemp"
+)
 navbarPage("DMR Lease Data", id="nav",
 
   tabPanel("Interactive map",
@@ -29,12 +35,13 @@ navbarPage("DMR Lease Data", id="nav",
 
         h2("Site Explorer"),
 
-        selectInput("color", "Color", vars),
+         selectInput("color", "Color", vars),
 #        selectInput("size", "Size", vars, selected = "SST"),
-        plotOutput("scatterTemp", height = 250),
+         selectInput("selectedplot", "selectedPlot",plotVars, selected = "scatterspeciesTemp"),
+         plotOutput(plotVars, height = 250)
 #        plotOutput("histTemp", height = 175),
-        plotOutput("boxSpeciesTemp", height = 200),
-        plotOutput("boxSpeciesBathy", height=200)
+#        plotOutput("boxSpeciesTemp", height = 200),
+#        plotOutput("boxSpeciesBathy", height=200)
       ),
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',
