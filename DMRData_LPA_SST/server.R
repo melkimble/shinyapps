@@ -225,7 +225,7 @@ function(input, output, session) {
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$equipment[input$equipment %in% Equipment])
+    stillSelected <- isolate(input$equipment[input$equipment %in% equips])
     updateSelectInput(session, "equips", choices = equips,
       selected = stillSelected)
   })
@@ -238,7 +238,7 @@ function(input, output, session) {
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% LeaseTypes])
+    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% leasetypes])
     updateSelectInput(session, "leasetypes", choices = leasetypes,
       selected = stillSelected)
   })
