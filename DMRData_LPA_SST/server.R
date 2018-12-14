@@ -87,7 +87,7 @@ function(input, output) {
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(),
-                  axis.text.x = element_text(angle=35, hjust=1),
+ #                 axis.text.x = element_text(angle=35, hjust=1),
                   axis.title.x = element_blank(),
                   legend.position="top",
                   legend.title=element_blank()) +
@@ -166,7 +166,7 @@ function(input, output) {
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius= 250, layerId=~unique(SITE_ID),
+      addCircles(~longitude, ~latitude, radius= 100, layerId=~unique(SITE_ID),
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")

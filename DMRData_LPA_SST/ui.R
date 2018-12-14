@@ -35,8 +35,10 @@ navbarPage("DMR Lease Data", id="nav",
 
         h2("Site Explorer"),
         plotOutput("plot", height = 250),
-        selectInput("color", "Color", vars),
-        selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp")
+        fluidRow(box(width = 12,splitLayout(
+                selectInput("color", "Color", vars),
+                selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))))
+
 
         
 #        selectInput("size", "Size", vars, selected = "SST"),
