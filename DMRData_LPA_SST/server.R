@@ -196,6 +196,9 @@ function(input, output) {
     SDTemps<-selectedSite$SST_StdDev
     
     TheTable<-selectedSite[,c("Month","SST","SST_StdDev", "BATHY")]
+    MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
+    selectedSite<-selectedSite[order(factor(selectedSite$Month,levels=c(MonthOrder))),]
+    
     names(TheTable)<-c("Month", "Mean Temp (C)", "SD", "Bathy (m)")
     
     content <- paste("<h4> Site ID:", ID,"</h4>",
