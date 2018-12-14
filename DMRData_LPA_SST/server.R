@@ -198,14 +198,14 @@ function(input, output) {
         tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        paste(sprintf("Mean %s Temp (C): %s [StdDev %s]", Months, round(Temps,2), round(SDTemps,2)),collapse = ", /n")
-        ))
+        sprintf("Mean %s Temp (C): %s [StdDev %s]", Months, round(Temps,2), round(SDTemps,2), "<br>")
+      ))
     } else {
       content <- as.character(tagList(
         tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        paste(sprintf("Mean %s Temp (C): %s [StdDev %s]", Months, round(Temps,2), round(SDTemps,2)),collapse = ", <br/>")
+        sprintf("Mean %s Temp (C): %s [StdDev %s]", Months, round(Temps,2), round(SDTemps,2), "<br>")
       ))
       }
     
