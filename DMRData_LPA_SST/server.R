@@ -217,60 +217,61 @@ function(input, output) {
 
 
   ## Data Explorer ###########################################
+ # DMRData
+  observe({
+    equips <- if (is.null(input$Species)) character(0) else {
+      filter(cleantable, Species %in% input$Species) %>%
+        `$`('Equipment') %>%
+        unique() %>%
+        sort()
+    }
+    stillSelected <- isolate(input$equips[input$equips %in% equips])
+    updateSelectInput(session, "equips", choices = equips,
+      selected = stillSelected)
+  })
+  observe({
+    leasetypes <- if (is.null(input$Species)) character(0) else {
+      cleantable %>%
+        filter(Species %in% input$Species,
+          is.null(input$equips) | Equipment %in% input$equips) %>%
+        `$`('LeaseType') %>%
+        unique() %>%
+        sort()
+    }
+    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% leasetypes])
+    updateSelectInput(session, "leasetypes", choices = leasetypes,
+      selected = stillSelected)
+  })
 
-#  observe({
-#    cities <- if (is.null(input$states)) character(0) else {
-#      filter(cleantable, State %in% input$states) %>%
-#        `$`('City') %>%
-#        unique() %>%
-#        sort()
-#    }
-#    stillSelected <- isolate(input$cities[input$cities %in% cities])
-#    updateSelectInput(session, "cities", choices = cities,
-#      selected = stillSelected)
-#  })
+  observe({
+    if (is.null(input$goto))
+      return()
+    isolate({
+      map <- leafletProxy("map")
+      map %>% clearPopups()
+      dist <- 0.5
+      site <- input$goto$site
+      lat <- input$goto$lat
+      lng <- input$goto$lng
+      showSitePopup(site, lat, lng)
+      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
+    })
+  })
 
-#  observe({
-#    zipcodes <- if (is.null(input$states)) character(0) else {
-#      cleantable %>%
-#        filter(State %in% input$states,
-#          is.null(input$cities) | City %in% input$cities) %>%
-#        `$`('Zipcode') %>%
-#        unique() %>%
-#        sort()
-#    }
-#    stillSelected <- isolate(input$zipcodes[input$zipcodes %in% zipcodes])
-#    updateSelectInput(session, "zipcodes", choices = zipcodes,
-#      selected = stillSelected)
-#  })
+  output$dmrTable <- DT::renderDataTable({
+    df <- cleantable %>%
+      filter(
+        SeaSurfaceTemp >= input$minTemp,
+        SeaSurfaceTemp <= input$maxTemp,
+        Bathymetry >= input$minBathy,
+        Bathymetry <= input$maxBathy,        
+        is.null(input$Species) | Species %in% input$Species,
+        is.null(input$equips) | Equipment %in% input$equips,
+        is.null(input$leasetypes) | LeaseType %in% input$leasetypes
+      ) %>%
+      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', LeaseType, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+    action <- DT::dataTableAjax(session, df)
 
-#  observe({
-#    if (is.null(input$goto))
-#      return()
-#    isolate({
-#      map <- leafletProxy("map")
-#      map %>% clearPopups()
-#      dist <- 0.5
-#      zip <- input$goto$zip
-#      lat <- input$goto$lat
-#      lng <- input$goto$lng
-#      showSitePopup(zip, lat, lng)
-#      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
-#    })
-#  })
-
-#  output$ziptable <- DT::renderDataTable({
-#    df <- cleantable %>%
-#      filter(
-#        Score >= input$minScore,
-#        Score <= input$maxScore,
-#        is.null(input$states) | State %in% input$states,
-#        is.null(input$cities) | City %in% input$cities,
-#        is.null(input$zipcodes) | Zipcode %in% input$zipcodes
-#      ) %>%
-#      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-zip="', Zipcode, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
-#    action <- DT::dataTableAjax(session, df)
-
-#    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
-#  })
+    DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
+  })
 }
