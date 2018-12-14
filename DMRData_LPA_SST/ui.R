@@ -31,13 +31,13 @@ navbarPage("DMR Lease Data", id="nav",
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
         draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-        width = 450, height = 350,
+        width = "auto", height = 350,
 
         h2("Site Explorer"),
         
          selectInput("color", "Color", vars),
 #        selectInput("size", "Size", vars, selected = "SST"),
-         selectInput("selectedplot", "selectedPlot",plotVars, selected = "scatterspeciesTemp")
+         selectInput("selectedplot", "Plot",plotVars, selected = "scatterspeciesTemp")
 
 #        plotOutput("histTemp", height = 175),
 #        plotOutput("boxSpeciesTemp", height = 200),
