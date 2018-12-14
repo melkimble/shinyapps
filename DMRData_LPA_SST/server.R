@@ -13,8 +13,8 @@ library(htmlTable)
 # By ordering by centile, we ensure that the (comparatively rare) SuperZIPs
 # will be drawn last and thus be easier to see
 #zipdata <- zipdata[order(zipdata$centile),]
-# , session
-function(input, output) {
+
+function(input, output, session) {
 
   ## Interactive Map ###########################################
 
