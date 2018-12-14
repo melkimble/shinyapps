@@ -88,19 +88,19 @@ function(input, output) {
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(),
                   axis.text.x = element_text(angle=35, hjust=1),
+                  axis.title.x = element_blank(),
                   legend.position="top",
                   legend.title=element_blank()) +
             geom_point() +
             scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
             ggtitle(TheTitle) +
-#            xlab("Date") +
             ylab("Temperature (C)")
           } else if (selectPlot == "boxSpeciesTemp") {
             # If no zipcodes are in view, don't plot
             if (nrow(meltMonthLeasesInBounds()) == 0)
               return(NULL)
             #MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
-            ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=species)) +
+            ggplot(meltMonthLeasesInBounds(), aes(x=as.Date(Month), y=SST, fill=species)) +
               geom_boxplot() +
               theme(legend.position="none",
                     plot.title=element_text(hjust=0.5),
@@ -115,7 +115,7 @@ function(input, output) {
               # If no zipcodes are in view, don't plot
               if (nrow(meltMonthLeasesInBounds()) == 0)
                 return(NULL)
-              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=Month, y=BATHY, fill=species)) +
+              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=as.Date(Month), y=BATHY, fill=species)) +
                 geom_boxplot() +
                 theme(legend.position="none",
                       plot.title=element_text(hjust=0.5),
