@@ -31,7 +31,7 @@ navbarPage("DMR Lease Data", id="nav",
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
                     draggable = TRUE, top = 60, left = 20, right = 20, bottom = "auto",
-                    width = "auto", height = 500,
+                    width = "auto", height = "auto",
 
         h2("Site Explorer"),
         plotOutput("plot", height = 250),
