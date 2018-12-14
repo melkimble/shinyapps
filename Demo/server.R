@@ -196,16 +196,20 @@ function(input, output) {
     SDTemps<-selectedSite$SST_StdDev
     
     TheTable<-selectedSite[,c("Month","SST","SST_StdDev", "BATHY")]
-    names(TheTable)<-c("Month", "Mean Temp (C)", "SD", "Bathy (m)")
+    MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
+    TheTable<-TheTable[order(factor(TheTable$Month,levels=c(MonthOrder))),]
+    
+    names(TheTable)<-c("Month", "Mean Temp", "Std Dev", "Bathy")
     
     content <- paste("<h4> Site ID:", ID,"</h4>",
                      "<strong>", sprintf("%s, %s", selectedSite$species[1], 
-                                         selectedSite$equipment[1]),"</strong> </br>", 
+                                         selectedSite$equipment[1]),"</strong>", 
                      htmlTable(TheTable, col.rgroup = c("none", "#F9FAF0"), 
                                col.columns = c("none", "#F1F0FA"),
                                align.header = "clcr",
                                align.cgroup = "lcr",
-                               padding.rgroup = "&nbsp;&nbsp;"))
+                               padding.tspanner = "&nbsp;&nbsp;"),
+                     "*Sea Surface Temperature (SST, C)","</br>", "Bathymetry (m).")
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
 
