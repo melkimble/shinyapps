@@ -100,30 +100,32 @@ function(input, output) {
             if (nrow(meltMonthLeasesInBounds()) == 0)
               return(NULL)
             #MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
-            ggplot(meltMonthLeasesInBounds(), aes(x=as.Date(Month), y=SST, fill=species)) +
+            ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=species)) +
               geom_boxplot() +
               theme(legend.position="none",
                     plot.title=element_text(hjust=0.5),
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
+                    axis.title.x = element_blank(),
                     axis.title.x=element_blank()) +
-              scale_x_date(date_labels = "%b", date_breaks="1 month") +
+#              scale_x_date(date_labels = "%b", date_breaks="1 month") +
               ggtitle("Monthly Temperature by Species") +
               ylab("Temperature (C)")
             } else if (selectPlot == "boxSpeciesBathy") {
               # If no zipcodes are in view, don't plot
               if (nrow(meltMonthLeasesInBounds()) == 0)
                 return(NULL)
-              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=as.Date(Month), y=BATHY, fill=species)) +
+              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=Month, y=BATHY, fill=species)) +
                 geom_boxplot() +
                 theme(legend.position="none",
                       plot.title=element_text(hjust=0.5),
                       panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(),
                       panel.background = element_blank(),
+                      axis.title.x = element_blank(),
                       axis.title.x=element_blank()) +
-                scale_x_date(date_labels = "%b", date_breaks="1 month") +
+#                scale_x_date(date_labels = "%b", date_breaks="1 month") +
                 ggtitle("Monthly Bathymetry by Species") +
                 ylab("Bathymetry (m)")
               } else return(NULL)
