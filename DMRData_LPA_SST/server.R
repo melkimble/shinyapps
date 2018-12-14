@@ -186,7 +186,8 @@ function(input, output) {
   # DMRData DMRDataMelt DMRDataMeltAgg DMRDataMeltMonthAgg
   
   showSitePopup <- function(ID, lat, lng) {
-    print(ID)
+    #print(ID)
+    #ID="JYOU215"
     selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
     Months<-selectedSite$Month
     Temps<-selectedSite$SST
@@ -197,16 +198,14 @@ function(input, output) {
         tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
-        sprintf("Std Dev Temp (C): %s", round(selectedSite$SST_StdDev, 2))
+        paste(sprintf("Mean %s Temp (C): %s [StdDev %s]", Months, round(Temps,2), round(SDTemps,2)),collapse = ", /n")
         ))
     } else {
       content <- as.character(tagList(
         tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        sprintf("Mean %s Temp: %s", Months, round(Temps,2), collapse=" "), tags$br(),
-        sprintf("StdDev %s Temp: %s", Months, round(SDTemps,2), collapse=" ")
+        paste(sprintf("Mean %s Temp (C): %s [StdDev %s]", Months, round(Temps,2), round(SDTemps,2)),collapse = ", /n")
       ))
       }
     
