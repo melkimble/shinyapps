@@ -55,11 +55,13 @@ function(input, output) {
            latitude >= latRng[1] & latitude <= latRng[2] &
              longitude >= lngRng[1] & longitude <= lngRng[2])
   })
-
-  observe({
+  print(paste(input$selectedplot, "2"))
+  
+  reactive({
     # Precalculate the breaks we'll need for the two histograms
     # tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
     selectPlot<-input$selectedplot
+    print(paste(selectPlot, "2"))
     
     if (selectPlot == "histTemp") {
       output$histTemp <- renderPlot({
