@@ -30,14 +30,14 @@ function(input, output) {
   
   # A reactive expression that returns the set of zips that are
   # in bounds right now
-  leasesInBounds <- reactive({
+  meltMonthLeasesInBounds <- reactive({
     if (is.null(input$map_bounds))
-      return(DMRData[FALSE,])
+      return(DMRDataMeltMonthAgg[FALSE,])
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
     
-    subset(DMRData,
+    subset(DMRDataMeltMonthAgg,
            latitude >= latRng[1] & latitude <= latRng[2] &
              longitude >= lngRng[1] & longitude <= lngRng[2])
   })
@@ -55,97 +55,87 @@ function(input, output) {
            latitude >= latRng[1] & latitude <= latRng[2] &
              longitude >= lngRng[1] & longitude <= lngRng[2])
   })
-
-  # Precalculate the breaks we'll need for the two histograms
-#  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
-  
-#  output$histTemp <- renderPlot({
-    # If no zipcodes are in view, don't plot
-#    if (nrow(meltLeasesInBounds()) == 0)
-#      return(NULL)
-    
-#    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
-#    ggplot(meltLeasesInBounds(), aes(x=SST)) +
-#      theme(plot.title=element_text(hjust=0.5),
-#            panel.grid.major = element_blank(),
-#            panel.grid.minor = element_blank(),
-#            panel.background = element_blank()) +
-#      xlim(range(DMRData$SST)) +
-#      geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-#      geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
-#                 color="blue", linetype="dashed", size=1) +
-#      ggtitle(TheTitle) +
-#      xlab("Temperature (C)") +
-#      ylab("Frequency")
-    
-#  })
-
-  output$scatterTemp <- renderPlot({
-    # If no zipcodes are in view, don't plot
-    if (nrow(meltLeasesInBounds()) == 0)
-      return(NULL)
-#    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
-    ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
-      theme(plot.title=element_text(hjust=0.5),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.background = element_blank(),
-            axis.text.x = element_text(angle=45, hjust=1),
-            legend.position="top",
-            legend.title=element_blank()) +
-      geom_point() +
-      scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
-#      ggtitle(TheTitle) +
-      xlab("Date") +
-      ylab("Temperature (C)")
-    
-    #print(gghistTemp)
-  })
-
-  output$boxSpeciesTemp <- renderPlot({
-    # If no zipcodes are in view, don't plot
-    if (nrow(meltLeasesInBounds()) == 0)
-      return(NULL)
-    #ggboxTemp<-
-    ggplot(meltLeasesInBounds(), aes(x=species, y=SST, fill=species)) +
-      geom_boxplot() +
-      theme(legend.position="none",
-            plot.title=element_text(hjust=0.5),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.background = element_blank(),
-            axis.title.x=element_blank()) +
-      ggtitle("Temperature by Species") +
-      ylab("Temperature (C)")
-    #print(ggboxTemp)
-    
-  })
-  
-  output$boxSpeciesBathy <- renderPlot({
-    # If no zipcodes are in view, don't plot
-    if (nrow(leasesInBounds()) == 0)
-      return(NULL)
-    #ggboxTemp<-
-    ggplot(leasesInBounds()[!is.na(leasesInBounds()$BATHY),], aes(x=species, y=BATHY, fill=species)) +
-      geom_boxplot() +
-      theme(legend.position="none",
-            plot.title=element_text(hjust=0.5),
-            panel.grid.major = element_blank(),
-            panel.grid.minor = element_blank(),
-            panel.background = element_blank(),
-            axis.title.x=element_blank()) +
-      ggtitle("Bathymetry by Species") +
-      ylab("Bathymetry (m)")
-    #print(ggboxTemp)
-    
-  })
-  
+  observe({
+    # Precalculate the breaks we'll need for the two histograms
+    # tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
+    selectPlot<-input$selectedplot
+    output$plot <- renderPlot({
+      if (selectPlot == "histTemp") {
+        # If no zipcodes are in view, don't plot
+        if (nrow(meltLeasesInBounds()) == 0)
+          return(NULL)
+        TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+        ggplot(meltLeasesInBounds(), aes(x=SST)) +
+          theme(plot.title=element_text(hjust=0.5),
+                panel.grid.major = element_blank(),
+                panel.grid.minor = element_blank(),
+                panel.background = element_blank()) +
+          xlim(range(DMRDataMelt$SST)) +
+          geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
+          geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
+                     color="blue", linetype="dashed", size=1) +
+          ggtitle(TheTitle) +
+          xlab("Temperature (C)") +
+          ylab("Frequency")
+        } else if (selectPlot == "scatterspeciesTemp") {
+          # If no zipcodes are in view, don't plot
+          if (nrow(meltLeasesInBounds()) == 0)
+            return(NULL)
+          TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
+          ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
+            theme(plot.title=element_text(hjust=0.5),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank(),
+ #                 axis.text.x = element_text(angle=35, hjust=1),
+                  axis.title.x = element_blank(),
+                  legend.position="top",
+                  legend.title=element_blank()) +
+            geom_point() +
+            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
+            ggtitle(TheTitle) +
+            ylab("Temperature (C)")
+          } else if (selectPlot == "boxSpeciesTemp") {
+            # If no zipcodes are in view, don't plot
+            if (nrow(meltMonthLeasesInBounds()) == 0)
+              return(NULL)
+            #MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
+            ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=species)) +
+              geom_boxplot() +
+              theme(legend.position="none",
+                    plot.title=element_text(hjust=0.5),
+                    panel.grid.major = element_blank(),
+                    panel.grid.minor = element_blank(),
+                    panel.background = element_blank(),
+                    axis.title.x=element_blank()) +
+              scale_x_discrete(limits = month.abb) +
+#              scale_x_date(date_labels = "%b", date_breaks="1 month") +
+              ggtitle("Monthly Temperature by Species") +
+              ylab("Temperature (C)")
+            } else if (selectPlot == "boxSpeciesBathy") {
+              # If no zipcodes are in view, don't plot
+              if (nrow(meltMonthLeasesInBounds()) == 0)
+                return(NULL)
+              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=species, y=BATHY, fill=species)) +
+                geom_boxplot() +
+                theme(legend.position="none",
+                      plot.title=element_text(hjust=0.5),
+                      panel.grid.major = element_blank(),
+                      panel.grid.minor = element_blank(),
+                      panel.background = element_blank(),
+                      axis.title.x=element_blank()) +
+#                scale_x_date(date_labels = "%b", date_breaks="1 month") +
+                ggtitle("Bathymetry by Species") +
+                ylab("Bathymetry (m)")
+              } else return(NULL)
+      }) 
+    })
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
   observe({
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
-    sizeBy <- input$size
+#    sizeBy <- input$size
     if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
@@ -155,28 +145,28 @@ function(input, output) {
       #colorBy="SST"
       
       colorData <- DMRDataMeltAgg[[colorBy]]
-      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+      pal <- colorBin("RdYlBu", colorData, 7, pretty = FALSE)
     } else if (colorBy == "BATHY") {
       colorData <- DMRDataMeltAgg[[colorBy]]
-      pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
+      pal <- colorBin("Greys", colorData, 7, pretty = FALSE)
     } else {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
       pal <- colorFactor("viridis", colorData)
     }
     #sizeBy="species"
-    if (sizeBy == "species") {
+#    if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
-    } else if (sizeBy == "equipment") {
-      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
-    } else {
-      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
+#      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
+#    } else if (sizeBy == "equipment") {
+#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
+#    } else {
+#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
      # radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
-    }
+#    }
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~unique(SITE_ID),
+      addCircles(~longitude, ~latitude, radius= 100, layerId=~unique(SITE_ID),
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
