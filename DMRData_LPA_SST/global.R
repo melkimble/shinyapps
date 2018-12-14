@@ -31,11 +31,11 @@ DMRData$BATHY<-round(DMRData$BATHY,2)
 DMRDataMelt$SST <- round(DMRDataMelt$SST,2)
 DMRDataMelt$BATHY <- round(DMRDataMelt$BATHY,2)
 
-DMRDataMeltAgg$SST_Mean <- round(DMRDataMeltAgg$SST_Mean,2)
+DMRDataMeltAgg$SST <- round(DMRDataMeltAgg$SST,2)
 DMRDataMeltAgg$SST_StdDev <- round(DMRDataMeltAgg$SST_StdDev,2)
 DMRDataMeltAgg$BATHY <- round(DMRDataMeltAgg$BATHY,2)
 
-DMRDataMeltMonthAgg$SST_Mean <- round(DMRDataMeltMonthAgg$SST_Mean,2)
+DMRDataMeltMonthAgg$SST <- round(DMRDataMeltMonthAgg$SST,2)
 DMRDataMeltMonthAgg$SST_StdDev <- round(DMRDataMeltMonthAgg$SST_StdDev,2)
 DMRDataMeltMonthAgg$BATHY <- round(DMRDataMeltMonthAgg$BATHY,2)
 

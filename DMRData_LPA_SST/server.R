@@ -174,7 +174,7 @@ function(input, output) {
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~SITE_ID,
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~unique(SITE_ID),
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
