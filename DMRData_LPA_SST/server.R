@@ -107,8 +107,8 @@ function(input, output) {
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
-                    axis.title.x = element_blank(),
                     axis.title.x=element_blank()) +
+              scale_x_discrete(limits = month.abb) +
 #              scale_x_date(date_labels = "%b", date_breaks="1 month") +
               ggtitle("Monthly Temperature by Species") +
               ylab("Temperature (C)")
@@ -123,8 +123,8 @@ function(input, output) {
                       panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(),
                       panel.background = element_blank(),
-                      axis.title.x = element_blank(),
                       axis.title.x=element_blank()) +
+                scale_x_discrete(limits = month.abb) +
 #                scale_x_date(date_labels = "%b", date_breaks="1 month") +
                 ggtitle("Monthly Bathymetry by Species") +
                 ylab("Bathymetry (m)")
