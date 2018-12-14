@@ -14,9 +14,9 @@ names(DMRData)<-c("ID", "SITE_ID", "latitude", "longitude", "species", "equipmen
                   "X011030_20160128", "X011030_20160417", "X011030_20160620", "X011030_20160706", "X011030_20160722", "X011030_20160823")
 names(DMRDataMelt)<-c("SITE_ID", "LSAT8_PPPRRR", "Date", "SST", "latitude", "longitude", "species", "BATHY", "Datef", "Month")
 ## this data does not have a date because it is aggregated on SITE_ID. So all SST values are averaged by SITE_ID.
-names(DMRDataMeltAgg)<-c("ID","SITE_ID", "latitude", "longitude", "species", "equipment", "SST_Mean", "SST_StdDev", "BATHY")
+names(DMRDataMeltAgg)<-c("ID","SITE_ID", "latitude", "longitude", "species", "equipment", "SST", "SST_StdDev", "BATHY")
 ## this data has month because SST is aggregated by SITE_ID and Month.
-names(DMRDataMeltMonthAgg)<-c("ID","SITE_ID", "latitude", "longitude", "Month", "species", "equipment", "SST_Mean", "SST_StdDev", "BATHY")
+names(DMRDataMeltMonthAgg)<-c("ID","SITE_ID", "latitude", "longitude", "Month", "species", "equipment", "SST", "SST_StdDev", "BATHY")
 
 #DMRData$ID<-as.integer(DMRData$ID)
 #DMRData$SITE_ID <- as.character(DMRData$SITE_ID)

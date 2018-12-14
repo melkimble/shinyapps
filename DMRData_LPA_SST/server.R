@@ -144,7 +144,7 @@ function(input, output) {
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
     sizeBy <- input$size
-    if (colorBy == "SST_Mean") {
+    if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
@@ -189,7 +189,7 @@ function(input, output) {
     print(ID)
     selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
     Months<-selectedSite$Month
-    Temps<-selectedSite$SST_Mean
+    Temps<-selectedSite$SST
     SDTemps<-selectedSite$SST_StdDev
     
 #    if (length(Months) == 1) { 
@@ -197,7 +197,7 @@ function(input, output) {
 #        tags$h4("Site ID:", selectedSiteID),
 #        tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
 #        sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-#        sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST_Mean, 2)), tags$br(),
+#        sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
 #        sprintf("Std Dev Temp (C): %s", round(selectedSite$SST_StdDev, 2))
 #        ))
 #    } else {
