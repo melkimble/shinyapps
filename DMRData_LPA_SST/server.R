@@ -199,7 +199,7 @@ function(input, output) {
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
         paste(sprintf("Mean %s Temp (C): %s [StdDev %s] <br>", Months, round(Temps,2), round(SDTemps,2)),collapse=" ")
-        #paste("Mean ", Months, "Temp (C): ", round(Temps,2), "[StdDev ", round(SDTemps,2), "]", "<br>")
+        #paste("Mean ", Months, "Temp (C): ", round(Temps,2), "[StdDev ", round(SDTemps,2), "]", "<br/>")
       ))
     } else {
       content <- as.character(tagList(
@@ -207,7 +207,7 @@ function(input, output) {
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
         paste(sprintf("Mean %s Temp (C): %s [StdDev %s] <br>", Months, round(Temps,2), round(SDTemps,2)),collapse=" ")
-        #paste("Mean ", Months, "Temp (C): ", round(Temps,2), "[StdDev ", round(SDTemps,2), "]", "<br>")
+        #paste("Mean ", Months, "Temp (C): ", round(Temps,2), "[StdDev ", round(SDTemps,2), "]", "<br/>")
       ))
       }
     
