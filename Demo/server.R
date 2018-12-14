@@ -4,6 +4,8 @@ library(scales)
 library(lattice)
 library(dplyr)
 library(ggplot2)
+library(htmlTable)
+
 
 # Leaflet bindings are a bit slow; for now we'll just sample to compensate
 #set.seed(100)
@@ -55,28 +57,47 @@ function(input, output) {
   })
 
   # Precalculate the breaks we'll need for the two histograms
-  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
+#  tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
+  
+#  output$histTemp <- renderPlot({
+    # If no zipcodes are in view, don't plot
+#    if (nrow(meltLeasesInBounds()) == 0)
+#      return(NULL)
+    
+#    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+#    ggplot(meltLeasesInBounds(), aes(x=SST)) +
+#      theme(plot.title=element_text(hjust=0.5),
+#            panel.grid.major = element_blank(),
+#            panel.grid.minor = element_blank(),
+#            panel.background = element_blank()) +
+#      xlim(range(DMRData$SST)) +
+#      geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
+#      geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
+#                 color="blue", linetype="dashed", size=1) +
+#      ggtitle(TheTitle) +
+#      xlab("Temperature (C)") +
+#      ylab("Frequency")
+    
+#  })
 
-  output$histTemp <- renderPlot({
+  output$scatterTemp <- renderPlot({
     # If no zipcodes are in view, don't plot
     if (nrow(meltLeasesInBounds()) == 0)
       return(NULL)
-    
-    TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
-    #gghistTemp<-
-    ggplot(meltLeasesInBounds(), aes(x=SST)) +
+#    TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
+    ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
       theme(plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            #panel.border = element_blank(),
-            panel.background = element_blank()) +
-#      xlim(range(DMRData$SST)) +
-      geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-      geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
-                 color="blue", linetype="dashed", size=1) +
-      ggtitle(TheTitle) +
-      xlab("Temperature (C)") +
-      ylab("Frequency")
+            panel.background = element_blank(),
+            axis.text.x = element_text(angle=45, hjust=1),
+            legend.position="top",
+            legend.title=element_blank()) +
+      geom_point() +
+      scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
+#      ggtitle(TheTitle) +
+      xlab("Date") +
+      ylab("Temperature (C)")
     
     #print(gghistTemp)
   })
@@ -92,7 +113,6 @@ function(input, output) {
             plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            #panel.border = element_blank(),
             panel.background = element_blank(),
             axis.title.x=element_blank()) +
       ggtitle("Temperature by Species") +
@@ -100,19 +120,18 @@ function(input, output) {
     #print(ggboxTemp)
     
   })
-
+  
   output$boxSpeciesBathy <- renderPlot({
     # If no zipcodes are in view, don't plot
     if (nrow(leasesInBounds()) == 0)
       return(NULL)
     #ggboxTemp<-
-    ggplot(leasesInBounds(), aes(x=species, y=BATHY, fill=species)) +
+    ggplot(leasesInBounds()[!is.na(leasesInBounds()$BATHY),], aes(x=species, y=BATHY, fill=species)) +
       geom_boxplot() +
       theme(legend.position="none",
             plot.title=element_text(hjust=0.5),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            #panel.border = element_blank(),
             panel.background = element_blank(),
             axis.title.x=element_blank()) +
       ggtitle("Bathymetry by Species") +
@@ -133,6 +152,8 @@ function(input, output) {
       ## this input$threshold is from the ui.R script, it grabs the value input by the user
       ## and adjusts the threshold on the size of the icons based on the threshold.
       # Precalculate the breaks we'll need for the two histograms
+      #colorBy="SST"
+      
       colorData <- DMRDataMeltAgg[[colorBy]]
       pal <- colorBin("viridis", colorData, 7, pretty = FALSE)
     } else if (colorBy == "BATHY") {
@@ -142,7 +163,7 @@ function(input, output) {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
       pal <- colorFactor("viridis", colorData)
     }
- 
+    #sizeBy="species"
     if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
       radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
@@ -155,7 +176,7 @@ function(input, output) {
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~ID,
+      addCircles(~longitude, ~latitude, radius=radius, layerId=~unique(SITE_ID),
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
@@ -163,17 +184,28 @@ function(input, output) {
 
   # Show a popup at the given location
   ## later grab SITE_ID from this group and calculate aggregates based on
+  
+  # DMRData DMRDataMelt DMRDataMeltAgg DMRDataMeltMonthAgg
+  
   showSitePopup <- function(ID, lat, lng) {
-    selectedSite <- DMRDataMeltAgg[DMRDataMeltAgg$ID == ID,]
-    content <- as.character(tagList(
-      tags$h4("Site ID:", selectedSite$SITE_ID),
-      tags$strong(HTML(sprintf("%s, %s",
-        selectedSite$species, selectedSite$equipment
-      ))), tags$br(),
-      sprintf("Site Depth (m): %s", round(selectedSite$BATHY, 2)), tags$br(),
-      sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
-      sprintf("Std Dev Temp (C): %s", round(selectedSite$SST_StdDev, 2))
-    ))
+    #print(ID)
+    #ID="JYOU215"
+    selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
+    Months<-selectedSite$Month
+    Temps<-selectedSite$SST
+    SDTemps<-selectedSite$SST_StdDev
+    
+    TheTable<-selectedSite[,c("Month","SST","SST_StdDev", "BATHY")]
+    names(TheTable)<-c("Month", "Mean Temp (C)", "SD", "Bathy (m)")
+    
+    content <- paste("<h4> Site ID:", ID,"</h4>",
+                     "<strong>", sprintf("%s, %s", selectedSite$species[1], 
+                                         selectedSite$equipment[1]),"</strong> </br>", 
+                     htmlTable(TheTable, col.rgroup = c("none", "#F9FAF0"), 
+                               col.columns = c("none", "#F1F0FA"),
+                               align.header = "clcr",
+                               align.cgroup = "lcr",
+                               padding.rgroup = "&nbsp;&nbsp;"))
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
 

@@ -31,15 +31,15 @@ navbarPage("DMR Lease Data", id="nav",
 
         selectInput("color", "Color", vars),
         selectInput("size", "Size", vars, selected = "SST"),
-
-        plotOutput("histTemp", height = 175),
-        plotOutput("boxSpeciesTemp", height = 225),
-        plotOutput("boxSpeciesBathy", height=225)
+        plotOutput("scatterTemp", height = 250),
+#        plotOutput("histTemp", height = 175),
+        plotOutput("boxSpeciesTemp", height = 200),
+        plotOutput("boxSpeciesBathy", height=200)
       ),
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',
         'Bathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM)',
-        'nSea Surface Temperature data obtained from the Coastal Satellite Oceanography team at the University of Maine',
+        'Sea Surface Temperature data obtained from the Coastal Satellite Oceanography team at the University of Maine',
         'Aquaculture lease data obtained from the Maine Department of Marine Resources.'
       )
     )
