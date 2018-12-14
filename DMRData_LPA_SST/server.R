@@ -145,7 +145,7 @@ function(input, output) {
   observe({
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
-    sizeBy <- input$size
+#    sizeBy <- input$size
     if (colorBy == "SST") {
       # Color and palette are treated specially in the "SST" case, because
       # the values are categorical instead of continuous.
@@ -164,19 +164,19 @@ function(input, output) {
       pal <- colorFactor("viridis", colorData)
     }
     #sizeBy="species"
-    if (sizeBy == "species") {
+#    if (sizeBy == "species") {
       # Radius is treated specially in the "species" case.
-      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
-    } else if (sizeBy == "equipment") {
-      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
-    } else {
-      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
+#      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
+#    } else if (sizeBy == "equipment") {
+#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
+#    } else {
+#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
      # radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
-    }
+#    }
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius=radius, layerId=~unique(SITE_ID),
+      addCircles(~longitude, ~latitude, radius= 250, layerId=~unique(SITE_ID),
                  stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
