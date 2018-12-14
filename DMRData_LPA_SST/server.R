@@ -219,21 +219,21 @@ function(input, output, session) {
   ## Data Explorer ###########################################
  # DMRData
   observe({
-    equips <- if (is.null(input$Species)) character(0) else {
-      filter(cleantable, Species %in% input$Species) %>%
-        `$`('Equipment') %>%
+    equips <- if (is.null(input$species)) character(0) else {
+      filter(cleantable, Species %in% input$species) %>%
+        `$`('equipment') %>%
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$equips[input$equips %in% equips])
+    stillSelected <- isolate(input$equipment[input$equipment %in% equips])
     updateSelectInput(session, "equips", choices = equips,
       selected = stillSelected)
   })
   observe({
-    leasetypes <- if (is.null(input$Species)) character(0) else {
+    leasetypes <- if (is.null(input$species)) character(0) else {
       cleantable %>%
-        filter(Species %in% input$Species,
-          is.null(input$equips) | Equipment %in% input$equips) %>%
+        filter(Species %in% input$species,
+          is.null(input$equipment) | Equipment %in% input$equipment) %>%
         `$`('LeaseType') %>%
         unique() %>%
         sort()
@@ -250,7 +250,7 @@ function(input, output, session) {
       map <- leafletProxy("map")
       map %>% clearPopups()
       dist <- 0.5
-      site <- input$goto$site
+      site <- input$goto$SiteId
       lat <- input$goto$lat
       lng <- input$goto$lng
       showSitePopup(site, lat, lng)
@@ -263,7 +263,7 @@ function(input, output, session) {
       filter(
         Bathymetry >= input$minBathy,
         Bathymetry <= input$maxBathy,        
-        is.null(input$Species) | Species %in% input$Species,
+        is.null(input$species) | Species %in% input$species,
         is.null(input$equips) | Equipment %in% input$equips,
         is.null(input$leasetypes) | LeaseType %in% input$leasetypes
       ) %>%
