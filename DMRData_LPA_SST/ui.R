@@ -37,7 +37,8 @@ navbarPage("DMR Lease Data", id="nav",
         
          selectInput("color", "Color", vars),
 #        selectInput("size", "Size", vars, selected = "SST"),
-         selectInput("selectedplot", "Plot",plotVars, selected = "scatterspeciesTemp")
+         selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp", 
+                     plotOutput("plot", height = 250))
 
 #        plotOutput("histTemp", height = 175),
 #        plotOutput("boxSpeciesTemp", height = 200),
