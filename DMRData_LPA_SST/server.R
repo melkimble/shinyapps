@@ -4,6 +4,8 @@ library(scales)
 library(lattice)
 library(dplyr)
 library(ggplot2)
+library(htmlTable)
+
 
 # Leaflet bindings are a bit slow; for now we'll just sample to compensate
 #set.seed(100)
@@ -198,7 +200,8 @@ function(input, output) {
         tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        paste(sprintf("Mean %s Temp (C): %s [StdDev %s] \n", Months, round(Temps,2), round(SDTemps,2)),collapse=" ")
+        apply(selectedSite[,c("SITE_ID","Month","SST","SST_StdDev")], 1, function(row) htmlTable(row))
+        #paste(sprintf("Mean %s Temp (C): %s [StdDev %s] \n", Months, round(Temps,2), round(SDTemps,2)),collapse=" ")
         #paste("Mean ", Months, "Temp (C): ", round(Temps,2), "[StdDev ", round(SDTemps,2), "]", "<br/>")
       ))
     } else {
@@ -206,7 +209,8 @@ function(input, output) {
         tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        paste(sprintf("Mean %s Temp (C): %s [StdDev %s] \n", Months, round(Temps,2), round(SDTemps,2)),collapse=" ")
+        apply(selectedSite[,c("SITE_ID","Month","SST","SST_StdDev")], 1, function(row) htmlTable(row))
+        #paste(sprintf("Mean %s Temp (C): %s [StdDev %s] \n", Months, round(Temps,2), round(SDTemps,2)),collapse=" ")
         #paste("Mean ", Months, "Temp (C): ", round(Temps,2), "[StdDev ", round(SDTemps,2), "]", "<br/>")
       ))
       }
