@@ -208,7 +208,7 @@ function(input, output) {
                                col.columns = c("none", "#F1F0FA"),
                                align.header = "clcr",
                                align.cgroup = "lcr",
-                               padding.rgroup = "&nbsp;&nbsp;"),
+                               padding.tspanner = "&nbsp;&nbsp;"),
                      "*Sea Surface Temperature (SST, C)","</br>", "Bathymetry (m).")
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
