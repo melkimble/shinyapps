@@ -55,8 +55,7 @@ function(input, output) {
            latitude >= latRng[1] & latitude <= latRng[2] &
              longitude >= lngRng[1] & longitude <= lngRng[2])
   })
-  observe({
-    print(input$selectedplot)
+#  observe({
     # Precalculate the breaks we'll need for the two histograms
     # tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
     selectPlot<-input$selectedplot
@@ -126,7 +125,7 @@ function(input, output) {
                 ylab("Bathymetry (m)")
               } else return(NULL)
       }) 
-    })
+#    })
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
   observe({
