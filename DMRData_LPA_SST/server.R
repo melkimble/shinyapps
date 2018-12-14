@@ -192,23 +192,23 @@ function(input, output) {
     Temps<-selectedSite$SST
     SDTemps<-selectedSite$SST_StdDev
     
-#    if (length(Months) == 1) { 
-#      content <- as.character(tagList(
-#        tags$h4("Site ID:", selectedSiteID),
-#        tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
-#        sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-#        sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
-#        sprintf("Std Dev Temp (C): %s", round(selectedSite$SST_StdDev, 2))
-#        ))
-#    } else {
-#      content <- as.character(tagList(
-#        tags$h4("Site ID:", selectedSiteID),
-#        tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
-#        sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-#        sprintf("Mean %s Temp: %s", Months, round(Temps,2)), tags$br(),
-#        sprintf("StdDev %s Temp: %s", Months, round(SDTemps,2))
-#      ))
-#      }
+    if (length(Months) == 1) { 
+      content <- as.character(tagList(
+        tags$h4("Site ID:", selectedSiteID),
+        tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
+        sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
+        sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
+        sprintf("Std Dev Temp (C): %s", round(selectedSite$SST_StdDev, 2))
+        ))
+    } else {
+      content <- as.character(tagList(
+        tags$h4("Site ID:", selectedSiteID),
+        tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
+        sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
+        sprintf("Mean %s Temp: %s", Months, round(Temps,2)), tags$br(),
+        sprintf("StdDev %s Temp: %s", Months, round(SDTemps,2))
+      ))
+      }
     
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
   }
