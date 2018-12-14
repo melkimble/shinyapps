@@ -194,7 +194,7 @@ function(input, output) {
     
     if (length(Months) == 1) { 
       content <- as.character(tagList(
-        tags$h4("Site ID:", selectedSiteID),
+        tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
         sprintf("Average Sea Surface Temp (C): %s", round(selectedSite$SST, 2)), tags$br(),
@@ -202,7 +202,7 @@ function(input, output) {
         ))
     } else {
       content <- as.character(tagList(
-        tags$h4("Site ID:", selectedSiteID),
+        tags$h4("Site ID:", ID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
         sprintf("Mean %s Temp: %s", Months, round(Temps,2), collapse=" "), tags$br(),
