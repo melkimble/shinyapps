@@ -205,8 +205,8 @@ function(input, output) {
         tags$h4("Site ID:", selectedSiteID),
         tags$strong(HTML(sprintf("%s, %s", selectedSite$species[1], selectedSite$equipment[1]))), tags$br(),
         sprintf("Site Depth (m): %s", round(mean(selectedSite$BATHY),2)), tags$br(),
-        sprintf("Mean %s Temp: %s", Months, round(Temps,2)), tags$br(),
-        sprintf("StdDev %s Temp: %s", Months, round(SDTemps,2))
+        sprintf("Mean %s Temp: %s", Months, round(Temps,2), collapse=" "), tags$br(),
+        sprintf("StdDev %s Temp: %s", Months, round(SDTemps,2), collapse=" ")
       ))
       }
     
