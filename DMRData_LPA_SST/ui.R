@@ -9,9 +9,9 @@ vars <- c(
 )
 # Choices for plots
 plotVars <- c(
+  "Scatterplot: Monthly SST by Species" = "scatterspeciesTemp",
   "Boxplot: Monthly SST by Species" = "boxSpeciesTemp",
   "Boxplot: Bathymetry by Species" = "boxSpeciesBathy",
-  "Scatterplot: Monthly SST by Species" = "scatterspeciesTemp",
   "Histogram: Sea Surface Temperature" = "histTemp"
 )
 navbarPage("DMR Lease Data", id="nav",
