@@ -34,7 +34,9 @@ navbarPage("DMR Lease Data", id="nav",
                     width = "auto", height = 500,
 
         h2("Site Explorer"),
-        plotOutput("plot", height = 250)
+        plotOutput("plot", height = 250),
+        tags$div(style="display:inline-block",selectInput("color", "Color", vars)),
+        tags$div(style="display:inline-block",selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
 
 #        selectInput("color", "Color", vars),
 #        selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp")
@@ -44,8 +46,7 @@ navbarPage("DMR Lease Data", id="nav",
 #        plotOutput("boxSpeciesTemp", height = 200),
 #        plotOutput("boxSpeciesBathy", height=200)
       ),
-      tags$div(style="display:inline-block",selectInput("color", "Color", vars)),
-      tags$div(style="display:inline-block",selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp")),
+
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',
         'Bathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM)',
