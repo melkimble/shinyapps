@@ -54,35 +54,23 @@ navbarPage("DMR Lease Data", id="nav",
         'Aquaculture lease data obtained from the Maine Department of Marine Resources.'
       )
     )
-  )#,
+  ),
+#######################################################
+#DMRData
+#names(DMRData)
+  tabPanel("Data Explorer",
+    fluidRow(
+      column(3, selectInput("species", "Species", c("All Species"=""), multiple=TRUE)),
+      column(3, conditionalPanel("input.equipment", selectInput("Equipment", "Equipment", c("All Equipment"=""), multiple=TRUE))),
+      column(3, conditionalPanel("input.leasetype", selectInput("LeaseType", "Lease Type", c("All LeaseType"=""), multiple=TRUE)))
+      ),
+    fluidRow(
+      column(1, numericInput("minBathy", "Min Bathy", min=0, max=100, value=0)),
+      column(1, numericInput("maxBathy", "Max Bathy", min=0, max=100, value=100))
+      ),
+    hr(),
+    DT::dataTableOutput("dmrTable")
+  ),
 
-#  tabPanel("Data explorer",
-#    fluidRow(
-#      column(3,
-#        selectInput("states", "States", c("All states"="", structure(state.abb, names=state.name), "Washington, DC"="DC"), multiple=TRUE)
-#      ),
-#      column(3,
-#        conditionalPanel("input.states",
-#          selectInput("cities", "Cities", c("All cities"=""), multiple=TRUE)
-#        )
-#      ),
-#      column(3,
-#        conditionalPanel("input.states",
-#          selectInput("zipcodes", "Zipcodes", c("All zipcodes"=""), multiple=TRUE)
-#        )
-#      )
-#    ),
-#    fluidRow(
-#      column(1,
-#        numericInput("minScore", "Min score", min=0, max=100, value=0)
-#      ),
-#      column(1,
-#        numericInput("maxScore", "Max score", min=0, max=100, value=100)
-#      )
-#    ),
-#    hr(),
-#    DT::dataTableOutput("ziptable")
-#  ),
-
-#  conditionalPanel("false", icon("crosshair"))
+  conditionalPanel("false", icon("crosshair"))
 )
