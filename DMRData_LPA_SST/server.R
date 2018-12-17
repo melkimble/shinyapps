@@ -87,12 +87,13 @@ function(input, output, session) {
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(),
+                  axis.text=element_text(size=12),
  #                 axis.text.x = element_text(angle=35, hjust=1),
                   axis.title.x = element_blank(),
                   legend.position="top",
                   legend.title=element_blank()) +
             scale_x_discrete(limits = month.abb) +
-            geom_point() +
+            geom_point(size = 3) +
 #            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
             ggtitle(TheTitle) +
             ylab("Temperature (C)")
@@ -108,6 +109,7 @@ function(input, output, session) {
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
+                    axis.text=element_text(size=12),
                     axis.title.x=element_blank()) +
               scale_x_discrete(limits = month.abb) +
 #              scale_x_date(date_labels = "%b", date_breaks="1 month") +
@@ -124,6 +126,7 @@ function(input, output, session) {
                       panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(),
                       panel.background = element_blank(),
+                      axis.text=element_text(size=12),
                       axis.title.x=element_blank()) +
 #                scale_x_date(date_labels = "%b", date_breaks="1 month") +
                 ggtitle("Bathymetry by Species") +
