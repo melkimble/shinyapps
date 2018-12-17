@@ -34,7 +34,7 @@ navbarPage("DMR Lease Data", id="nav",
                     width = 750 , height = 350,
 
         h2("Site Explorer"),
-        plotOutput("plot", height = 250),
+        plotOutput("plot", height = 225),
         tags$div(style="display:inline-block",selectInput("color", "Color", vars)),
         tags$div(style="display:inline-block",selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
 
