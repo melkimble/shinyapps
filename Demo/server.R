@@ -64,7 +64,7 @@ function(input, output, session) {
         # If no zipcodes are in view, don't plot
         if (nrow(meltLeasesInBounds()) == 0)
           return(NULL)
-        TheTitle=paste("Sea Surface Temperature \n(Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+        TheTitle=paste("Sea Surface Temperature (Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
         ggplot(meltLeasesInBounds(), aes(x=SST)) +
           theme(plot.title=element_text(hjust=0.5),
                 panel.grid.major = element_blank(),
@@ -96,7 +96,7 @@ function(input, output, session) {
             scale_x_discrete(limits = month.abb) +
             geom_point(size = 3) +
 #            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
-            ggtitle(TheTitle) +
+#            ggtitle(TheTitle) +
             ylab("Temperature (C)")
           } else if (selectPlot == "boxSpeciesTemp") {
             # If no zipcodes are in view, don't plot
@@ -105,16 +105,18 @@ function(input, output, session) {
             #MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
             ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=species)) +
               geom_boxplot() +
-              theme(legend.position="none",
-                    plot.title=element_text(hjust=0.5),
+              theme(plot.title=element_text(hjust=0.5),
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
                     axis.text=element_text(size=12),
+                    legend.text=element_text(size=12),
+                    legend.title=element_blank(),
+                    legend.position="top",
                     axis.title.x=element_blank()) +
               scale_x_discrete(limits = month.abb) +
 #              scale_x_date(date_labels = "%b", date_breaks="1 month") +
-              ggtitle("Monthly Temperature by Species") +
+#              ggtitle("Monthly Temperature by Species") +
               ylab("Temperature (C)")
             } else if (selectPlot == "boxSpeciesBathy") {
               # If no zipcodes are in view, don't plot
@@ -130,7 +132,7 @@ function(input, output, session) {
                       axis.text=element_text(size=12),
                       axis.title.x=element_blank()) +
 #                scale_x_date(date_labels = "%b", date_breaks="1 month") +
-                ggtitle("Bathymetry by Species") +
+#                ggtitle("Bathymetry by Species") +
                 ylab("Bathymetry (m)")
               } else return(NULL)
       }) 
