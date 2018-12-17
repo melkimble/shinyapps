@@ -79,10 +79,10 @@ function(input, output, session) {
           ylab("Frequency")
         } else if (selectPlot == "scatterspeciesTemp") {
           # If no zipcodes are in view, don't plot
-          if (nrow(meltLeasesInBounds()) == 0)
+          if (nrow(meltMonthLeasesInBounds()) == 0)
             return(NULL)
           TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
-          ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
+          ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, color=species, shape=species)) +
             theme(plot.title=element_text(hjust=0.5),
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
@@ -91,8 +91,9 @@ function(input, output, session) {
                   axis.title.x = element_blank(),
                   legend.position="top",
                   legend.title=element_blank()) +
+            scale_x_discrete(limits = month.abb) +
             geom_point() +
-            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
+#            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
             ggtitle(TheTitle) +
             ylab("Temperature (C)")
           } else if (selectPlot == "boxSpeciesTemp") {
