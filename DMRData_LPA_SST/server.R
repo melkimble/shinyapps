@@ -110,6 +110,7 @@ function(input, output, session) {
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
                     axis.text=element_text(size=12),
+                    legend.text=element_text(size=12),
                     legend.title=element_blank(),
                     legend.position="top",
                     axis.title.x=element_blank()) +
