@@ -91,6 +91,7 @@ function(input, output, session) {
  #                 axis.text.x = element_text(angle=35, hjust=1),
                   axis.title.x = element_blank(),
                   legend.position="top",
+                  legend.text=element_text(size=12),
                   legend.title=element_blank()) +
             scale_x_discrete(limits = month.abb) +
             geom_point(size = 3) +
