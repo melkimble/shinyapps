@@ -79,20 +79,23 @@ function(input, output, session) {
           ylab("Frequency")
         } else if (selectPlot == "scatterspeciesTemp") {
           # If no zipcodes are in view, don't plot
-          if (nrow(meltLeasesInBounds()) == 0)
+          if (nrow(meltMonthLeasesInBounds()) == 0)
             return(NULL)
           TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
-          ggplot(meltLeasesInBounds(), aes(x=as.Date(Datef), y=SST, color=species, shape=species)) +
+          ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, color=species, shape=species)) +
             theme(plot.title=element_text(hjust=0.5),
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank(),
+                  axis.text=element_text(size=12),
  #                 axis.text.x = element_text(angle=35, hjust=1),
                   axis.title.x = element_blank(),
                   legend.position="top",
+                  legend.text=element_text(size=12),
                   legend.title=element_blank()) +
-            geom_point() +
-            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
+            scale_x_discrete(limits = month.abb) +
+            geom_point(size = 3) +
+#            scale_x_date(date_labels = "%b %Y", date_breaks="3 month") +
             ggtitle(TheTitle) +
             ylab("Temperature (C)")
           } else if (selectPlot == "boxSpeciesTemp") {
@@ -107,6 +110,7 @@ function(input, output, session) {
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
+                    axis.text=element_text(size=12),
                     axis.title.x=element_blank()) +
               scale_x_discrete(limits = month.abb) +
 #              scale_x_date(date_labels = "%b", date_breaks="1 month") +
@@ -123,6 +127,7 @@ function(input, output, session) {
                       panel.grid.major = element_blank(),
                       panel.grid.minor = element_blank(),
                       panel.background = element_blank(),
+                      axis.text=element_text(size=12),
                       axis.title.x=element_blank()) +
 #                scale_x_date(date_labels = "%b", date_breaks="1 month") +
                 ggtitle("Bathymetry by Species") +
@@ -166,8 +171,8 @@ function(input, output, session) {
     
     leafletProxy("map", data = DMRDataMeltAgg) %>%
       clearShapes() %>%
-      addCircles(~longitude, ~latitude, radius= 100, layerId=~unique(SITE_ID),
-                 stroke=FALSE, fillOpacity=0.4, fillColor=pal(colorData)) %>%
+      addCircles(~longitude, ~latitude, radius= 150, layerId=~unique(SITE_ID),
+                 stroke=FALSE, fillOpacity=0.8, fillColor=pal(colorData)) %>%
       addLegend("bottomleft", pal=pal, values=colorData, title=colorBy,
                 layerId="colorLegend")
   })

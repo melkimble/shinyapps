@@ -30,11 +30,11 @@ navbarPage("DMR Lease Data", id="nav",
 
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                    draggable = TRUE, top = 60, left = 20, right = 20, bottom = "auto",
-                    width = "auto", height = "auto",
+                    draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
+                    width = 750 , height = 350,
 
-        h2("Site Explorer"),
-        plotOutput("plot", height = 250),
+        h3("Site Explorer"),
+        plotOutput("plot", height = 225),
         tags$div(style="display:inline-block",selectInput("color", "Color", vars)),
         tags$div(style="display:inline-block",selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
 
