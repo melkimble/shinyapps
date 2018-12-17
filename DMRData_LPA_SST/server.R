@@ -105,12 +105,12 @@ function(input, output, session) {
             #MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
             ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=species)) +
               geom_boxplot() +
-              theme(legend.position="none",
-                    plot.title=element_text(hjust=0.5),
+              theme(plot.title=element_text(hjust=0.5),
                     panel.grid.major = element_blank(),
                     panel.grid.minor = element_blank(),
                     panel.background = element_blank(),
                     axis.text=element_text(size=12),
+                    legend.title=element_blank(),
                     axis.title.x=element_blank()) +
               scale_x_discrete(limits = month.abb) +
 #              scale_x_date(date_labels = "%b", date_breaks="1 month") +
