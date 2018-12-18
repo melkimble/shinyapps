@@ -244,6 +244,7 @@ function(input, output, session) {
 
   ## Data Explorer ###########################################
  # DMRData
+  names(cleantable)
   observe({
     equipment <- if (is.null(input$species)) character(0) else {
       filter(cleantable, Species %in% input$species) %>%
@@ -256,7 +257,7 @@ function(input, output, session) {
       selected = stillSelected)
   })
   observe({
-    leasetypes <- if (is.null(input$species)) character(0) else {
+    leasetype <- if (is.null(input$species)) character(0) else {
       cleantable %>%
         filter(Species %in% input$species,
           is.null(input$equipment) | Equipment %in% input$equipment) %>%
@@ -264,8 +265,8 @@ function(input, output, session) {
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% leasetypes])
-    updateSelectInput(session, "leasetypes", choices = leasetypes,
+    stillSelected <- isolate(input$leasetype[input$leasetype %in% leasetype])
+    updateSelectInput(session, "leasetype", choices = leasetype,
       selected = stillSelected)
   })
 
@@ -294,7 +295,7 @@ function(input, output, session) {
         Bathymetry <= input$maxBathy,  
         is.null(input$species) | Species %in% input$species,
         is.null(input$equipment) | Equipment %in% input$equipment,
-        is.null(input$leasetypes) | LeaseType %in% input$leasetypes, 
+        is.null(input$leasetype) | LeaseType %in% input$leasetype, 
         SAT010029_20130824 | SAT010029_20140115 | SAT010029_20140304 | SAT010029_20140507 | SAT010029_20140608
         | SAT010029_20140827 | SAT010029_20140912 | SAT010029_20140928 | SAT010029_20141030 | SAT010029_20150307
         | SAT010029_20150713 | SAT010029_20150729 | SAT010029_20150814 | SAT010029_20150915 | SAT010029_20151220
