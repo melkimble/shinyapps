@@ -86,8 +86,8 @@ function(input, output, session) {
                   panel.background = element_blank()) +
             xlim(range(DMRDataMelt$BATHY)) +
             geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-            geom_vline(aes(xintercept=mean(meltLeasesInBounds()$BATHY)),
-                       color="blue", linetype="dashed", size=1) +
+#            geom_vline(aes(xintercept=mean(meltLeasesInBounds()$BATHY)),
+#                       color="blue", linetype="dashed", size=1) +
             ggtitle(TheTitle) +
             xlab("Bathymetry (m)") +
             ylab("Frequency")
@@ -245,14 +245,14 @@ function(input, output, session) {
   ## Data Explorer ###########################################
  # DMRData
   observe({
-    equips <- if (is.null(input$species)) character(0) else {
+    equipment <- if (is.null(input$species)) character(0) else {
       filter(cleantable, Species %in% input$species) %>%
         `$`('Equipment') %>%
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$equipment[input$equipment %in% equips])
-    updateSelectInput(session, "equips", choices = equips,
+    stillSelected <- isolate(input$equipment[input$equipment %in% equipment])
+    updateSelectInput(session, "equipment", choices = equipment,
       selected = stillSelected)
   })
   observe({
@@ -290,7 +290,7 @@ function(input, output, session) {
         Bathymetry >= input$minBathy,
         Bathymetry <= input$maxBathy,        
         is.null(input$species) | Species %in% input$species,
-        is.null(input$equips) | Equipment %in% input$equips,
+        is.null(input$equipment) | Equipment %in% input$equipment,
         is.null(input$leasetypes) | LeaseType %in% input$leasetypes
       ) %>%
       mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
