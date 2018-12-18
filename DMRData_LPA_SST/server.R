@@ -279,6 +279,7 @@ function(input, output, session) {
       site <- input$goto$SiteId
       lat <- input$goto$lat
       lng <- input$goto$lng
+      print(paste(site, lat, lng, sep=" - "))
       showSitePopup(site, lat, lng)
       map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
     })
