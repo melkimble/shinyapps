@@ -12,7 +12,8 @@ plotVars <- c(
   "Scatterplot: Monthly SST by Species" = "scatterspeciesTemp",
   "Boxplot: Monthly SST by Species" = "boxSpeciesTemp",
   "Boxplot: Bathymetry by Species" = "boxSpeciesBathy",
-  "Histogram: Sea Surface Temperature" = "histTemp"
+  "Histogram: Sea Surface Temperature" = "histTemp",
+  "Histogram: Bathymetry" = "histBathy"
 )
 navbarPage("DMR Lease Data", id="nav",
 

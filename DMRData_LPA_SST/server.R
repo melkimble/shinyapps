@@ -77,6 +77,21 @@ function(input, output, session) {
           ggtitle(TheTitle) +
           xlab("Temperature (C)") +
           ylab("Frequency")
+        } else if (selectPlot == "histBathy") {
+          TheTitle=paste("Bathymetry (Mean:",round(mean(meltLeasesInBounds()$BATHY),digits=2),") at Aquaculture Sites",sep="")
+          ggplot(meltLeasesInBounds(), aes(x=BATHY)) +
+            theme(plot.title=element_text(hjust=0.5),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank()) +
+            xlim(range(DMRDataMelt$BATHY)) +
+            geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
+            geom_vline(aes(xintercept=mean(meltLeasesInBounds()$BATHY)),
+                       color="blue", linetype="dashed", size=1) +
+            ggtitle(TheTitle) +
+            xlab("Bathymetry (m)") +
+            ylab("Frequency")
+          
         } else if (selectPlot == "scatterspeciesTemp") {
           # If no zipcodes are in view, don't plot
           if (nrow(meltMonthLeasesInBounds()) == 0)
@@ -188,6 +203,10 @@ function(input, output, session) {
     #print(ID)
     #ID="JYOU215"
     selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
+    TheID <- DMRDataMeltMonthAgg$SITE_ID[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    lat <- DMRDataMeltMonthAgg$LATITUDE[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    lng <- DMRDataMeltMonthAgg$LONGITUDE[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+
     Months<-selectedSite$Month
     Temps<-selectedSite$SST
     SDTemps<-selectedSite$SST_StdDev
@@ -207,7 +226,7 @@ function(input, output, session) {
                                align.cgroup = "lcr",
                                padding.tspanner = "&nbsp;&nbsp;"),
                      "*Sea Surface Temperature (SST, C)","</br>", "Bathymetry (m).")
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = TheID)
   }
 
   # When map is clicked, show a popup with site info
