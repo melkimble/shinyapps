@@ -276,10 +276,10 @@ function(input, output, session) {
       map <- leafletProxy("map")
       map %>% clearPopups()
       dist <- 0.5
-      site <- input$goto$SiteId
+      site <- input$goto$site
       lat <- input$goto$lat
       lng <- input$goto$lng
-      print(paste(site, lat, lng, sep=" - "))
+      print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
       map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
     })
