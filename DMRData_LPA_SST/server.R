@@ -276,12 +276,11 @@ function(input, output, session) {
       map <- leafletProxy("map")
       map %>% clearPopups()
       dist <- 0.5
-      site <- input$goto$site
+      
       lat <- input$goto$lat
       lng <- input$goto$lng
+      site <- as.character(cleantable$SiteId[cleantable$Lat == lat & cleantable$Long == lng])
 
-      test<-names(input$dmrTable_cell_clicked)
-      print(test)
       print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
       map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
