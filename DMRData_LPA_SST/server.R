@@ -280,7 +280,7 @@ function(input, output, session) {
       lat <- input$goto$lat
       lng <- input$goto$lng
 
-      theNames<-names(input)
+      theNames<-names(input$selectedplot)
       print(theNames)
       print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
