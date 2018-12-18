@@ -244,7 +244,9 @@ function(input, output, session) {
 
   ## Data Explorer ###########################################
  # DMRData
-  names(cleantable)
+  #sort(unique(cleantable$LeaseType))
+  #names(cleantable)
+  #?structure
   observe({
     equipment <- if (is.null(input$species)) character(0) else {
       filter(cleantable, Species %in% input$species) %>%

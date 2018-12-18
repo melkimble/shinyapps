@@ -61,7 +61,7 @@ navbarPage("DMR Lease Data", id="nav",
 #names(DMRData)
   tabPanel("Data Explorer",
     fluidRow(
-      column(3, selectInput("species", "Species", c("All species"=""), multiple=TRUE)),
+      column(3, selectInput("species", "Species", c("All species"="", "Urchin"), multiple=TRUE)),
       column(3, conditionalPanel("input.species", selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE))),
       column(3, conditionalPanel("input.species", selectInput("leasetype", "Lease Type", c("All leasetype"=""), multiple=TRUE)))
       ),
