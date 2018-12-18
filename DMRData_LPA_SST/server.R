@@ -275,7 +275,7 @@ function(input, output, session) {
     isolate({
       map <- leafletProxy("map")
       map %>% clearPopups()
-      dist <- 0.025
+      dist <- 0.05
       
       lat <- input$goto$lat
       lng <- input$goto$lng
