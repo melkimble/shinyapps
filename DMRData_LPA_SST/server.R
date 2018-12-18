@@ -280,7 +280,7 @@ function(input, output, session) {
       lat <- input$goto$lat
       lng <- input$goto$lng
 
-      test<-names(input$goto)
+      test<-names(input$dmrTable_cell_clicked)
       print(test)
       print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
