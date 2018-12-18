@@ -279,7 +279,7 @@ function(input, output, session) {
       site <- input$goto$site
       lat <- input$goto$lat
       lng <- input$goto$lng
-      theNames<-names(input$goto)
+      theNames<-input$goto$nonce
       print(theNames)
       print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
