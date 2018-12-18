@@ -43,7 +43,6 @@ DMRDataMeltMonthAgg$BATHY <- round(DMRDataMeltMonthAgg$BATHY,2)
 
 cleantable <- DMRData %>%
   select(
-    id = ID,
     SiteId = SITE_ID,
     Lat = latitude,
     Long = longitude,
@@ -89,5 +88,6 @@ cleantable <- DMRData %>%
     SAT011030_20160620 = X011030_20160620, 
     SAT011030_20160706 = X011030_20160706, 
     SAT011030_20160722 = X011030_20160722, 
-    SAT011030_20160823 = X011030_20160823)
+    SAT011030_20160823 = X011030_20160823
+    )
 

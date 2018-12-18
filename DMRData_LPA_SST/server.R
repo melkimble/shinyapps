@@ -288,7 +288,7 @@ function(input, output, session) {
     df <- cleantable %>%
       filter(
         Bathymetry >= input$minBathy,
-        Bathymetry <= input$maxBathy,        
+        Bathymetry <= input$maxBathy,  
         is.null(input$species) | Species %in% input$species,
         is.null(input$equipment) | Equipment %in% input$equipment,
         is.null(input$leasetypes) | LeaseType %in% input$leasetypes
