@@ -281,7 +281,7 @@ function(input, output, session) {
       lng <- input$goto$lng
 
       site<-input$selectedplot
-      print(theNames)
+      print(site)
       print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
       map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
