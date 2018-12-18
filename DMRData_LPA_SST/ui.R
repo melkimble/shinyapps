@@ -68,8 +68,8 @@ navbarPage("DMR Lease Data", id="nav",
     fluidRow(
       column(1, numericInput("minBathy", "Min Bathy", min=-100, max=0, value=-100)),
       column(1, numericInput("maxBathy", "Max Bathy", min=-100, max=0, value=0)),
-      column(2, numericInput("minTemp", "Min Temp", min=-50, max=50, value=-50)),
-      column(2, numericInput("maxTemp", "Max Temp", min=-50, max=50, value=50))
+      column(1, numericInput("minTemp", "Min Temp", min=-50, max=50, value=-50)),
+      column(1, numericInput("maxTemp", "Max Temp", min=-50, max=50, value=50))
       ),
     hr(),
     DT::dataTableOutput("dmrTable")
