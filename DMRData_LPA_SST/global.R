@@ -38,7 +38,7 @@ DMRDataMeltAgg$BATHY <- round(DMRDataMeltAgg$BATHY,2)
 DMRDataMeltMonthAgg$SST <- round(DMRDataMeltMonthAgg$SST,2)
 DMRDataMeltMonthAgg$SST_StdDev <- round(DMRDataMeltMonthAgg$SST_StdDev,2)
 DMRDataMeltMonthAgg$BATHY <- round(DMRDataMeltMonthAgg$BATHY,2)
-
+DMRData$LEASE_TYPE <- as.character(DMRData$LEASE_TYPE)
 #row.names(DMRData) <- DMRData$ID
 
 DMRData$X010029_20130824 <- round(DMRData$X010029_20130824,2)
