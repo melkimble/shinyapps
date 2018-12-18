@@ -64,29 +64,29 @@ function(input, output, session) {
         # If no zipcodes are in view, don't plot
         if (nrow(meltLeasesInBounds()) == 0)
           return(NULL)
-        TheTitle=paste("Sea Surface Temperature (Mean:",round(mean(subset(meltLeasesInBounds(), !is.na(SST)),digits=2)),") at Aquaculture Sites",sep="")
-        ggplot(subset(meltLeasesInBounds(), !is.na(SST)), aes(x=SST)) +
+        TheTitle=paste("Sea Surface Temperature (Mean:",round(mean(meltLeasesInBounds()$SST),digits=2),") at Aquaculture Sites",sep="")
+        ggplot(meltLeasesInBounds(), aes(x=SST)) +
           theme(plot.title=element_text(hjust=0.5),
                 panel.grid.major = element_blank(),
                 panel.grid.minor = element_blank(),
                 panel.background = element_blank()) +
           xlim(range(DMRDataMelt$SST)) +
           geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-          geom_vline(aes(xintercept=round(mean(subset(meltLeasesInBounds(), !is.na(SST))), 2)),
+          geom_vline(aes(xintercept=mean(meltLeasesInBounds()$SST)),
                      color="blue", linetype="dashed", size=1) +
           ggtitle(TheTitle) +
           xlab("Temperature (C)") +
           ylab("Frequency")
         } else if (selectPlot == "histBathy") {
-          TheTitle=paste("Bathymetry (Mean:",round(mean(subset(meltLeasesInBounds(), !is.na(BATHY))), 2),") at Aquaculture Sites",sep="")
-          ggplot(subset(meltLeasesInBounds(), !is.na(BATHY)), aes(x=BATHY)) +
+          TheTitle=paste("Bathymetry (Mean:",round(mean(meltLeasesInBounds()$BATHY),digits=2),") at Aquaculture Sites",sep="")
+          ggplot(meltLeasesInBounds(), aes(x=BATHY)) +
             theme(plot.title=element_text(hjust=0.5),
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
                   panel.background = element_blank()) +
             xlim(range(DMRDataMelt$BATHY)) +
             geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
-            geom_vline(aes(xintercept=mean(subset(meltLeasesInBounds(), is.na(BATHY))), 2),
+            geom_vline(aes(xintercept=mean(meltLeasesInBounds()$BATHY)),
                        color="blue", linetype="dashed", size=1) +
             ggtitle(TheTitle) +
             xlab("Bathymetry (m)") +
