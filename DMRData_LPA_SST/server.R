@@ -204,8 +204,8 @@ function(input, output, session) {
     #ID="JYOU215"
     selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
     TheID <- DMRDataMeltMonthAgg$SITE_ID[DMRDataMeltMonthAgg$SITE_ID == ID][1]
-    lat <- DMRDataMeltMonthAgg$LATITUDE[DMRDataMeltMonthAgg$SITE_ID == ID][1]
-    lng <- DMRDataMeltMonthAgg$LONGITUDE[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    lat <- DMRDataMeltMonthAgg$latitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    lng <- DMRDataMeltMonthAgg$longitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
 
     Months<-selectedSite$Month
     Temps<-selectedSite$SST
