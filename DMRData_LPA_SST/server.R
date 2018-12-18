@@ -291,6 +291,8 @@ function(input, output, session) {
   })
 
   output$dmrTable <- DT::renderDataTable({
+    mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
+    action <- DT::dataTableAjax(session, df) %>%
     df <- cleantable %>%
       filter(
         Bathymetry >= input$minBathy,
@@ -314,9 +316,8 @@ function(input, output, session) {
         | SAT011030_20150415 | SAT011030_20150906 | SAT011030_20151008 | SAT011030_20151109 | SAT011030_20151125
         | SAT011030_20160128 | SAT011030_20160417 | SAT011030_20160620 | SAT011030_20160706 | SAT011030_20160722
         | SAT011030_20160823 <= input$maxTemp
-      ) %>%
-      mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
-    action <- DT::dataTableAjax(session, df)
+      ) 
+      
 
     DT::datatable(df, options = list(ajax = list(url = action)), escape = FALSE)
   })
