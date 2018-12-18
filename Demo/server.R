@@ -77,6 +77,21 @@ function(input, output, session) {
           ggtitle(TheTitle) +
           xlab("Temperature (C)") +
           ylab("Frequency")
+        } else if (selectPlot == "histBathy") {
+          TheTitle=paste("Bathymetry (Mean:",round(mean(meltLeasesInBounds()$BATHY),digits=2),") at Aquaculture Sites",sep="")
+          ggplot(meltLeasesInBounds(), aes(x=BATHY)) +
+            theme(plot.title=element_text(hjust=0.5),
+                  panel.grid.major = element_blank(),
+                  panel.grid.minor = element_blank(),
+                  panel.background = element_blank()) +
+            xlim(range(DMRDataMelt$BATHY)) +
+            geom_histogram(binwidth=1, colour="white", fill="#00DD00") +
+#            geom_vline(aes(xintercept=mean(meltLeasesInBounds()$BATHY)),
+#                       color="blue", linetype="dashed", size=1) +
+            ggtitle(TheTitle) +
+            xlab("Bathymetry (m)") +
+            ylab("Frequency")
+          
         } else if (selectPlot == "scatterspeciesTemp") {
           # If no zipcodes are in view, don't plot
           if (nrow(meltMonthLeasesInBounds()) == 0)
@@ -188,6 +203,10 @@ function(input, output, session) {
     #print(ID)
     #ID="JYOU215"
     selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
+    TheID <- DMRDataMeltMonthAgg$SITE_ID[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    lat <- DMRDataMeltMonthAgg$latitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    lng <- DMRDataMeltMonthAgg$longitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+
     Months<-selectedSite$Month
     Temps<-selectedSite$SST
     SDTemps<-selectedSite$SST_StdDev
@@ -207,7 +226,7 @@ function(input, output, session) {
                                align.cgroup = "lcr",
                                padding.tspanner = "&nbsp;&nbsp;"),
                      "*Sea Surface Temperature (SST, C)","</br>", "Bathymetry (m).")
-    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = ID)
+    leafletProxy("map") %>% addPopups(lng, lat, content, layerId = TheID)
   }
 
   # When map is clicked, show a popup with site info
@@ -225,19 +244,22 @@ function(input, output, session) {
 
   ## Data Explorer ###########################################
  # DMRData
+  #sort(unique(cleantable$LeaseType))
+  #names(cleantable)
+  #?structure
   observe({
-    equips <- if (is.null(input$species)) character(0) else {
+    equipment <- if (is.null(input$species)) character(0) else {
       filter(cleantable, Species %in% input$species) %>%
         `$`('Equipment') %>%
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$equipment[input$equipment %in% equips])
-    updateSelectInput(session, "equips", choices = equips,
+    stillSelected <- isolate(input$equipment[input$equipment %in% equipment])
+    updateSelectInput(session, "equipment", choices = equipment,
       selected = stillSelected)
   })
   observe({
-    leasetypes <- if (is.null(input$species)) character(0) else {
+    leasetype <- if (is.null(input$species)) character(0) else {
       cleantable %>%
         filter(Species %in% input$species,
           is.null(input$equipment) | Equipment %in% input$equipment) %>%
@@ -245,8 +267,8 @@ function(input, output, session) {
         unique() %>%
         sort()
     }
-    stillSelected <- isolate(input$leasetypes[input$leasetypes %in% leasetypes])
-    updateSelectInput(session, "leasetypes", choices = leasetypes,
+    stillSelected <- isolate(input$leasetype[input$leasetype %in% leasetype])
+    updateSelectInput(session, "leasetype", choices = leasetype,
       selected = stillSelected)
   })
 
@@ -256,12 +278,15 @@ function(input, output, session) {
     isolate({
       map <- leafletProxy("map")
       map %>% clearPopups()
-      dist <- 0.5
-      site <- input$goto$SiteId
+      dist <- 0.05
+      
       lat <- input$goto$lat
       lng <- input$goto$lng
+      site <- as.character(cleantable$SiteId[cleantable$Lat == lat & cleantable$Long == lng])
+
+#      print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
-      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
+      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist*10)
     })
   })
 
@@ -269,10 +294,26 @@ function(input, output, session) {
     df <- cleantable %>%
       filter(
         Bathymetry >= input$minBathy,
-        Bathymetry <= input$maxBathy,        
+        Bathymetry <= input$maxBathy,  
         is.null(input$species) | Species %in% input$species,
-        is.null(input$equips) | Equipment %in% input$equips,
-        is.null(input$leasetypes) | LeaseType %in% input$leasetypes
+        is.null(input$equipment) | Equipment %in% input$equipment,
+        is.null(input$leasetype) | LeaseType %in% input$leasetype, 
+        SAT010029_20130824 | SAT010029_20140115 | SAT010029_20140304 | SAT010029_20140507 | SAT010029_20140608
+        | SAT010029_20140827 | SAT010029_20140912 | SAT010029_20140928 | SAT010029_20141030 | SAT010029_20150307
+        | SAT010029_20150713 | SAT010029_20150729 | SAT010029_20150814 | SAT010029_20150915 | SAT010029_20151220
+        | SAT011029_20160823 | SAT011030_20130714 | SAT011030_20130730 | SAT011030_20130815 | SAT011030_20131002
+        | SAT011030_20131018 | SAT011030_20140327 | SAT011030_20140412 | SAT011030_20140530 | SAT011030_20140919 
+        | SAT011030_20150415 | SAT011030_20150906 | SAT011030_20151008 | SAT011030_20151109 | SAT011030_20151125
+        | SAT011030_20160128 | SAT011030_20160417 | SAT011030_20160620 | SAT011030_20160706 | SAT011030_20160722
+        | SAT011030_20160823 >= input$minTemp,
+        SAT010029_20130824 | SAT010029_20140115 | SAT010029_20140304 | SAT010029_20140507 | SAT010029_20140608
+        | SAT010029_20140827 | SAT010029_20140912 | SAT010029_20140928 | SAT010029_20141030 | SAT010029_20150307
+        | SAT010029_20150713 | SAT010029_20150729 | SAT010029_20150814 | SAT010029_20150915 | SAT010029_20151220
+        | SAT011029_20160823 | SAT011030_20130714 | SAT011030_20130730 | SAT011030_20130815 | SAT011030_20131002
+        | SAT011030_20131018 | SAT011030_20140327 | SAT011030_20140412 | SAT011030_20140530 | SAT011030_20140919 
+        | SAT011030_20150415 | SAT011030_20150906 | SAT011030_20151008 | SAT011030_20151109 | SAT011030_20151125
+        | SAT011030_20160128 | SAT011030_20160417 | SAT011030_20160620 | SAT011030_20160706 | SAT011030_20160722
+        | SAT011030_20160823 <= input$maxTemp
       ) %>%
       mutate(Action = paste('<a class="go-map" href="" data-lat="', Lat, '" data-long="', Long, '" data-site="', SiteId, '"><i class="fa fa-crosshairs"></i></a>', sep=""))
     action <- DT::dataTableAjax(session, df)

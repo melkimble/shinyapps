@@ -12,7 +12,8 @@ plotVars <- c(
   "Scatterplot: Monthly SST by Species" = "scatterspeciesTemp",
   "Boxplot: Monthly SST by Species" = "boxSpeciesTemp",
   "Boxplot: Bathymetry by Species" = "boxSpeciesBathy",
-  "Histogram: Sea Surface Temperature" = "histTemp"
+  "Histogram: Sea Surface Temperature" = "histTemp",
+  "Histogram: Bathymetry" = "histBathy"
 )
 navbarPage("DMR Lease Data", id="nav",
 
@@ -49,7 +50,7 @@ navbarPage("DMR Lease Data", id="nav",
 
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',
-        'Bathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM)',
+        'Bathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM).',
         'Sea Surface Temperature data obtained from the Coastal Satellite Oceanography team at the University of Maine',
         'Aquaculture lease data obtained from the Maine Department of Marine Resources.'
       )
@@ -60,13 +61,15 @@ navbarPage("DMR Lease Data", id="nav",
 #names(DMRData)
   tabPanel("Data Explorer",
     fluidRow(
-      column(3, selectInput("species", "Species", c("All Species"=""), multiple=TRUE)),
-      column(3, conditionalPanel("input.equipment", selectInput("Equipment", "Equipment", c("All Equipment"=""), multiple=TRUE))),
-      column(3, conditionalPanel("input.leasetype", selectInput("LeaseType", "Lease Type", c("All LeaseType"=""), multiple=TRUE)))
+      column(3, selectInput("species", "Species", c("All species"="", sort(unique(cleantable$Species))), multiple=TRUE)),
+      column(3, conditionalPanel("input.species", selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE))),
+      column(3, conditionalPanel("input.species", selectInput("leasetype", "Lease Type", c("All leasetype"=""), multiple=TRUE)))
       ),
     fluidRow(
-      column(1, numericInput("minBathy", "Min Bathy", min=0, max=100, value=0)),
-      column(1, numericInput("maxBathy", "Max Bathy", min=0, max=100, value=100))
+      column(1, numericInput("minBathy", "Min Bathy", min=-100, max=0, value=-100)),
+      column(1, numericInput("maxBathy", "Max Bathy", min=-100, max=0, value=0)),
+      column(1, numericInput("minTemp", "Min Temp", min=-50, max=50, value=-50)),
+      column(1, numericInput("maxTemp", "Max Temp", min=-50, max=50, value=50))
       ),
     hr(),
     DT::dataTableOutput("dmrTable")
