@@ -283,7 +283,7 @@ function(input, output, session) {
 
       print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
-      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist)
+      map %>% fitBounds(lng - dist, lat - dist, lng + dist*2, lat + dist)
     })
   })
 
