@@ -281,9 +281,9 @@ function(input, output, session) {
       lng <- input$goto$lng
       site <- as.character(cleantable$SiteId[cleantable$Lat == lat & cleantable$Long == lng])
 
-      print(paste(site, lat, lng, sep=" "))
+#      print(paste(site, lat, lng, sep=" "))
       showSitePopup(site, lat, lng)
-      map %>% fitBounds(lng - dist, lat - dist, lng + dist*2, lat + dist)
+      map %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist*2)
     })
   })
 
