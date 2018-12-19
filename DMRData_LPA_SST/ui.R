@@ -3,7 +3,7 @@ library(leaflet)
 # Choices for drop-downs
 vars <- c(
   "Species Category" = "speciesCategory",
-  "Equipment" = "equipment",
+#  "Equipment" = "equipment", ## add equipment category someday
   "Sea Surface Temperature" = "SST",
   "Bathymetry" = "BATHY"
 )
@@ -32,7 +32,7 @@ navbarPage("DMR Lease Data", id="nav",
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
                     draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                    width = 750 , height = 350,
+                    width = 800 , height = 350,
 
         h3("Site Explorer"),
         plotOutput("plot", height = 225),
