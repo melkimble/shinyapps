@@ -2,16 +2,16 @@ library(leaflet)
 
 # Choices for drop-downs
 vars <- c(
-  "Species" = "species",
+  "Species Category" = "speciesCategory",
   "Equipment" = "equipment",
   "Sea Surface Temperature" = "SST",
   "Bathymetry" = "BATHY"
 )
 # Choices for plots
 plotVars <- c(
-  "Scatterplot: Monthly SST by Species" = "scatterspeciesTemp",
-  "Boxplot: Monthly SST by Species" = "boxSpeciesTemp",
-  "Boxplot: Bathymetry by Species" = "boxSpeciesBathy",
+  "Scatterplot: Monthly SST by Species Category" = "scatterspeciesTemp",
+  "Boxplot: Monthly SST by Species Category" = "boxSpeciesTemp",
+  "Boxplot: Bathymetry by Species Category" = "boxSpeciesBathy",
   "Histogram: Sea Surface Temperature" = "histTemp",
   "Histogram: Bathymetry" = "histBathy"
 )
@@ -61,9 +61,9 @@ navbarPage("DMR Lease Data", id="nav",
 #names(DMRData)
   tabPanel("Data Explorer",
     fluidRow(
-      column(3, selectInput("species", "Species", c("All species"="", sort(unique(cleantable$Species))), multiple=TRUE)),
-      column(3, conditionalPanel("input.species", selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE))),
-      column(3, conditionalPanel("input.species", selectInput("leasetype", "Lease Type", c("All leasetype"=""), multiple=TRUE)))
+      column(3, selectInput("speciesCategory", "SpeciesCategory", c("All speciesCategory"="", sort(unique(cleantable$SpeciesCategory))), multiple=TRUE)),
+      column(3, conditionalPanel("input.speciesCategory", selectInput("equipment", "Equipment", c("All equipment"=""), multiple=TRUE))),
+      column(3, conditionalPanel("input.speciesCategory", selectInput("leasetype", "Lease Type", c("All leasetype"=""), multiple=TRUE)))
       ),
     fluidRow(
       column(1, numericInput("minBathy", "Min Bathy", min=-100, max=0, value=-100)),

@@ -97,7 +97,7 @@ function(input, output, session) {
           if (nrow(meltMonthLeasesInBounds()) == 0)
             return(NULL)
           TheTitle=paste("Sea Surface Temperature at Aquaculture Sites",sep="")
-          ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, color=species, shape=species)) +
+          ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, color=speciesCategory, shape=speciesCategory)) +
             theme(plot.title=element_text(hjust=0.5),
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
@@ -118,7 +118,7 @@ function(input, output, session) {
             if (nrow(meltMonthLeasesInBounds()) == 0)
               return(NULL)
             #MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
-            ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=species)) +
+            ggplot(meltMonthLeasesInBounds(), aes(x=Month, y=SST, fill=speciesCategory)) +
               geom_boxplot() +
               theme(plot.title=element_text(hjust=0.5),
                     panel.grid.major = element_blank(),
@@ -131,13 +131,13 @@ function(input, output, session) {
                     axis.title.x=element_blank()) +
               scale_x_discrete(limits = month.abb) +
 #              scale_x_date(date_labels = "%b", date_breaks="1 month") +
-#              ggtitle("Monthly Temperature by Species") +
+#              ggtitle("Monthly Temperature by SpeciesCategory") +
               ylab("Temperature (C)")
             } else if (selectPlot == "boxSpeciesBathy") {
               # If no zipcodes are in view, don't plot
               if (nrow(meltMonthLeasesInBounds()) == 0)
                 return(NULL)
-              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=species, y=BATHY, fill=species)) +
+              ggplot(meltMonthLeasesInBounds()[!is.na(meltMonthLeasesInBounds()$BATHY),], aes(x=speciesCategory, y=BATHY, fill=speciesCategory)) +
                 geom_boxplot() +
                 theme(legend.position="none",
                       plot.title=element_text(hjust=0.5),
@@ -147,7 +147,7 @@ function(input, output, session) {
                       axis.text=element_text(size=12),
                       axis.title.x=element_blank()) +
 #                scale_x_date(date_labels = "%b", date_breaks="1 month") +
-#                ggtitle("Bathymetry by Species") +
+#                ggtitle("Bathymetry by SpeciesCategory") +
                 ylab("Bathymetry (m)")
               } else return(NULL)
       }) 
@@ -175,9 +175,9 @@ function(input, output, session) {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
       pal <- colorFactor("viridis", colorData)
     }
-    #sizeBy="species"
-#    if (sizeBy == "species") {
-      # Radius is treated specially in the "species" case.
+    #sizeBy="speciesCategory"
+#    if (sizeBy == "speciesCategory") {
+      # Radius is treated specially in the "speciesCategory" case.
 #      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
 #    } else if (sizeBy == "equipment") {
 #      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
@@ -218,7 +218,7 @@ function(input, output, session) {
     names(TheTable)<-c("Month", "Mean Temp", "Std Dev", "Bathy")
     
     content <- paste("<h4> Site ID:", ID,"</h4>",
-                     "<strong>", sprintf("%s, %s", selectedSite$species[1], 
+                     "<strong>", sprintf("%s, %s", selectedSite$speciesCategory[1], 
                                          selectedSite$equipment[1]),"</strong>", 
                      htmlTable(TheTable, col.rgroup = c("none", "#F9FAF0"), 
                                col.columns = c("none", "#F1F0FA"),
@@ -248,8 +248,8 @@ function(input, output, session) {
   #names(cleantable)
   #?structure
   observe({
-    equipment <- if (is.null(input$species)) character(0) else {
-      filter(cleantable, Species %in% input$species) %>%
+    equipment <- if (is.null(input$speciesCategory)) character(0) else {
+      filter(cleantable, SpeciesCategory %in% input$speciesCategory) %>%
         `$`('Equipment') %>%
         unique() %>%
         sort()
@@ -259,9 +259,9 @@ function(input, output, session) {
       selected = stillSelected)
   })
   observe({
-    leasetype <- if (is.null(input$species)) character(0) else {
+    leasetype <- if (is.null(input$speciesCategory)) character(0) else {
       cleantable %>%
-        filter(Species %in% input$species,
+        filter(SpeciesCategory %in% input$speciesCategory,
           is.null(input$equipment) | Equipment %in% input$equipment) %>%
         `$`('LeaseType') %>%
         unique() %>%
@@ -295,7 +295,7 @@ function(input, output, session) {
       filter(
         Bathymetry >= input$minBathy,
         Bathymetry <= input$maxBathy,  
-        is.null(input$species) | Species %in% input$species,
+        is.null(input$speciesCategory) | SpeciesCategory %in% input$speciesCategory,
         is.null(input$equipment) | Equipment %in% input$equipment,
         is.null(input$leasetype) | LeaseType %in% input$leasetype, 
         SAT010029_20130824 | SAT010029_20140115 | SAT010029_20140304 | SAT010029_20140507 | SAT010029_20140608
