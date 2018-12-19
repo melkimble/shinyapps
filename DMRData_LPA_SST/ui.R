@@ -9,9 +9,9 @@ vars <- c(
 )
 # Choices for plots
 plotVars <- c(
-  "Scatterplot: Monthly SST by Species Category" = "scatterspeciesTemp",
-  "Boxplot: Monthly SST by Species Category" = "boxSpeciesTemp",
-  "Boxplot: Bathymetry by Species Category" = "boxSpeciesBathy",
+  "Scatterplot: Monthly SST by Species Cat." = "scatterspeciesTemp",
+  "Boxplot: Monthly SST by Species Cat." = "boxSpeciesTemp",
+  "Boxplot: Bathymetry by Species Cat." = "boxSpeciesBathy",
   "Histogram: Sea Surface Temperature" = "histTemp",
   "Histogram: Bathymetry" = "histBathy"
 )
@@ -32,7 +32,7 @@ navbarPage("DMR Lease Data", id="nav",
       # Shiny versions prior to 0.11 should use class = "modal" instead.
       absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
                     draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                    width = 800 , height = 350,
+                    width = 750 , height = 375,
 
         h3("Site Explorer"),
         plotOutput("plot", height = 225),
