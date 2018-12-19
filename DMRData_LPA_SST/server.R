@@ -170,7 +170,8 @@ function(input, output, session) {
       pal <- colorBin("RdYlBu", colorData, 7, pretty = FALSE)
     } else if (colorBy == "BATHY") {
       colorData <- DMRDataMeltAgg[[colorBy]]
-      pal <- colorBin("Greys", colorData, 7, pretty = FALSE)
+      colorData <- DMRDataMeltAgg[["BATHY"]]
+      pal <- colorBin("Greys", colorData, 7, pretty = FALSE, reverse = TRUE)
     } else {
       colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
       pal <- colorFactor("viridis", colorData)
