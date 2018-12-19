@@ -167,7 +167,7 @@ function(input, output, session) {
       #colorBy="SST"
       
       colorData <- DMRDataMeltAgg[[colorBy]]
-      pal <- colorBin("RdYlBu", colorData, 7, pretty = FALSE)
+      pal <- colorBin("RdYlBu", colorData, 7, pretty = FALSE, reverse = TRUE)
     } else if (colorBy == "BATHY") {
       colorData <- DMRDataMeltAgg[[colorBy]]
       colorData <- DMRDataMeltAgg[["BATHY"]]
