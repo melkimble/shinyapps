@@ -209,7 +209,11 @@ function(input, output, session) {
     TheID <- DMRDataMeltMonthAgg$SITE_ID[DMRDataMeltMonthAgg$SITE_ID == ID][1]
     lat <- DMRDataMeltMonthAgg$latitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
     lng <- DMRDataMeltMonthAgg$longitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
-
+    siteStart <- DMRDataMeltMonthAgg$StartYr[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    siteEnd <- DMRDataMeltMonthAgg$EndYr[DMRDataMeltMonthAgg$SITE_ID == ID][1]
+    
+    #print(paste(siteStart,siteEnd))
+    
     Months<-selectedSite$Month
     Temps<-selectedSite$SST
     SDTemps<-selectedSite$SST_StdDev
@@ -220,15 +224,16 @@ function(input, output, session) {
     
     names(TheTable)<-c("Month", "Mean Temp", "Std Dev", "Bathy")
     
-    content <- paste("<h4> Site ID:", ID,"</h4>",
-                     "<strong>", sprintf("%s, %s", selectedSite$speciesCategory[1], 
-                                         selectedSite$equipment[1]),"</strong>", 
-                     htmlTable(TheTable, col.rgroup = c("none", "#F9FAF0"), 
+    content <- paste("<h4> Site ID: ", ID," (",siteStart,"-",siteEnd,")","</h4>",
+                     htmlTable(TheTable, 
+                               col.rgroup = c("none", "#F9FAF0"), 
                                col.columns = c("none", "#F1F0FA"),
-                               align.header = "clcr",
+                               align.header = "c",
                                align.cgroup = "lcr",
-                               padding.tspanner = "&nbsp;&nbsp;"),
-                     "*Sea Surface Temperature (SST, C)","</br>", "Bathymetry (m).")
+                               padding.tspanner = "&nbsp;&nbsp;",
+                               caption=paste("<strong>Species Category:</strong> ", selectedSite$speciesCategory[1], 
+                                             "</br>","<strong>Equipment:</strong> ", selectedSite$equipment[1], sep=""),
+                               tfoot="<i>Sea Surface Temperature (C), Bathymetry (m)</i>"), sep="")
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = TheID)
   }
 
