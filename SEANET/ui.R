@@ -35,31 +35,28 @@ navbarPage("DMR Lease Data", id="nav",
       leafletOutput("map", width="100%", height="100%"),
 
       # Shiny versions prior to 0.11 should use class = "modal" instead.
-      absolutePanel(
-        id = "controls", class = "panel panel-default", draggable = TRUE, fixed = TRUE,
-        top = 60, right = 10, width = 750, style = "opacity: 0.92", 
-          h4("Site Explorer"),
-          plotOutput("plot", height = 250),
-        hr(),
-        wellPanel(
-          fixedRow(
-            column(12, 
-                   sliderInput("timeSlider", label = "Year Range", min = 2004, max = 2017, value = c(2004, 2017), sep=""),
-              fixedRow(
-                column(4, selectInput("color", "Color", vars)),
-                column(8, selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
-                )
-              )
-            )
-          )
-#        selectInput("color", "Color", vars),
-#        selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp")
-
-#        selectInput("size", "Size", vars, selected = "SST"),
-#        plotOutput("histTemp", height = 175),
-#        plotOutput("boxSpeciesTemp", height = 200),
-#        plotOutput("boxSpeciesBathy", height=200)
-      ),
+      bootstrapPage(absolutePanel(
+        id = "controls", class = "panel panel-default", fixed = TRUE,
+        draggable = FALSE, top = 60, left = "auto", right = 20, bottom = "auto",
+        width = "auto", height = "auto",style = "opacity: 0.92", 
+        HTML('<button data-toggle="collapse" data-target="#MapOptions">Map Options and Plots</button>'),
+        tags$div(id = 'MapOptions',  class="collapse",
+                 h4("Site Explorer"),
+                 plotOutput("plot", height = 250),
+                 hr(),
+                 wellPanel(
+                   fixedRow(
+                     column(12, 
+                            sliderInput("timeSlider", label = "Year Range", min = 2004, max = 2017, value = c(2004, 2017), sep=""),
+                            fixedRow(
+                              column(4, selectInput("color", "Color", vars)),
+                              column(8, selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
+                              )
+                            )
+                     )
+                   )
+                 )
+        )),
 
       tags$div(id="cite",
         'Data compiled for ', tags$em('Maine Department of Marine Resources Lease Site Profiles'), ' by Melissa Kimble (SEANET, 2018).',

@@ -205,35 +205,52 @@ function(input, output, session) {
   showSitePopup <- function(ID, lat, lng) {
     #print(ID)
     #ID="JYOU215"
+    #head(DMRDataMelt)
+    
+    # popupPlot<-renderPlot({ggplot(selectedSite, aes(x=Month, y=SST, color=SST)) +
+    #              theme(panel.grid.major = element_blank(),
+    #                    panel.grid.minor = element_blank(),
+    #                    panel.background = element_blank(),
+    #                    axis.text=element_text(size=12),
+    #                    #                 axis.text.x = element_text(angle=35, hjust=1),
+    #                    axis.title.x = element_blank(),
+    #                    legend.position="none") +
+    #              scale_x_discrete(limits = month.abb) +
+    #              geom_point(size = 3) +
+    #              geom_smooth(aes(group=1), se=FALSE, color="black") +
+    #              ylab("Temperature (C)")})
+
+    
     selectedSite <- DMRDataMeltMonthAgg[DMRDataMeltMonthAgg$SITE_ID == ID,]
     TheID <- DMRDataMeltMonthAgg$SITE_ID[DMRDataMeltMonthAgg$SITE_ID == ID][1]
     lat <- DMRDataMeltMonthAgg$latitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
     lng <- DMRDataMeltMonthAgg$longitude[DMRDataMeltMonthAgg$SITE_ID == ID][1]
     siteStart <- DMRDataMeltMonthAgg$StartYr[DMRDataMeltMonthAgg$SITE_ID == ID][1]
     siteEnd <- DMRDataMeltMonthAgg$EndYr[DMRDataMeltMonthAgg$SITE_ID == ID][1]
-    
+
     #print(paste(siteStart,siteEnd))
     
     Months<-selectedSite$Month
     Temps<-selectedSite$SST
     SDTemps<-selectedSite$SST_StdDev
     
-    TheTable<-selectedSite[,c("Month","SST","SST_StdDev", "BATHY")]
+    TheTable<-selectedSite[,c("Month","SST","SST_StdDev")]
     MonthOrder<-c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec")
     TheTable<-TheTable[order(factor(TheTable$Month,levels=c(MonthOrder))),]
     
-    names(TheTable)<-c("Month", "Mean Temp", "Std Dev", "Bathy")
+    names(TheTable)<-c("Month", "Mean Temp", "Std Dev")
     
     content <- paste("<h4> Site ID: ", ID," (",siteStart,"-",siteEnd,")","</h4>",
-                     htmlTable(TheTable, 
-                               col.rgroup = c("none", "#F9FAF0"), 
+                     htmlTable(TheTable,
+                               col.rgroup = c("none", "#F9FAF0"),
                                col.columns = c("none", "#F1F0FA"),
                                align.header = "c",
                                align.cgroup = "lcr",
                                padding.tspanner = "&nbsp;&nbsp;",
-                               caption=paste("<strong>Species:</strong> ", selectedSite$species[1], 
-                                             "</br>","<strong>Equipment:</strong> ", selectedSite$equipment[1], sep=""),
-                               tfoot="<i>Sea Surface Temperature (C), Bathymetry (m)</i>"), sep="")
+                               caption=paste("<strong>Species:</strong> ", selectedSite$species[1],
+                                             "</br>","<strong>Equipment:</strong> ", selectedSite$equipment[1],
+                                             "</br>","<strong>Bathymetry:</strong> ",selectedSite$BATHY[1]," meters",sep=""),
+                               tfoot="<i>Sea Surface Temperature (C)</i>"), sep="")
     leafletProxy("map") %>% addPopups(lng, lat, content, layerId = TheID)
   }
 
