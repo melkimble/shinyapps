@@ -6,14 +6,6 @@ library(dplyr)
 library(ggplot2)
 library(htmlTable)
 
-
-# Leaflet bindings are a bit slow; for now we'll just sample to compensate
-#set.seed(100)
-#zipdata <- allzips[sample.int(nrow(allzips), 10000),]
-# By ordering by centile, we ensure that the (comparatively rare) SuperZIPs
-# will be drawn last and thus be easier to see
-#zipdata <- zipdata[order(zipdata$centile),]
-
 function(input, output, session) {
 
   ## Interactive Map ###########################################
@@ -36,10 +28,13 @@ function(input, output, session) {
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
+    ## user inputs based on what is selected from the timeSlider
+    yearRange<-input$timeSlider
     
     subset(DMRDataMeltMonthAgg,
            latitude >= latRng[1] & latitude <= latRng[2] &
-             longitude >= lngRng[1] & longitude <= lngRng[2])
+             longitude >= lngRng[1] & longitude <= lngRng[2]& 
+             StartYr>=yearRange[1] & StartYr<=yearRange[2])
   })
   
   # A reactive expression that returns the set of zips that are
@@ -50,14 +45,15 @@ function(input, output, session) {
     bounds <- input$map_bounds
     latRng <- range(bounds$north, bounds$south)
     lngRng <- range(bounds$east, bounds$west)
+    ## user inputs based on what is selected from the timeSlider
+    yearRange<-input$timeSlider
     
     subset(DMRDataMelt,
            latitude >= latRng[1] & latitude <= latRng[2] &
-             longitude >= lngRng[1] & longitude <= lngRng[2])
+             longitude >= lngRng[1] & longitude <= lngRng[2] & 
+             StartYr>=yearRange[1] & StartYr<=yearRange[2])
   })
   observe({
-    # Precalculate the breaks we'll need for the two histograms
-    # tempBreaks <- hist(plot = FALSE, DMRDataMelt$SST, breaks = 20)$breaks
     selectPlot<-input$selectedplot
     output$plot <- renderPlot({
       if (selectPlot == "histTemp") {
@@ -78,8 +74,8 @@ function(input, output, session) {
           xlab("Temperature (C)") +
           ylab("Frequency")
         } else if (selectPlot == "histBathy") {
-          TheTitle=paste("Bathymetry (Mean:",round(mean(meltLeasesInBounds()$BATHY),digits=2),") at Aquaculture Sites",sep="")
-          ggplot(meltLeasesInBounds(), aes(x=BATHY)) +
+          TheTitle=paste("Bathymetry (Mean:",round(mean(na.omit(meltLeasesInBounds()$BATHY)),digits=2),") at Aquaculture Sites",sep="")
+          ggplot(na.omit(meltLeasesInBounds()), aes(x=BATHY)) +
             theme(plot.title=element_text(hjust=0.5),
                   panel.grid.major = element_blank(),
                   panel.grid.minor = element_blank(),
@@ -155,6 +151,12 @@ function(input, output, session) {
   # This observer is responsible for maintaining the circles and legend,
   # according to the variables the user has chosen to map to color and size.
   observe({
+    ## user inputs based on what is selected from the timeSlider
+    yearRange<-input$timeSlider
+    TheStart<-yearRange[1]
+    TheEnd<-yearRange[2]
+    DMRDataMeltAggTimeSub<-DMRDataMeltAgg[DMRDataMeltAgg$StartYr>=TheStart & DMRDataMeltAgg$StartYr<=TheEnd,]
+    
     ## user inputs based on what is selected from the drop down menu
     colorBy <- input$color
 #    sizeBy <- input$size
@@ -166,28 +168,28 @@ function(input, output, session) {
       # Precalculate the breaks we'll need for the two histograms
       #colorBy="SST"
       
-      colorData <- DMRDataMeltAgg[[colorBy]]
+      colorData <- DMRDataMeltAggTimeSub[[colorBy]]
       pal <- colorBin("RdYlBu", colorData, 7, pretty = FALSE, reverse = TRUE)
     } else if (colorBy == "BATHY") {
-      colorData <- DMRDataMeltAgg[[colorBy]]
-      colorData <- DMRDataMeltAgg[["BATHY"]]
+      colorData <- DMRDataMeltAggTimeSub[[colorBy]]
+      colorData <- DMRDataMeltAggTimeSub[["BATHY"]]
       pal <- colorBin("Greys", colorData, 7, pretty = FALSE, reverse = TRUE)
     } else {
-      colorData <-as.factor(DMRDataMeltAgg[[colorBy]])
+      colorData <-as.factor(DMRDataMeltAggTimeSub[[colorBy]])
       pal <- colorFactor("viridis", colorData)
     }
     #sizeBy="speciesCategory"
 #    if (sizeBy == "speciesCategory") {
       # Radius is treated specially in the "speciesCategory" case.
-#      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*100
+#      radius <-  hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAggTimeSub[[sizeBy]])), breaks=7)$breaks*100
 #    } else if (sizeBy == "equipment") {
-#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks*10
+#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAggTimeSub[[sizeBy]])), breaks=7)$breaks*10
 #    } else {
-#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAgg[[sizeBy]])), breaks=7)$breaks
-     # radius <- DMRDataMeltAgg[[sizeBy]] / max(DMRDataMeltAgg[[sizeBy]]) * 10000
+#      radius <- hist(plot = FALSE,as.numeric(as.factor(DMRDataMeltAggTimeSub[[sizeBy]])), breaks=7)$breaks
+     # radius <- DMRDataMeltAggTimeSub[[sizeBy]] / max(DMRDataMeltAggTimeSub[[sizeBy]]) * 10000
 #    }
     
-    leafletProxy("map", data = DMRDataMeltAgg) %>%
+    leafletProxy("map", data = DMRDataMeltAggTimeSub) %>%
       clearShapes() %>%
       addCircles(~longitude, ~latitude, radius= 150, layerId=~unique(SITE_ID),
                  stroke=FALSE, fillOpacity=0.8, fillColor=pal(colorData)) %>%
