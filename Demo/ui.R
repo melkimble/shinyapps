@@ -30,15 +30,23 @@ navbarPage("DMR Lease Data", id="nav",
       leafletOutput("map", width="100%", height="100%"),
 
       # Shiny versions prior to 0.11 should use class = "modal" instead.
-      absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                    draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                    width = 750 , height = 375,
-
-        h3("Site Explorer"),
-        plotOutput("plot", height = 225),
-        tags$div(style="display:inline-block",selectInput("color", "Color", vars)),
-        tags$div(style="display:inline-block",selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
-
+      absolutePanel(
+        id = "controls", class = "panel panel-default", draggable = TRUE, fixed = TRUE,
+        top = 60, right = 10, width = 750, style = "opacity: 0.92", 
+          h4("Site Explorer"),
+          plotOutput("plot", height = 250),
+        hr(),
+        wellPanel(
+          fixedRow(
+            column(12, 
+                   sliderInput("timeSlider", label = "Year Range", min = 2004, max = 2017, value = c(2004, 2017), sep=""),
+              fixedRow(
+                column(4, selectInput("color", "Color", vars)),
+                column(8, selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp"))
+                )
+              )
+            )
+          )
 #        selectInput("color", "Color", vars),
 #        selectInput("selectedplot","Plot", plotVars, selected = "scatterspeciesTemp")
 
