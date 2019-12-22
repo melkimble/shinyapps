@@ -1,0 +1,70 @@
+library(dplyr)
+
+DMRData <- readRDS("data/TestData.rds")
+DMRDataMelt <- readRDS("data/TestDataMelt.rds")
+## this data does not have a date because it is aggregated on SITE_ID. So all SST values are averaged by SITE_ID.
+DMRDataMeltAgg <- readRDS("data/TestDataMeltAgg.rds")
+## this data has month because SST is aggregated by SITE_ID and Month.
+DMRDataMeltMonthAgg<- readRDS("data/TestDataMeltMonthAgg.rds")
+
+colnames(DMRDataMelt)[colnames(DMRDataMelt)=="DATE"] <- "Date"
+
+DMRData$SITE_ID <- as.character(DMRData$SITE_ID)
+DMRData$speciesCategory <- as.character(DMRData$speciesCategory)
+DMRData$species <- as.character(DMRData$species)
+DMRData$Status <- as.character(DMRData$Status)
+DMRData$LEASE_TYPE <- as.character(DMRData$LEASE_TYPE)
+DMRData$equipment <- as.character(DMRData$equipment)
+DMRData$Source_of_Stock <- as.character(DMRData$Source_of_Stock)
+
+cleantable <- DMRData %>%
+  dplyr::select(
+    SiteId = SITE_ID,
+    Lat = latitude,
+    Long = longitude,
+    Species = species,
+    SpeciesCategory = speciesCategory,
+    Equipment = equipment,
+    LeaseType = LEASE_TYPE,
+    Status = Status,
+    StartYear = StartYr,
+    EndYear = EndYr,
+    Bathymetry = BATHY,
+    SAT010029_20130824 = X010029_20130824, 
+    SAT010029_20140115 = X010029_20140115, 
+    SAT010029_20140304 = X010029_20140304, 
+    SAT010029_20140507 = X010029_20140507, 
+    SAT010029_20140608 = X010029_20140608,
+    SAT010029_20140827 = X010029_20140827,
+    SAT010029_20140912 = X010029_20140912, 
+    SAT010029_20140928 = X010029_20140928, 
+    SAT010029_20141030 = X010029_20141030, 
+    SAT010029_20150307 = X010029_20150307, 
+    SAT010029_20150713 = X010029_20150713, 
+    SAT010029_20150729 = X010029_20150729,
+    SAT010029_20150814 = X010029_20150814, 
+    SAT010029_20150915 = X010029_20150915, 
+    SAT010029_20151220 = X010029_20151220, 
+    SAT011029_20160823 = X011029_20160823, 
+    SAT011030_20130714 = X011030_20130714, 
+    SAT011030_20130730 = X011030_20130730,
+    SAT011030_20130815 = X011030_20130815, 
+    SAT011030_20131002 = X011030_20131002, 
+    SAT011030_20131018 = X011030_20131018, 
+    SAT011030_20140327 = X011030_20140327, 
+    SAT011030_20140412 = X011030_20140412, 
+    SAT011030_20140530 = X011030_20140530,
+    SAT011030_20140919 = X011030_20140919, 
+    SAT011030_20150415 = X011030_20150415, 
+    SAT011030_20150906 = X011030_20150906, 
+    SAT011030_20151008 = X011030_20151008, 
+    SAT011030_20151109 = X011030_20151109, 
+    SAT011030_20151125 = X011030_20151125,
+    SAT011030_20160128 = X011030_20160128, 
+    SAT011030_20160417 = X011030_20160417, 
+    SAT011030_20160620 = X011030_20160620, 
+    SAT011030_20160706 = X011030_20160706, 
+    SAT011030_20160722 = X011030_20160722, 
+    SAT011030_20160823 = X011030_20160823
+    )
+
