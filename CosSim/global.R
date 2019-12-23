@@ -1,4 +1,4 @@
-#library(rgdal)
+library(rgdal)
 library(spdplyr)
 
 
