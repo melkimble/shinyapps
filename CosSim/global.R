@@ -1,5 +1,5 @@
-library(rgdal)
 library(spdplyr)
+library(rgdal)
 
 
 NCT <- readOGR("data/WQWL_VoronoiPolys_V2_NCT_NAD83.shp", layer = "WQWL_VoronoiPolys_V2_NCT_NAD83", GDAL1_integer64_policy = TRUE)
