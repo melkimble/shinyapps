@@ -82,11 +82,12 @@ function(input, output, session) {
 
 
     idx<-idx[c("Station","Similarity")]
-    idx <- idx[order(idx$Similarity,decreasing = TRUE),]
+    DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),]
+    idx})
   })
   
   # Show the values in an HTML table ----
-  output$values <- renderTable({
+  output$theOutputTable <- DT::renderDataTable({
     sliderValues()
     #remove any previously highlighted polygon
   })
