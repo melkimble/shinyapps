@@ -96,10 +96,6 @@ function(input, output, session) {
       
     } else{
       
-      print(input$corrVars)
-      #print(Combo_rds[grep(input$corrVars,rownames(Combo_rds)),])
-      
-      
       Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
       
       Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
