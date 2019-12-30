@@ -18,10 +18,13 @@ bootstrapPage(
   leafletOutput("map", height = "65%"),
   wellPanel(
     fixedRow(
-      column(8, checkboxGroupInput("corrVars", label= "Correlation Variables", choices=corrVarsOptions, inline = TRUE, selected=c("fscore","sal","temp"))),
       column(4, checkboxInput("legend", "Show legend", TRUE))
+    ),
+    fixedRow(
+      column(8, checkboxGroupInput("corrVars", label= h4("Correlation Variables"), choices=corrVarsOptions, inline = TRUE, selected=c("fscore","sal","temp"))),
       ),
-    sliderInput("range", "Similarity Range:",
+
+    sliderInput("range", h4("Similarity Range"),
                 min = 0, max = 1,
                 value = c(0.7,0.90), step = 0.1),
     DT::dataTableOutput('theOutputTable')

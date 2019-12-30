@@ -65,44 +65,34 @@ function(input, output, session) {
   
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
-    RemvNAColRow <- function(df){
-      ## drop when column contains all NAs
-      df <- df[,colSums(is.na(df))<nrow(df)]
-      ## drop row if contains all NAs
-      df<-df[rowSums(is.na(df)) != ncol(df), ]
-      return(df)
-    }
     
-    CosSim_T <- function(df, groupby){
-      df<-RemvNAColRow(df)
-      
-      df[[groupby]] <- as.character(df[[groupby]])
-      rownames(df) <- df[[groupby]]
-      theStations <- df[[groupby]]
-      
-      df_cos<-df[ , -which(names(df) %in% c(groupby))]
-      
-      df_cos_t <- t(df_cos)
-      
-      df_cos_t <- as.matrix(df_cos_t)
-      df_CosSim<-cosine(df_cos_t)
-      
-      colnames(df_CosSim)<-theStations
-      rownames(df_CosSim)<-theStations
-      return(df_CosSim)
-    }
+
     
     
     click <- input$map_shape_click
+    idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
+    
     if(is.null(click))
       return()
-    idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
     
     ## CosSim
     #(input$corrVars)
     if(is.null(input$corrVars)){
       print("A selection must be made")
       idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
+      
+      idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
+      
+      selected_polygon <- NCT %>% filter(NCT@data[["Location_I"]] %in% unique(idx$Station))
+      
+      leafletProxy("map") %>% clearGroup("highlighted_polygon")
+      
+      #add a slightly thicker red polygon on top of the selected one
+      leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
+      
+      idx<-idx[c("Station","Similarity")]
+      DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),] 
+      idx})
       
     } else{
       
@@ -112,26 +102,28 @@ function(input, output, session) {
       
       Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
       
-      idx<-CosSim_T(Combo_Sub, "Station")
-      print("HERE")
+      Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
+      idx<-flattenCorrMatrix(Combo_Cossim)
       idx <- na.omit(idx[idx$row == click$id,])
+      colnames(idx)[colnames(idx)=="column"] <- "Station"
+      colnames(idx)[colnames(idx)=="cor"] <- "Similarity"
+      
+      idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
+      
+      selected_polygon <- NCT %>% filter(NCT@data[["Location_I"]] %in% unique(idx$Station))
+      
+      leafletProxy("map") %>% clearGroup("highlighted_polygon")
+      
+      #add a slightly thicker red polygon on top of the selected one
+      leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
+      
+      idx<-idx[c("Station","Similarity")]
+      DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),] 
+      idx})
+      
     }
     
-    idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
-    
 
-    
-    selected_polygon <- NCT %>% filter(NCT@data[["Location_I"]] %in% unique(idx$Station))
-    
-    leafletProxy("map") %>% clearGroup("highlighted_polygon")
-
-    #add a slightly thicker red polygon on top of the selected one
-    leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
-
-
-    idx<-idx[c("Station","Similarity")]
-    DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),]
-    idx})
   })
   
   # Show the values in an HTML table ----
