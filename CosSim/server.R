@@ -64,48 +64,7 @@ function(input, output, session) {
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
     
-    flattenCorrMatrix <- function(df) {
-      df <- as.matrix(df)
-      CosColNames<-colnames(df)
-      rownames(df)<-CosColNames
-      
-      ut <- upper.tri(df)
-      flat_df<-data.frame(
-        row = rownames(df)[row(df)[ut]],
-        column = rownames(df)[col(df)[ut]],
-        cor  =(df)[ut]
-      )
-      
-      flat_df <- flat_df[order(flat_df$row),]
-      return(flat_df)
-    }
-    
-    RemvNAColRow <- function(df){
-      ## drop when column contains all NAs
-      df <- df[,colSums(is.na(df))<nrow(df)]
-      ## drop row if contains all NAs
-      df<-df[rowSums(is.na(df)) != ncol(df), ]
-      return(df)
-    }
-    
-    CosSim_T <- function(df, groupby){
-      df<-RemvNAColRow(df)
-      
-      df[[groupby]] <- as.character(df[[groupby]])
-      rownames(df) <- df[[groupby]]
-      theStations <- df[[groupby]]
-      
-      df_cos<-df[ , -which(names(df) %in% c(groupby))]
-      
-      df_cos_t <- t(df_cos)
-      
-      df_cos_t <- as.matrix(df_cos_t)
-      df_CosSim<-cosine(df_cos_t)
-      
-      colnames(df_CosSim)<-theStations
-      rownames(df_CosSim)<-theStations
-      return(df_CosSim)
-    }
+
     
 
     
@@ -136,6 +95,49 @@ function(input, output, session) {
       idx})
       
     } else{
+      
+      flattenCorrMatrix <- function(df) {
+        df <- as.matrix(df)
+        CosColNames<-colnames(df)
+        rownames(df)<-CosColNames
+        
+        ut <- upper.tri(df)
+        flat_df<-data.frame(
+          row = rownames(df)[row(df)[ut]],
+          column = rownames(df)[col(df)[ut]],
+          cor  =(df)[ut]
+        )
+        
+        flat_df <- flat_df[order(flat_df$row),]
+        return(flat_df)
+      }
+      
+      RemvNAColRow <- function(df){
+        ## drop when column contains all NAs
+        df <- df[,colSums(is.na(df))<nrow(df)]
+        ## drop row if contains all NAs
+        df<-df[rowSums(is.na(df)) != ncol(df), ]
+        return(df)
+      }
+      
+      CosSim_T <- function(df, groupby){
+        df<-RemvNAColRow(df)
+        
+        df[[groupby]] <- as.character(df[[groupby]])
+        rownames(df) <- df[[groupby]]
+        theStations <- df[[groupby]]
+        
+        df_cos<-df[ , -which(names(df) %in% c(groupby))]
+        
+        df_cos_t <- t(df_cos)
+        
+        df_cos_t <- as.matrix(df_cos_t)
+        df_CosSim<-cosine(df_cos_t)
+        
+        colnames(df_CosSim)<-theStations
+        rownames(df_CosSim)<-theStations
+        return(df_CosSim)
+      }
       
       Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
       
