@@ -2,8 +2,11 @@ library(shiny)
 library(leaflet)
 library(RColorBrewer)
 library(spdplyr)
+library(lsa)
 
 # https://rstudio.github.io/leaflet/shiny.html
+
+
 
 
 function(input, output, session) {
@@ -62,12 +65,57 @@ function(input, output, session) {
   
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
+    RemvNAColRow <- function(df){
+      ## drop when column contains all NAs
+      df <- df[,colSums(is.na(df))<nrow(df)]
+      ## drop row if contains all NAs
+      df<-df[rowSums(is.na(df)) != ncol(df), ]
+      return(df)
+    }
+    
+    CosSim_T <- function(df, groupby){
+      df<-RemvNAColRow(df)
+      
+      df[[groupby]] <- as.character(df[[groupby]])
+      rownames(df) <- df[[groupby]]
+      theStations <- df[[groupby]]
+      
+      df_cos<-df[ , -which(names(df) %in% c(groupby))]
+      
+      df_cos_t <- t(df_cos)
+      
+      df_cos_t <- as.matrix(df_cos_t)
+      df_CosSim<-cosine(df_cos_t)
+      
+      colnames(df_CosSim)<-theStations
+      rownames(df_CosSim)<-theStations
+      return(df_CosSim)
+    }
+    
     
     click <- input$map_shape_click
     if(is.null(click))
       return()
-    
     idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
+    
+    ## CosSim
+    #(input$corrVars)
+    if(is.null(input$corrVars)){
+      print("A selection must be made")
+      idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
+      
+    } else{
+      
+      print(input$corrVars)
+      #print(Combo_rds[grep(input$corrVars,rownames(Combo_rds)),])
+      
+      
+      Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
+      
+      idx<-CosSim_T(Combo_Sub, "Station")
+      print("HERE")
+      idx <- na.omit(idx[idx$row == click$id,])
+    }
     
     idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
     
