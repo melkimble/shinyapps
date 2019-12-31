@@ -2,6 +2,7 @@ library(shiny)
 library(leaflet)
 library(RColorBrewer)
 library(spdplyr)
+library(rgdal)
 library(lsa)
 
 # https://rstudio.github.io/leaflet/shiny.html
