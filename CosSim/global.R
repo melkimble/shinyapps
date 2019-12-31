@@ -42,7 +42,7 @@ CosSim_T <- function(df, groupby){
   df_cos_t <- t(df_cos)
   
   df_cos_t <- as.matrix(df_cos_t)
-  df_CosSim<-cosine(df_cos_t)
+  df_CosSim<-lsa::cosine(df_cos_t)
   
   colnames(df_CosSim)<-theStations
   rownames(df_CosSim)<-theStations
