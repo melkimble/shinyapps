@@ -1,6 +1,6 @@
 library(spdplyr)
 library(rgdal)
-library(lsa)
+#library(lsa)
 
 # To install gdal: sudo apt install gdal-bin proj-bin libgdal-dev libproj-dev
 # https://community.rstudio.com/t/can-not-install-rgdal/33971
