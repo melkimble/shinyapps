@@ -2,8 +2,7 @@ library(shiny)
 library(leaflet)
 library(RColorBrewer)
 library(spdplyr)
-#library(lsa)
-
+library(lsa)
 
 # https://rstudio.github.io/leaflet/shiny.html
 
@@ -11,10 +10,10 @@ library(spdplyr)
 function(input, output, session) {
   
   # Reactive expression for the data subsetted to what the user selected
-  filteredData <- reactive({
+#  filteredData <- reactive({
     ## input from the slider
-    CosSim_rds[CosSim_rds$cor >= input$range[1] & CosSim_rds$cor <= input$range[2],]
-  })
+#    CosSim_rds[CosSim_rds$Similarity >= input$range[1] & CosSim_rds$Similarity <= input$range[2],]
+#  })
   
   # This reactive expression represents the palette function,
   # which changes as the user makes selections in UI.
@@ -64,8 +63,11 @@ function(input, output, session) {
   
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
+    ## input from the slider
+    #CosSim_rds[CosSim_rds$Similarity >= input$range[1] & CosSim_rds$Similarity <= input$range[2],]
     
     click <- input$map_shape_click
+    
     idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
     
     if(is.null(click))
@@ -73,28 +75,26 @@ function(input, output, session) {
     
     ## CosSim
     #(input$corrVars)
-#    if(is.null(input$corrVars)){
-#      output$printOutput<-renderPrint("A variable selection must be made.", quoted=FALSE)
-#      return()
+    if(is.null(input$corrVars)){
+      output$printOutput<-renderPrint("A variable selection must be made.", quoted=FALSE)
+      return()
+      } else {
       
-#    } else{
+      Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
+
+      Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
+      idx<-flattenCorrMatrix(Combo_Cossim, "Station")
       
-#      Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
-      
-#      Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
-#      idx<-flattenCorrMatrix(Combo_Cossim)
-#      idx <- na.omit(idx[idx$row == click$id,])
-#      colnames(idx)[colnames(idx)=="column"] <- "Station"
-#      colnames(idx)[colnames(idx)=="cor"] <- "Similarity"
+      idx <- na.omit(idx[idx$row == click$id,])
       
       idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
       NumRows<-nrow(idx)
       
- #     if (NumRows == 0) {
-#        ## if there are no selections, then no polygons will be selected
-#        output$printOutput<-renderPrint("No areas within desired correlation ranges.", quoted=FALSE)
-#        leafletProxy("map") %>% clearGroup("highlighted_polygon")
-#      } else {
+      if (NumRows == 0) {
+        ## if there are no selections, then no polygons will be selected
+        output$printOutput<-renderPrint("No areas within desired correlation ranges.", quoted=FALSE)
+        leafletProxy("map") %>% clearGroup("highlighted_polygon")
+      } else {
         
         output$printOutput<-renderPrint(sprintf("%s areas within desired correlation ranges.",NumRows), quoted=FALSE)
         
@@ -107,12 +107,12 @@ function(input, output, session) {
         #add a slightly thicker red polygon on top of the selected one
         leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
         
- #     }
+      }
       idx<-idx[c("Station","Similarity")]
       DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),] 
       idx})
 
-#    }
+    }
     
   })
   
