@@ -56,6 +56,9 @@ CosSim_T <- function(df, groupby){
 NCT <- readOGR("data/WQWL_VoronoiPolys_V2_NCT_NAD83.shp", layer = "WQWL_VoronoiPolys_V2_NCT_NAD83", GDAL1_integer64_policy = TRUE)
 CosSim_rds<- readRDS("data/DMR_Lobo_Voronoi_CosSim_flat.rds")
 Combo_rds<-readRDS("data/DMR_Lobo_Voronoi_Combined.rds")
+DMRDataMelt <- readRDS("data/TestDataMelt.rds")
+colnames(DMRDataMelt)[colnames(DMRDataMelt)=="DATE"] <- "Date"
+
 
 #NCT$meanTenure[NCT$meanTenure==0]<-NA
 

@@ -25,7 +25,12 @@ function(input, output, session) {
   
   
   bins <- as.vector(quantile(NCT$meanTenure[NCT$meanTenure>0], na.rm=TRUE))
-  pal <- colorBin("YlOrRd", domain = NCT$meanTenure, bins = bins, na.color = "#808080")
+  polyPal <- colorBin("YlOrRd", domain = NCT$meanTenure, bins = bins, na.color = "#808080")
+  
+  
+  colorData <-as.factor(DMRDataMelt$speciesCategory)
+  pointPal <- colorFactor("viridis", colorData)
+  
   
   labels <- sprintf(
     "<strong>%s</strong><br/>%g NCT",
@@ -43,7 +48,7 @@ function(input, output, session) {
       addPolygons(
         data=NCT,
         layerId=~Location_I,
-        fillColor = ~pal(meanTenure),
+        fillColor = ~polyPal(meanTenure),
         weight = 1,
         opacity = 1,
         color = "#444444",
@@ -58,11 +63,15 @@ function(input, output, session) {
           style = list("font-weight" = "normal", padding = "3px 8px"),
           textsize = "15px",
           direction = "auto")) %>%
+      addCircles(data = DMRDataMelt, ~longitude, ~latitude, radius= 150, layerId=~unique(SITE_ID),
+                 stroke=FALSE, fillOpacity=0.8, fillColor=pointPal(colorData)) %>%
+      
       setView(lng = -69.7314453, lat = 43.9143787, zoom = 11)
     
 
   })
   
+
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
     ## input from the slider
@@ -135,8 +144,9 @@ function(input, output, session) {
     # enabled, create a new one.
     proxy %>% clearControls()
     if (input$legend) {
-      proxy %>% addLegend(pal = pal, values = ~meanTenure, opacity = 0.8, title = "Normalized Tenure",
-                          position = "bottomleft")
+      proxy %>% addLegend(position = "bottomleft", pal=pointPal, values=colorData, title="Species Category") %>%
+      addLegend(pal = polyPal, values = ~meanTenure, opacity = 0.8, title = "Normalized Tenure", position = "bottomleft") 
+        
     }
   })
 }
