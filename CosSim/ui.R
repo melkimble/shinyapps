@@ -1,5 +1,6 @@
 library(shiny)
 library(leaflet)
+library(DT)
 
 # Choices for drop-downs
 corrVarsOptions <- c(

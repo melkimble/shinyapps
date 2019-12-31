@@ -5,6 +5,7 @@ library(spdplyr)
 library(rgdal)
 library(lsa)
 library(stringr)
+library(DT)
 
 # https://rstudio.github.io/leaflet/shiny.html
 
