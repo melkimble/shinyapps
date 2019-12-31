@@ -18,11 +18,9 @@ bootstrapPage(
   leafletOutput("map", height = "65%"),
   wellPanel(
     fixedRow(
-      column(8, verbatimTextOutput("printOutput"))
+      column(2, checkboxInput("legend", "Show legend", TRUE)),
+      column(6, verbatimTextOutput("printOutput"))
       ),
-    fixedRow(
-      column(4, checkboxInput("legend", "Show legend", TRUE))
-    ),
     fixedRow(
       column(8, checkboxGroupInput("corrVars", label= h4("Correlation Variables"), choices=corrVarsOptions, inline = TRUE, selected=c("fscore","sal","temp"))),
       ),

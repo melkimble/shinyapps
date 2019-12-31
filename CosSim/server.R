@@ -4,6 +4,7 @@ library(RColorBrewer)
 library(spdplyr)
 library(rgdal)
 library(lsa)
+library(stringr)
 
 # https://rstudio.github.io/leaflet/shiny.html
 
@@ -23,7 +24,7 @@ function(input, output, session) {
   })
   
   
-  bins <- as.vector(quantile(NCT$meanTenure, na.rm=TRUE))
+  bins <- as.vector(quantile(NCT$meanTenure[NCT$meanTenure>0], na.rm=TRUE))
   pal <- colorBin("YlOrRd", domain = NCT$meanTenure, bins = bins, na.color = "#808080")
   
   labels <- sprintf(
@@ -69,7 +70,7 @@ function(input, output, session) {
     
     click <- input$map_shape_click
     
-    idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
+    idx <- CosSim_rds[(CosSim_rds$row == click$id) & (CosSim_rds$Similarity > 0),]
     
     if(is.null(click))
       return()
@@ -86,9 +87,12 @@ function(input, output, session) {
       Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
       idx<-flattenCorrMatrix(Combo_Cossim, "Station")
       
-      idx <- na.omit(idx[idx$row == click$id,])
+      idx <- idx[(idx$row == click$id) & (idx$Similarity > 0),]
       
       idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
+      idx<-idx %>% 
+        filter(!str_detect(Station, 'NA'))      
+      
       NumRows<-nrow(idx)
       
       if (NumRows == 0) {

@@ -57,7 +57,7 @@ NCT <- readOGR("data/WQWL_VoronoiPolys_V2_NCT_NAD83.shp", layer = "WQWL_VoronoiP
 CosSim_rds<- readRDS("data/DMR_Lobo_Voronoi_CosSim_flat.rds")
 Combo_rds<-readRDS("data/DMR_Lobo_Voronoi_Combined.rds")
 
-NCT$meanTenure[NCT$meanTenure==0]<-NA
+#NCT$meanTenure[NCT$meanTenure==0]<-NA
 
 
 
