@@ -17,6 +17,7 @@ bootstrapPage(
   tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
   leafletOutput("map", height = "65%"),
   wellPanel(
+    fluidRow(column(8, verbatimTextOutput("printOutput"))),
     fixedRow(
       column(4, checkboxInput("legend", "Show legend", TRUE))
     ),
@@ -27,6 +28,7 @@ bootstrapPage(
     sliderInput("range", h4("Similarity Range"),
                 min = 0, max = 1,
                 value = c(0.7,0.90), step = 0.1),
+    
     DT::dataTableOutput('theOutputTable')
   )
   )

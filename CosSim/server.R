@@ -64,11 +64,6 @@ function(input, output, session) {
   # Reactive expression to create data frame of all input values ----
   sliderValues <- reactive({
     
-
-    
-
-    
-    
     click <- input$map_shape_click
     idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
     
@@ -78,25 +73,10 @@ function(input, output, session) {
     ## CosSim
     #(input$corrVars)
     if(is.null(input$corrVars)){
-      print("A selection must be made")
-      idx <- na.omit(CosSim_rds[CosSim_rds$row == click$id,])
-      
-      idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
-      
-      selected_polygon <- NCT %>% filter(NCT@data[["Location_I"]] %in% unique(idx$Station))
-      
-      leafletProxy("map") %>% clearGroup("highlighted_polygon")
-      
-      #add a slightly thicker red polygon on top of the selected one
-      leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
-      
-      idx<-idx[c("Station","Similarity")]
-      DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),] 
-      idx})
+      output$printOutput<-renderPrint("A variable selection must be made.", quoted=FALSE)
+      return()
       
     } else{
-      
-
       
       Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
       
@@ -107,21 +87,32 @@ function(input, output, session) {
       colnames(idx)[colnames(idx)=="cor"] <- "Similarity"
       
       idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
+      NumRows<-nrow(idx)
       
-      selected_polygon <- NCT %>% filter(NCT@data[["Location_I"]] %in% unique(idx$Station))
-      
-      leafletProxy("map") %>% clearGroup("highlighted_polygon")
-      
-      #add a slightly thicker red polygon on top of the selected one
-      leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
-      
+      if (NumRows == 0) {
+        ## if there are no selections, then no polygons will be selected
+        output$printOutput<-renderPrint("No areas within desired correlation ranges.", quoted=FALSE)
+        leafletProxy("map") %>% clearGroup("highlighted_polygon")
+      } else {
+        
+        output$printOutput<-renderPrint(sprintf("%s areas within desired correlation ranges.",NumRows), quoted=FALSE)
+        
+        
+        ## if there are selections, then polygons will be selected
+        selected_polygon <- NCT %>% filter(NCT@data[["Location_I"]] %in% unique(idx$Station))
+        
+        leafletProxy("map") %>% clearGroup("highlighted_polygon")
+        
+        #add a slightly thicker red polygon on top of the selected one
+        leafletProxy("map") %>% addPolylines(stroke=TRUE, weight = 3,color="red",data=selected_polygon,group="highlighted_polygon")
+        
+      }
       idx<-idx[c("Station","Similarity")]
       DT::datatable({idx <- idx[order(idx$Similarity,decreasing = TRUE),] 
       idx})
-      
+
     }
     
-
   })
   
   # Show the values in an HTML table ----
