@@ -79,13 +79,13 @@ function(input, output, session) {
       
 #    } else{
       
-      Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
+#      Combo_Sub<-Combo_rds[grep(paste(c(input$corrVars,"Station"), collapse="|"),colnames(Combo_rds))]
       
-      Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
-      idx<-flattenCorrMatrix(Combo_Cossim)
-      idx <- na.omit(idx[idx$row == click$id,])
-      colnames(idx)[colnames(idx)=="column"] <- "Station"
-      colnames(idx)[colnames(idx)=="cor"] <- "Similarity"
+#      Combo_Cossim<-CosSim_T(Combo_Sub, "Station")
+#      idx<-flattenCorrMatrix(Combo_Cossim)
+#      idx <- na.omit(idx[idx$row == click$id,])
+#      colnames(idx)[colnames(idx)=="column"] <- "Station"
+#      colnames(idx)[colnames(idx)=="cor"] <- "Similarity"
       
       idx <- idx[(idx$Similarity >= input$range[1]) & (idx$Similarity <= input$range[2]),]
       NumRows<-nrow(idx)
