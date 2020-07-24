@@ -2,6 +2,7 @@
 RShiny applications adapted from RShiny examples ( https://github.com/rstudio/shiny-examples ).
 
 CosSim Map: https://rshiny.spatialmsk.com/CosSim/
+
 SEANET Map: https://rshiny.spatialmsk.com/SEANET/
 
 ## Data Disclaimer
