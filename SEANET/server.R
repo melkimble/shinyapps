@@ -5,7 +5,6 @@ library(lattice)
 library(dplyr)
 library(ggplot2)
 library(htmlTable)
-library(DT)
 
 function(input, output, session) {
 
