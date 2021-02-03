@@ -1,1 +1,4 @@
-# Aquaculture siting tenure demo!
+# Supplementary Materials and Data
+CosSim Map: https://rshiny.spatialmsk.com/CosSim/ 
+
+Beard, Kimble, Yuan, Evans, Liu, Brady, & Moore. (2020). A Method for Heterogeneous Spatio-Temporal Data Integration in Support of Marine Aquaculture Site Selection. Journal of Marine Science and Engineering, 8(2), 96. https://doi.org/10.3390/jmse8020096
