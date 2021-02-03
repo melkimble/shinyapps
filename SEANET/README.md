@@ -1,10 +1,5 @@
-# SEANET Adaptation
-Adapted from SuperZIP demo (see below) for the Sustainable Ecological Aquaculture Network (SEANET).
-
-SEANET Map: https://rshiny.spatialmsk.com/SEANET/
-
-
 # SuperZIP demo
+
 See a version of it live at http://shiny.rstudio.com/gallery/superzip-example.html
 
 You can run this demo with:
