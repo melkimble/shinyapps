@@ -1,4 +1,4 @@
-You can run this demo with:
+You can run this with:
 ```
 if (!require(devtools))
   install.packages("devtools")
@@ -10,8 +10,6 @@ Data compiled for _Maine Department of Marine Resources Lease Site Profiles by M
 
 # shinyapps
 RShiny applications adapted from RShiny examples ( https://github.com/rstudio/shiny-examples ).
-
-CosSim Map: https://rshiny.spatialmsk.com/CosSim/
 
 SEANET Map: https://rshiny.spatialmsk.com/SEANET/
 
