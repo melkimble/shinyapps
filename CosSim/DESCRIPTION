@@ -1,7 +1,7 @@
 Title: Cosine Similarity Siting Map
 License: MIT
 DisplayMode: Normal
-Author: Melissa Kimble
-AuthorUrl: http://www.rstudio.com/
+Author: Melissa Kimble <melissa.kimble@maine.edu>
+AuthorUrl: https://blog.spatialmsk.com/
 Type: Shiny
 Tags: leaflet rshiny selection shapefiles
