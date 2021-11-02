@@ -4,8 +4,8 @@ library(data.table)
 library(lubridate)
 library(stringr)
 library(ggplot2)
-library(scales)
-library(zoo)
+#library(scales)
+#library(zoo)
 library(tidyr)
 library(gridExtra)
 library(rgdal)
@@ -15,19 +15,17 @@ library(leaflet)
 library(spdplyr)
 library(raster)
 library(sf)
-library(rgeos)
-library(rmapshaper)
+#library(rgeos)
+#library(rmapshaper)
 library(DT)
 library(shinythemes)
 library(shinyWidgets)
-library(gargle)
-library(googledrive)
 
 source("medna_survey123.R")
 # LOAD PROJECT VARIABLES
 ################################################################################
 overwrite = FALSE
-inputFolder = "data/02_Working/"
+inputFolder = "data/02_Working/PyOutput/"
 originalFolder = "data/01_Original/"
 outputFolder = "data/02_Working/"
 outputPngFolder = "data/figures/"
@@ -70,7 +68,7 @@ gargle::gargle_oauth_cache()
 
 options(
   gargle_oauth_cache = ".secrets",
-  gargle_oauth_email = TRUE
+  gargle_oauth_email = "melissa.kimble@maine.edu"
 )
 
 # load gsheet
