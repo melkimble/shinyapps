@@ -24,7 +24,7 @@ library(sf)
 #library(rmapshaper)
 library(DT)
 library(shinythemes)
-library(shinyWidgets)
+#library(shinyWidgets)
 
 envmeas_choices <- c("Measurement Depth" = "envmeas_depth",
                      "Water Temperature" = "water_temp",

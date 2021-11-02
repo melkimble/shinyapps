@@ -19,7 +19,7 @@ library(sf)
 #library(rmapshaper)
 library(DT)
 library(shinythemes)
-library(shinyWidgets)
+#library(shinyWidgets)
 
 source("medna_survey123.R")
 # LOAD PROJECT VARIABLES

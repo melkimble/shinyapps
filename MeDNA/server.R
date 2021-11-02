@@ -19,7 +19,7 @@ library(sf)
 #library(rmapshaper)
 library(DT)
 library(shinythemes)
-library(shinyWidgets)
+#library(shinyWidgets)
 
 function(input, output, session) {
   observe({
