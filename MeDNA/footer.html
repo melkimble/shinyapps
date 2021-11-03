@@ -1,0 +1,61 @@
+<hr>
+
+<div class="container">
+  <img src="images/tri_logos_with_nsf_statement_transparent.png" alt="logo" class="center-block img-responsive" width="500" style="margin-bottom: 0px;" />
+
+  <!-- FOOTER -->
+  <footer>
+  
+  <p>Support for this project is provided through a National Science Foundation award to <a href="https://umaine.edu/edna/">Maine EPSCoR at the University of Maine</a> and is part of the RII Track-1: Molecule to Ecosystem: Environmental DNA as a Nexus of Coastal Ecosystem Sustainability for Maine (Maine-eDNA).</p><br>
+  <p class="pull-right"><a href="#">Back to top</a></p>
+  <p><a href="#" data-toggle="modal" data-target="#modal-credits">Credits &amp; Disclaimer</a></p>
+  </footer>
+
+</div>
+
+<!-- Modal - Credits -->
+<div class="modal fade" id="modal-credits" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+  <div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h4 class="modal-title" id="myModalLabel">Credits</h4>
+  </div>
+  <div class="modal-body">
+    <p>This application was built with RShiny and the field data were collected through Maine-eDNA. The HTML template, CSS, and JS were sampled from <a href="https://github.com/phillyo/intelligentsia">The Intelligentsia GitHub Repo</a>.</p>
+    <p><a href="https://github.com/davatron5000/FitText.js">FitText.js</a></p>
+    <p><a href="http://jquery.com/">jQuery</a></p>
+    <p><a href="http://getbootstrap.com/">Twitter Bootstrap</a></p>
+    <p><a href="http://fontawesome.io/">Font Awesome</a></p>
+    <p>The following R packages were used in to build this RShiny application:</p>
+    <p>
+      <code>base</code><code>dplyr</code><code>data.table</code>
+      <code>DT</code><code>shinythemes</code><code>viridis</code>
+      <code>leaflet</code><code>lubridate</code><code>plyr</code>
+      <code>raster</code><code>rgdal</code><code>rgeos</code>
+      <code>spdplyr</code><code>sf</code><code>rmapshaper</code>
+      <code>shiny</code><code>ggplot2</code><code>scales</code>
+      <code>shinyjs</code><code>stringr</code><code>gridExtra</code>
+      <code>tidyr</code><code>utils</code><code>googlesheets4</code>
+      <code>zoo</code>
+    </p>
+      
+      <p><strong>Data Disclaimer</strong></p>
+      <p>The data from UMaineGIS are provided "as is", and UMaineGIS assumes no responsibility for erros or omissions. The User assumes the entire risk associated with its use of these data. UMaineGIS shall not be held liable for any use or misuse of the data described and/or contained herein. The User bears all responsibility in determining whether these data are fit for the User's intended use.</p>
+      <p>The information contained in these data are dynamic and may change over time.</p>
+  </div>
+  <div class="modal-footer">
+  <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+  </div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script src="plugins/fittext_1.2/jquery.fittext.js"></script>
+<script src="plugins/fittext.js"></script>
+
+<script type="text/javascript">
+  jQuery(".fit-h1").fitText(1.2, { minFontSize: '32px', maxFontSize: '38px' });
+  jQuery(".fit-h2").fitText(1.2, { minFontSize: '18px', maxFontSize: '26px' });
+  jQuery(".fit-text").fitText(0.8, { minFontSize: '18px', maxFontSize: '24px' });
+</script>

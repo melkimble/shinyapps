@@ -1,30 +1,10 @@
-# LibraryList<-c("leaflet","dplyr","RColorBrewer", "scales", "lattice","ggplot2","htmlTable")
-# for (TheLibrary in LibraryList)
-# {
-#   if(TheLibrary %in% rownames(installed.packages()) == FALSE) install.packages(TheLibrary)
-# }
-library(dplyr)
-library(googlesheets4)
-library(data.table)
-library(lubridate)
-library(stringr)
-library(ggplot2)
-#library(scales)
-#library(zoo)
-library(tidyr)
-library(gridExtra)
-library(rgdal)
-library(viridis)
 library(shiny)
 library(leaflet)
-library(spdplyr)
 library(raster)
 library(sf)
-#library(rgeos)
-#library(rmapshaper)
 library(DT)
 library(shinythemes)
-#library(shinyWidgets)
+library(shinyjs)
 
 envmeas_choices <- c("Measurement Depth" = "envmeas_depth",
                      "Water Temperature" = "water_temp",
@@ -86,8 +66,27 @@ hr_css <- "border-top: 1px solid #000000;width: 100%"
 
 navbarPage(
   id="navbar",
-  theme = shinythemes::shinytheme("flatly"),
-  "Maine-eDNA Survey123 Summary",
+  title="Maine-eDNA Survey123 Summary",
+  theme = "style/style.css",
+  footer = includeHTML("footer.html"),
+  fluid = TRUE, 
+  collapsible = TRUE,
+  # ----------------------------------
+  # tab panel 1 - Home
+  tabPanel("Home",
+           includeHTML("home.html"),
+           tags$script(src = "plugins/scripts.js"),
+           tags$head(
+             tags$link(rel = "stylesheet", 
+                       type = "text/css", 
+                       href = "plugins/font-awesome-4.7.0/css/font-awesome.min.css"),
+             tags$link(rel = "icon", 
+                       type = "image/png", 
+                       href = "images/eDNA-logo-Regular-S.png")
+           )
+  ),
+  # ----------------------------------
+  # tab panel 2 - Maps
   tabPanel("Maps",
            tabsetPanel(id="tab_maps",
                        tabPanel("Surveys",
@@ -95,7 +94,8 @@ navbarPage(
                                   column(12, leafletOutput("map_survey")),
                                   column(12, htmlOutput("maps_text_survey")),
                                   hr(style = hr_css),
-                                  column(12, DT::dataTableOutput('table_map_survey'))
+                                  column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                 DT::dataTableOutput('table_map_survey')))
                                 )
                        ),
                        tabPanel("Crew", 
@@ -103,7 +103,8 @@ navbarPage(
                                   column(12, leafletOutput("map_crew")),
                                   column(12, htmlOutput("maps_text_crew")),
                                   hr(style = hr_css),
-                                  column(12, DT::dataTableOutput('table_map_crew'))
+                                  column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                 DT::dataTableOutput('table_map_crew')))
                                 )                          
                        ),
                        tabPanel("Env Measurements", 
@@ -118,7 +119,8 @@ navbarPage(
                                     column(9, htmlOutput("maps_text_envmeas")),
                                   ),
                                   hr(style = hr_css),
-                                  column(12, DT::dataTableOutput('table_map_envmeas'))
+                                  column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                 DT::dataTableOutput('table_map_envmeas')))
                                 )
                        ),
                        tabPanel("Collections", 
@@ -133,7 +135,8 @@ navbarPage(
                                     column(9, htmlOutput("maps_text_col")),
                                   ),
                                   hr(style = hr_css),
-                                  column(12, DT::dataTableOutput('table_map_col'))
+                                  column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                 DT::dataTableOutput('table_map_col')))
                                 )
                        ),
                        tabPanel("Filters", 
@@ -148,7 +151,8 @@ navbarPage(
                                     column(9, htmlOutput("maps_text_filters")),
                                   ),
                                   hr(style = hr_css),
-                                  column(12, DT::dataTableOutput('table_map_filters'))
+                                  column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                 DT::dataTableOutput('table_map_filters')))
                                 )                          
                        ),
                        tabPanel("SubCores", 
@@ -156,11 +160,14 @@ navbarPage(
                                   column(12, leafletOutput("map_subcores")),
                                   column(12, htmlOutput("maps_text_subcores")),
                                   hr(style = hr_css),
-                                  column(12, DT::dataTableOutput('table_map_subcores'))
+                                  column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                 DT::dataTableOutput('table_map_subcores')))
                                 )                          
                        )
            )
   ),
+  # ----------------------------------
+  # tab panel 3 - Barplots
   tabPanel("Barplot Counts",
            tabsetPanel(id="tab_barplots",
                        tabPanel("Surveys",
@@ -182,7 +189,8 @@ navbarPage(
                                               hr(style = hr_css),
                                               textOutput("barplot_sum_survey"),
                                               hr(style = hr_css),
-                                              column(12, DT::dataTableOutput('table_barplot_survey'))
+                                              column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                             DT::dataTableOutput('table_barplot_survey')))
                                 )
                        ),
                        tabPanel("Crew", 
@@ -204,7 +212,8 @@ navbarPage(
                                               hr(style = hr_css),
                                               textOutput("barplot_sum_crew"),
                                               hr(style = hr_css),
-                                              column(12, DT::dataTableOutput('table_barplot_crew'))
+                                              column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                             DT::dataTableOutput('table_barplot_crew')))
                                 )
                        ),
                        tabPanel("Env Measurements",
@@ -226,7 +235,8 @@ navbarPage(
                                               hr(style = hr_css),
                                               textOutput("barplot_sum_envmeas"),
                                               hr(style = hr_css),
-                                              column(12, DT::dataTableOutput('table_barplot_envmeas'))
+                                              column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                             DT::dataTableOutput('table_barplot_envmeas')))
                                 )
                        ),
                        tabPanel("Collections", 
@@ -255,7 +265,8 @@ navbarPage(
                                               hr(style = hr_css),
                                               textOutput("barplot_sum_col"),
                                               hr(style = hr_css),
-                                              column(12, DT::dataTableOutput('table_barplot_col'))
+                                              column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                             DT::dataTableOutput('table_barplot_col')))
                                 )
                        ),
                        tabPanel("Filters", 
@@ -285,7 +296,8 @@ navbarPage(
                                               hr(style = hr_css),
                                               textOutput("barplot_sum_filters"),
                                               hr(style = hr_css),
-                                              column(12, DT::dataTableOutput('table_barplot_filters'))
+                                              column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                             DT::dataTableOutput('table_barplot_filters')))
                                 )                          
                        ),
                        tabPanel("SubCores", 
@@ -307,11 +319,14 @@ navbarPage(
                                               hr(style = hr_css),
                                               textOutput("barplot_sum_subcores"),
                                               hr(style = hr_css),
-                                              column(12, DT::dataTableOutput('table_barplot_subcores'))
+                                              column(12, div(style = "margin-top: 30px; font-size: 1em;",
+                                                             DT::dataTableOutput('table_barplot_subcores')))
                                 )
                        )
            )
   ),
+  # ----------------------------------
+  # tab panel 3 - Plots
   tabPanel("Summary Plots",
            tabsetPanel(id="tab_plots",
                        tabPanel("Env Measurements",
@@ -333,7 +348,8 @@ navbarPage(
                                   mainPanel(
                                     plotOutput("plots_envmeas", height = "auto"),
                                     hr(style = hr_css),
-                                    DT::dataTableOutput('table_plots_envmeas')
+                                    div(style = "margin-top: 30px; font-size: 1em;",
+                                        DT::dataTableOutput('table_plots_envmeas'))
                                   )
                                 )
                        ),
@@ -356,10 +372,25 @@ navbarPage(
                                   mainPanel(
                                     plotOutput("plots_col", height = "auto"),
                                     hr(style = hr_css),
-                                    DT::dataTableOutput('table_plots_col')
+                                    div(style = "margin-top: 30px; font-size: 1em;",
+                                        DT::dataTableOutput('table_plots_col'))
                                   )
                                 )
                        )
+           )
+  ),
+  tabPanel("About",
+           includeHTML("about.html"),
+           shinyjs::useShinyjs(),
+           tags$head(
+             tags$link(rel = "stylesheet", 
+                       type = "text/css", 
+                       href = "plugins/carousel.css"),
+             tags$script(src = "plugins/holder.js")
+           ),
+           tags$style(type="text/css",
+                      ".shiny-output-error { visibility: hidden; }",
+                      ".shiny-output-error:before { visibility: hidden; }"
            )
   )
 )

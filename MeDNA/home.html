@@ -1,0 +1,125 @@
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+    <li data-target="#myCarousel" data-slide-to="3"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="images/lobobuoy_500px.jpg" alt="1">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1 class="fit-head">Maine-eDNA Survey123 Summary</h1>
+          <p class="fit-text">Maps and plot summaries of Survey123 field collection</p>
+          <p>
+            <a class="btn btn-lg btn-primary" onclick="$('li:eq(1) a').tab('show');" role="button">Maps &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/s123_sids_zoom_map_500px.png" alt="2">
+      <div class="container">
+  <div class="carousel-caption">
+    <h1 class="fit-head">Maps</h1>
+    <p class="fit-text">Map of Survey123 field collection</p>
+    <a class="btn btn-lg btn-primary" onclick="$('li:eq(1) a').tab('show');" role="button">Maps &raquo;</a>
+  </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/s123_collect_system_year_count_barplot_500px.png" alt="3">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1 class="fit-head">Barplots</h1>
+          <p class="fit-text">Barplots of Survey123 field collection</p>
+          <p>
+            <a class="btn btn-lg btn-primary" onclick="$('li:eq(2) a').tab('show');" role="button">Barplots &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="images/s123_collect_sediment_system_boxplot_500px.png" alt="4">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1 class="fit-head">Plots</h1>
+          <p class="fit-text">Assorted plots of Survey123 field collection</p>
+          <p>
+            <a class="btn btn-lg btn-primary" onclick="$('li:eq(3) a').tab('show');" role="button">Plots &raquo;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a>
+  <a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a>
+</div>
+<!-- /.carousel -->
+
+<div class="container marketing">
+  <!-- START THE FEATURETTES -->
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette center-on-xs">
+  <div class="col-md-5 col-md-push-7">
+    <img class="featurette-image img-responsive" src="images/survey123_v14_simplified_erd.png" alt = "">
+  </div>
+  <div class="col-md-7 col-md-pull-5">
+    <h2 class="featurette-heading">Field Data Collection<br><span class="text-muted">Survey123</span></h2>
+    <p class="lead">Field data collection is Maine-eDNA wide, and pertains to environmental and collection information related to sediment or water samples. <a data-toggle="collapse" data-parent="#accordionOne" href="#collapseOne">Read more&hellip;</a></p>
+     <div class="panel-group transparent-panel-group" id="accordionOne">
+        <div class="panel panel-default">
+          <div id="collapseOne" class="panel-collapse collapse">
+            <div class="panel-body text-left">
+              <p>Information up to water filtration or sediment sub-coring is collected in the Survey123 field application. When downloading data as a CSV from Survey123, it will come with a few tables that are related bytheir respective GlobalIDs and ParentGlobalIDs. The diagram represents these relationships. Additional background information related to the Survey123 application can be found on the <a href="https://sites.google.com/maine.edu/maine-edna-survey123/home">Maine-eDNA Dataflow google site</a>. To access the application or view survey results, sign into the <a href="https://survey123.arcgis.com/surveys">Survey123 website</a> with your ArcGIS Online user account and then switch to the “Surveys I can view results for” tab in the My Surveys page.</p>
+              <p>The data in this application was automatically downloaded, cleaned, and uploaded to google sheets through the python module provided in the <a href="https://github.com/Maine-eDNA/medna_survey123">Maine-eDNA Survey123 GitHub Repo</a></p>
+              <p>Each water collection is filtered using multiple filter types (Nitex, Glass Fiber Filter, Supor, or Cellulose Nitrate) and each filter represents one sample. If sediment is collected, it is initially collected as a core. After a core of sediment is collected, it is subdivided into sub-cores, and each sub-core represents one sample. The maps and plots featured on this page contain summaries of information pertaining to coincident environmental measurements and samples collected by system, season, month, year, and site.</p>
+
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette center-on-xs">
+  <div class="col-md-5">
+    <img class="featurette-image img-responsive" src="images/rshiny_logo_500px.png" alt = "">
+  </div>
+  <div class="col-md-7">
+    <h2 class="featurette-heading">RShiny<br><span class="text-muted">Simplifying applications</span></h2>
+    <p class="lead">This application was built with RShiny. <a data-toggle="collapse" data-parent="#accordionTwo" href="#collapseTwo">Read more&hellip;</a></p>
+     <div class="panel-group transparent-panel-group" id="accordionTwo">
+        <div class="panel panel-default">
+          <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body text-left">
+              <p>The code is available through a <a href="https://github.com/melkimble/shinyapps/tree/master/MeDNA">shinyapps MeDNA GitHub Repo</a>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="featurette-divider">
+
+  <div class="row featurette center-on-xs">
+    <div class="col-md-5 col-md-push-7">
+      <img class="featurette-image img-responsive" src="images/eDNA-logo-Regular-S.png" alt = "">
+    </div>
+    <div class="col-md-7 col-md-pull-5">
+      <h2 class="featurette-heading">Maine-eDNA & Collaborators<br><span class="text-muted">Sampling Maine together</span></h2>
+      <p class="lead">This application was developed through a collaborative effort spanning multiple institutions, regions, and years. <a href="#" onclick="$('li:eq(4) a').tab('show');">Read more about Maine-eDNA&hellip;</a></p>
+    </div>
+  </div>
+
+</div>
+<!-- /END THE FEATURETTES -->

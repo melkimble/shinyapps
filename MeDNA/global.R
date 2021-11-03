@@ -1,27 +1,24 @@
+library(leaflet)
 library(dplyr)
 library(googlesheets4)
 library(data.table)
-library(lubridate)
-library(stringr)
-library(ggplot2)
-#library(scales)
-#library(zoo)
 library(tidyr)
-library(gridExtra)
 library(rgdal)
-library(viridis)
 library(shiny)
-library(leaflet)
 library(spdplyr)
 library(raster)
 library(sf)
-#library(rgeos)
-#library(rmapshaper)
-library(DT)
-library(shinythemes)
-#library(shinyWidgets)
 
-source("medna_survey123.R")
+add_seasons_df <- function(df) {
+  df<-df %>%
+    mutate(season = case_when(survey_month==12 | survey_month==1 | survey_month==2 ~ "Winter", 
+                              survey_month==3 | survey_month==4 | survey_month==5 ~ "Spring",
+                              survey_month==6 | survey_month==7 | survey_month==8 ~ "Summer",
+                              survey_month==9 | survey_month==10 | survey_month==11 ~ "Fall")) %>%
+    mutate(season_year = paste0(season," ",survey_year))
+  return(df)
+}
+
 # LOAD PROJECT VARIABLES
 ################################################################################
 overwrite = FALSE
@@ -55,31 +52,30 @@ existsPal <- colorFactor(c("antiquewhite", "forestgreen"), as.factor(c("Yes","No
 
 # LOAD GSHEETs
 ################################################################################
-# pre-select and grab oath
+# Authorize googlesheets4
+# https://googlesheets4.tidyverse.org/reference/gs4_auth.html
+# https://googlesheets4.tidyverse.org/reference/gs4_auth_configure.html
+# https://googlesheets4.tidyverse.org/reference/index.html#section-auth
 
-# designate project-specific cache
-options(gargle_oauth_cache = ".secrets")
-
-# check the value of the option, if you like
-gargle::gargle_oauth_cache()
-
-# trigger auth on purpose --> store a token in the specified cache
-#googledrive::drive_auth(cache = ".secrets", email = "melissa.kimble@maine.edu")
-
-options(
-  gargle_oauth_cache = ".secrets",
-  gargle_oauth_email = "melissa.kimble@maine.edu"
-)
+googlesheets4::gs4_auth(email="melissa.kimble@maine.edu", path="/srv/shiny-server/.secrets/survey123-fefda012b951.json")
 
 # load gsheet
-s123_gsheet_url = "https://docs.google.com/spreadsheets/d/1IVn6Ui80VZZrFjjRCy6FaOwh_5fR9ZJj4OxNypYBduc/edit?usp=sharing"
-site_ids_gsheet <- googlesheets4::read_sheet(s123_gsheet_url, "SiteIDs")
-survey_sub<-googlesheets4::read_sheet(s123_gsheet_url, "eDNA_Sampling_v14_sub")
-survey_crew_join<-googlesheets4::read_sheet(s123_gsheet_url, "survey_crew_join")
-survey_envmeas_join<-googlesheets4::read_sheet(s123_gsheet_url, "survey_envmeas_join")
-survey_collection_join<-googlesheets4::read_sheet(s123_gsheet_url, "survey_collection_join")
-clean_filter_join<-googlesheets4::read_sheet(s123_gsheet_url, "clean_filter_join")
-clean_subcore_join<-googlesheets4::read_sheet(s123_gsheet_url, "clean_subcore_join")
+sid_gsheet_url = "https://docs.google.com/spreadsheets/d/1TzlvUuaedzW0Q8JgPepYvmos0M4y1f-M_TMvLy6ZaJI/edit?usp=sharing"
+#s123_gsheet_url = "https://docs.google.com/spreadsheets/d/1IVn6Ui80VZZrFjjRCy6FaOwh_5fR9ZJj4OxNypYBduc/edit?usp=sharing"
+site_ids_gsheet <- googlesheets4::read_sheet(sid_gsheet_url, "lyr_view_fieldapp")
+#survey_sub<-googlesheets4::read_sheet(s123_gsheet_url, "eDNA_Sampling_v14_sub")
+#survey_crew_join<-googlesheets4::read_sheet(s123_gsheet_url, "survey_crew_join")
+#survey_envmeas_join<-googlesheets4::read_sheet(s123_gsheet_url, "survey_envmeas_join")
+#survey_collection_join<-googlesheets4::read_sheet(s123_gsheet_url, "survey_collection_join")
+#clean_filter_join<-googlesheets4::read_sheet(s123_gsheet_url, "clean_filter_join")
+#clean_subcore_join<-googlesheets4::read_sheet(s123_gsheet_url, "clean_subcore_join")
+
+survey_sub <- data.table::fread(paste0(inputFolder,'eDNA_Sampling_v14_sub.csv'))
+survey_crew_join <- data.table::fread(paste0(inputFolder,'survey_crew_join.csv'))
+survey_envmeas_join <- data.table::fread(paste0(inputFolder,'survey_envmeas_join.csv'))
+survey_collection_join <- data.table::fread(paste0(inputFolder,'survey_collection_join.csv'))
+clean_filter_join <- data.table::fread(paste0(inputFolder,'clean_filter_join.csv'))
+clean_subcore_join <- data.table::fread(paste0(inputFolder,'clean_subcore_join.csv'))
 
 # FORMAT DATA
 ################################################################################

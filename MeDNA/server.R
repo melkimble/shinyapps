@@ -1,11 +1,7 @@
 library(dplyr)
-library(googlesheets4)
 library(data.table)
 library(lubridate)
-library(stringr)
 library(ggplot2)
-#library(scales)
-#library(zoo)
 library(tidyr)
 library(gridExtra)
 library(rgdal)
@@ -15,13 +11,11 @@ library(leaflet)
 library(spdplyr)
 library(raster)
 library(sf)
-#library(rgeos)
-#library(rmapshaper)
 library(DT)
-library(shinythemes)
-#library(shinyWidgets)
+library(formattable)
 
 function(input, output, session) {
+  theme_set(theme_bw())
   observe({
     if (input$navbar == "Maps") {
       # only render if the tab is "maps"
@@ -795,12 +789,18 @@ function(input, output, session) {
           } else if (selected_plot == "boxSiteMonth") {
             plotTitle=sprintf("%s by Site and Month", selected_var_plots_fmt)
             ggplot(df_inrange() %>%
-                     dplyr::filter(!if_any(c(selected_var_plots, site_id), is.na)), 
+                     dplyr::filter(!if_any(c(selected_var_plots, site_id), is.na)) %>% 
+                     dplyr::mutate(survey_date = lubridate::ymd(survey_date, tz="UTC")) %>%
+                     dplyr::mutate(month = format(survey_date, format="%b")) %>%
+                     dplyr::mutate(month=factor(month, levels= c("Jan", "Feb", "Mar", 
+                                                                 "Apr", "May", "Jun", 
+                                                                 "Jul", "Aug", "Sep", 
+                                                                 "Oct", "Nov", "Dec"))),
                    aes_string(x="site_id", y=selected_var_plots, fill="site_id")) + 
               geom_boxplot() +
               xlab(selected_var_plots_fmt) +
               xlab("Site ID") +
-              facet_grid(survey_month ~ .) +
+              facet_grid(month ~ .) +
               ggtitle(plotTitle) +
               theme(axis.text.x = element_text(angle=50, hjust=1)) +
               theme(plot.title = element_text(hjust = 0.5)) +
