@@ -24,7 +24,6 @@ function(input, output, session) {
           addTiles() %>%
           setView(lng=-68.5, lat=44.0, zoom=7)
       })
-      
       if (input$tab_maps == "Surveys") {
         perc_var_txt<-input$tab_maps
         proxy <- leafletProxy("map_survey")
@@ -88,9 +87,11 @@ function(input, output, session) {
         dplyr::mutate(RecordsExist="Yes") %>%
         dplyr::select(site_id, RecordsExist) %>%
         dplyr::full_join(as.data.frame(site_ids_spdf)) %>%
+        dplyr::mutate(id = row_number()) %>%
+        dplyr::mutate(id = paste0("s",id)) %>%
         dplyr::mutate(RecordsExist = ifelse(is.na(RecordsExist), "No", RecordsExist)) %>%
-        dplyr::select(site_id, general_location_name, RecordsExist, 
-                      projects, system_type, region_code, lon, lat) %>%
+        dplyr::select(id, site_id, general_location_name, RecordsExist, 
+                      projects, system_type, watershed_code, lon, lat) %>%
         dplyr::arrange(site_id) 
       
       rcdext_sids_other <- df_map %>%
@@ -102,8 +103,11 @@ function(input, output, session) {
         dplyr::rename(lat=lat_manual) %>%
         dplyr::rename(lon=long_manual) %>%
         dplyr::mutate(RecordsExist="Yes") %>%
-        dplyr::mutate(region_code="other") %>%
+        dplyr::mutate(watershed_code="other") %>%
         dplyr::mutate(system_type="other") %>%
+        dplyr::mutate(id = row_number()) %>%
+        dplyr::mutate(id = paste0("o",id)) %>%
+        dplyr::select(id, everything()) %>%
         dplyr::arrange(general_location_name)
       
       rcdext_sids_all_spdf <- rcdext_sids_all %>%
@@ -134,13 +138,22 @@ function(input, output, session) {
         HTML(paste(str1, str2, sep = '<br/>'))
       })
       
+      if (nrow(rcdext_sids_other)>0) {
+        rcdext_df <- rbind(data.table(rcdext_sids_all), data.table(rcdext_sids_other), fill=TRUE)
+      } else {
+        rcdext_df <- as.data.frame(rcdext_sids_all)
+      }
+      
       # SURVEY SUMMARY MAP TABLE
       output$table_map_survey <- output$table_map_envmeas <- output$table_map_crew <- output$table_map_col <- output$table_map_filters <- output$table_map_subcores <-DT::renderDataTable({
-        if (nrow(rcdext_sids_other)>0) {
-          DT::datatable(rbind(data.table(rcdext_sids_all), data.table(rcdext_sids_other), fill=TRUE), options = list(scrollX = TRUE, pageLength = 5))
-        } else {
-          DT::datatable(as.data.frame(rcdext_sids_all), options = list(scrollX = TRUE, pageLength = 5))
-        }
+        df <- rcdext_df %>% 
+          dplyr::mutate(across(c(lat, lon), as.numeric)) %>%
+          dplyr::mutate(ZoomTo = paste('<a class="go-map" href="" data-lat="', lat, '" data-lon="', lon, '" data-id="', id, '"><i class="fa fa-crosshairs"></i></a>', sep="")) %>%
+          dplyr::select(ZoomTo, everything())
+        zoomto <- DT::dataTableAjax(session, df)
+        #DT::datatable(rcdext_df, options = list(scrollX = TRUE, pageLength = 5, ajax = list(url = zoomto)), escape = FALSE, rownames = FALSE)
+        DT::datatable(df, options = list(scrollX = TRUE, pageLength = 5, ajax = list(url = zoomto)), escape = FALSE)
+        
       })
       
       # SURVEY SUMMARY MAP
@@ -154,7 +167,6 @@ function(input, output, session) {
       proxy %>%
         clearMarkers() %>%
         clearShapes() %>%
-        clearPopups() %>%
         clearControls() %>%
         addPolygons(data=WBD_spdf_simplified, layerId=~region_cod,
                     fillColor="grey", fillOpacity=0.5, 
@@ -164,26 +176,24 @@ function(input, output, session) {
         addLabelOnlyMarkers(data=centers_wbd, lng=~x, lat=~y, label=~region_cod,
                             labelOptions = labelOptions(noHide = TRUE, direction = 'middle', textOnly = TRUE),
                             group="Watersheds") %>%
-        addCircleMarkers(data=rcdext_sids_all_spdf, layerId=~unique(site_id), 
-                         fillColor=~existsPal(RecordsExist), fillOpacity=0.8, 
-                         color="#444444", opacity=1, 
-                         weight=1, radius=5, stroke=TRUE,
-                         popup = sids_popup,
-                         group="Site IDs") %>%
         hideGroup("Watersheds") %>%
+        addCircleMarkers(data=rcdext_sids_all_spdf, layerId=~id, 
+                         fillColor=~existsPal(RecordsExist), fillOpacity=0.8, 
+                         color="#444444", opacity=1, popup=sids_popup,
+                         weight=1, radius=5, stroke=TRUE,
+                         group="Site IDs") %>%
         addLegend(data=rcdext_sids_all_spdf, pal=existsPal, values=~RecordsExist, opacity = 1)
       if (nrow(rcdext_sids_other)>0) {
-        osids_popup <- sprintf(
+       osids_popup <- sprintf(
           "<strong>%s: %s</strong><br/>Has %s records: %s<br/>%s",
           rcdext_sids_other_spdf$site_id, rcdext_sids_other_spdf$general_location_name,
           input$tab_maps,
           rcdext_sids_other_spdf$RecordsExist, rcdext_sids_other_spdf$projects) %>% 
           lapply(htmltools::HTML)
-        proxy %>% addCircleMarkers(data=rcdext_sids_other_spdf, 
+        proxy %>% addCircleMarkers(data=rcdext_sids_other_spdf, layerId=~id, 
                                    fillColor=~existsPal(RecordsExist), fillOpacity=0.8, 
-                                   color="#444444", opacity=1, 
+                                   color="#444444", opacity=1, popup=osids_popup,
                                    weight=1, radius=5, stroke=TRUE,
-                                   popup = osids_popup,
                                    group="Other Sites") %>%
           addLayersControl(
             overlayGroups = c("Watersheds", "Site IDs", "Other Sites"),
@@ -194,6 +204,39 @@ function(input, output, session) {
             overlayGroups = c("Watersheds", "Site IDs"),
             options = layersControlOptions(collapsed = FALSE))
       }
+      
+      showSitePopup <- function(ID, lat, lng, proxy) {
+        selected_site_id <- rcdext_df$site_id[rcdext_df$id == ID][1]
+        selected_site_name <- rcdext_df$general_location_name[rcdext_df$id == ID][1]
+        selected_exists <- rcdext_df$RecordsExist[rcdext_df$id == ID][1]
+        selected_prj <- rcdext_df$projects[rcdext_df$id == ID][1]
+        content<-sprintf(
+          "<strong>%s: %s</strong><br/>Has %s records: %s<br/>%s",
+          selected_site_id, selected_site_name,
+          input$tab_maps,
+          selected_exists, selected_prj) %>% 
+          lapply(htmltools::HTML)
+        #print(proxy$id)
+        #addPopups(lng, lat, content, layerId=ID)
+        proxy %>% addPopups(lng, lat, content, layerId=ID)
+      }
+      
+      # if click in table, show popup
+      if (is.null(input$goto))
+        return()
+      isolate({
+        proxy %>% clearPopups()
+        dist <- 0.05
+        
+        lat <- input$goto$lat
+        lng <- input$goto$lng
+        ID <- input$goto$id
+        
+        showSitePopup(ID, lat, lng, proxy)
+        proxy %>% fitBounds(lng - dist, lat - dist, lng + dist, lat + dist*10)
+      })
+      
+      
     }
     
     if (input$navbar == "Barplot Counts") {
@@ -264,18 +307,24 @@ function(input, output, session) {
         
       }
       if (input$tab_barplots == "SubCores") {
-        selected_barplot<-input$barplot_selected_subcores
-        selected_projects<-input$barplot_selprj_subcores
+        selected_barplot <- input$barplot_selected_subcores
+        selected_projects <- input$barplot_selprj_subcores
         df_bplot <- clean_subcore_join %>%
           dplyr::filter(!if_any(c(survey_GlobalID, collection_GlobalID), is.na))
       }
+      selected_projects <- gsub("[()]", "", selected_projects)
+      selected_projects <- tolower(selected_projects)
       
       # Subset df_bplot based on selected projects in plot view
       df_sub_prj <- df_bplot %>%
         dplyr::mutate(projects=na_if(projects,"")) %>%
         dplyr::mutate(projects = replace_na(projects, "Maine eDNA")) %>%
         dplyr::left_join(site_id_prjs) %>%
-        dplyr::filter(sid_prjs %in% selected_projects)
+        dplyr::mutate(sid_prjs_sub = gsub(",", " ", sid_prjs)) %>%
+        dplyr::mutate(sid_prjs_sub = gsub("[()]", "",sid_prjs_sub)) %>%
+        dplyr::mutate(sid_prjs_sub = tolower(sid_prjs_sub)) %>%
+        dplyr::filter(grepl(paste(selected_projects, collapse="|"), sid_prjs_sub)) %>%
+        dplyr::select(-sid_prjs_sub)
       
       
       ## RENDER TEXT: NROWS

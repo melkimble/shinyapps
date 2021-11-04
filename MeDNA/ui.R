@@ -75,19 +75,19 @@ navbarPage(
   # tab panel 1 - Home
   tabPanel("Home",
            includeHTML("home.html"),
-           tags$script(src = "plugins/scripts.js"),
            tags$head(
              tags$link(rel = "stylesheet", 
                        type = "text/css", 
                        href = "plugins/font-awesome-4.7.0/css/font-awesome.min.css"),
              tags$link(rel = "icon", 
                        type = "image/png", 
-                       href = "images/eDNA-logo-Regular-S.png")
+                       href = "images/eDNA-logo-Regular-L_square-notext.png")
            )
   ),
   # ----------------------------------
   # tab panel 2 - Maps
   tabPanel("Maps",
+           tags$head(tags$script(src = "plugins/gomap.js")),
            tabsetPanel(id="tab_maps",
                        tabPanel("Surveys",
                                 bootstrapPage(

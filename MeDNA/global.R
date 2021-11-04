@@ -80,7 +80,7 @@ clean_subcore_join <- data.table::fread(paste0(inputFolder,'clean_subcore_join.c
 # FORMAT DATA
 ################################################################################
 site_ids_spdf <- site_ids_gsheet %>%
-  dplyr::select(SiteID, `General Location Name`, `Intended Purpose`, `Latitude`, `Longitude`, `System Type`, `Region Code`, 
+  dplyr::select(SiteID, `General Location Name`, `Intended Purpose`, `Latitude`, `Longitude`, `System Type`, `Watershed Code`, 
                 `Survey123 Filter Count`, `Survey123 Core Count`) %>%
   sf::st_as_sf(.,coords=c('Longitude', 'Latitude'), crs=WGS84_SRID) %>% # st_as_sf combines fields into geometry field to create sf object
   dplyr::mutate(geom = gsub(geometry, pattern="(\\))|(\\()|c",replacement = "")) %>% # remove geometry characters
@@ -89,7 +89,7 @@ site_ids_spdf <- site_ids_gsheet %>%
   dplyr::rename(general_location_name = `General Location Name`) %>%
   dplyr::rename(projects = `Intended Purpose`) %>%
   dplyr::rename(system_type = `System Type`) %>%
-  dplyr::rename(region_code = `Region Code`) %>%
+  dplyr::rename(watershed_code = `Watershed Code`) %>%
   dplyr::rename(s123_filter_count = `Survey123 Filter Count`) %>%
   dplyr::rename(s123_core_count = `Survey123 Core Count`) %>%
   sf::as_Spatial()
