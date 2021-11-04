@@ -844,16 +844,18 @@ function(input, output, session) {
                      dplyr::mutate(month=factor(month, levels= c("Jan", "Feb", "Mar", 
                                                                  "Apr", "May", "Jun", 
                                                                  "Jul", "Aug", "Sep", 
-                                                                 "Oct", "Nov", "Dec"))),
-                   aes_string(x="site_id", y=selected_var_plots, fill="site_id")) + 
+                                                                 "Oct", "Nov", "Dec"))) %>%
+                     dplyr::mutate(system_type=factor(system_type, levels= c("Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))),
+                   aes_string(x="site_id", y=selected_var_plots, fill="system_type")) + 
               geom_boxplot() +
-              xlab(selected_var_plots_fmt) +
+              ylab(selected_var_plots_fmt) +
               xlab("Site ID") +
+              labs(fill="") +
               facet_grid(month ~ .) +
               ggtitle(plotTitle) +
+              theme(legend.position="top", legend.box = "horizontal") +
               theme(axis.text.x = element_text(angle=50, hjust=1)) +
-              theme(plot.title = element_text(hjust = 0.5)) +
-              theme(legend.position = "none") 
+              theme(plot.title = element_text(hjust = 0.5))
           } else if (selected_plot == "boxSystem") {
             plotTitle=sprintf("%s by System", selected_var_plots_fmt)
             ggplot(df_inrange() %>%
@@ -868,15 +870,17 @@ function(input, output, session) {
               theme(legend.position = "none") 
           } else if (selected_plot == "boxSite") {
             plotTitle=sprintf("%s by Site", selected_var_plots_fmt)
-            ggplot(df_inrange(), 
-                   aes_string(x="site_id", y=selected_var_plots, fill="site_id")) + 
+            ggplot(df_inrange() %>%
+                     dplyr::mutate(system_type=factor(system_type, levels= c("Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))), 
+                   aes_string(x="site_id", y=selected_var_plots, fill="system_type")) + 
               geom_boxplot() +
               ylab(selected_var_plots_fmt) +
               xlab("Site ID") +
+              labs(fill="") +
               ggtitle(plotTitle) +
+              theme(legend.position="top", legend.box = "horizontal") +
               theme(axis.text.x = element_text(angle=50, hjust=1)) +
-              theme(plot.title = element_text(hjust = 0.5)) +
-              theme(legend.position = "none") 
+              theme(plot.title = element_text(hjust = 0.5))
           } else if (selected_plot == "splotDepthMoSys") {
             #fileName="s123_envmeas_wtemp_system_month_depth_splot"
             plotTitle=sprintf("%s by System, Depth, and Month", selected_var_plots_fmt)
@@ -887,8 +891,10 @@ function(input, output, session) {
               geom_jitter(width = 0.25, height = 2) +
               scale_x_discrete(name ="Month", limits=factor(seq(1, 12, by=1))) +
               scale_y_continuous(name=selected_var_plots_fmt) +
-              labs(color='Water Temp (C)') +
+              labs(color=selected_var_plots_fmt) +
               ggtitle(plotTitle) +
+              theme(plot.title = element_text(hjust = 0.5)) +
+              theme(legend.position="top", legend.box = "horizontal") +
               facet_grid(system_type ~ .)
           } else return(NULL)
         })
