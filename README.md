@@ -1,9 +1,11 @@
 # shinyapps
-RShiny applications adapted from RShiny examples ( https://github.com/rstudio/shiny-examples ).
+RShiny applications adapted from RShiny examples (https://github.com/rstudio/shiny-examples).
 
 CosSim Map: https://rshiny.spatialmsk.com/CosSim/
 
 SEANET Map: https://rshiny.spatialmsk.com/SEANET/
+
+MeDNA Application: https://rshiny.spatialmsk.com/MeDNA/
 
 ## Data Disclaimer
 The data on spatialmsk or github.com/melkimble are provided "as is", and spatialmsk or github.com/melkimble assumes no responsibility for errors or omissions. The User assumes the entire risk associated with its use of these data. Spatialmsk or github.com/melkimble shall not be held liable for any use or misuse of the data described and/or contained herein. The User bears all responsibility in determining whether these data are fit for the User's intended use.

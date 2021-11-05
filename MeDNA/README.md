@@ -3,4 +3,4 @@
 if (!require(devtools))
   install.packages("devtools")
 devtools::install_github("rstudio/leaflet")
-shiny::runGitHub("shinyapps/", subdir="MeDNA")
+shiny::runApp("shinyapps/", subdir="MeDNA")
