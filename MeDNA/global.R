@@ -32,6 +32,17 @@ todaysDateFn = format(Sys.Date(), "%Y%m%d")
 # Projection
 WGS84_SRID = 4326
 
+var_fmt=data.table(var=c("env_measurements", "envmeas_depth", "water_temp",
+                         "salinity", "turbidity",
+                         "conductivity", "do",
+                         "par1", "par2",
+                         "water_depth", "depth_core_collected"),
+                   var_fmt=c("Environmental Measurements", "Measurement Depth (M)", "Water Temperature (°C)",
+                             "Salinity (Practical Salinity Unit)", "Turbidity (Formazin Nephelometric Unit)",
+                             "Conductivity (μS/cm)", "Dissolved Oxygen (mg/L)",
+                             "PAR1 (μmoles/sec/m²)", "PAR2 (μmoles/sec/m²)",
+                             "Water Collection Depth (M)", "Core Collection Depth (M)"))
+
 # LOAD SHAPFILES
 ################################################################################
 # Watershed Boundary Dataset (WBD), National Hydrography Dataset (NHD), United States Geological Survey (USGS)
@@ -126,6 +137,11 @@ survey_envmeas_join <- survey_envmeas_join %>% dplyr::rename(gid=envmeas_GlobalI
 clean_filter_join <- add_seasons_df(clean_filter_join)
 clean_filter_join$system_type <- plyr::mapvalues(clean_filter_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
 clean_filter_join <- clean_filter_join %>% dplyr::rename(gid=filter_GlobalID)
+# remove any filter_labels with "delete"
+clean_filter_join <- clean_filter_join %>% 
+  dplyr::mutate(filter_label_lower=tolower(filter_label)) %>%
+  dplyr::filter(!grepl("delete", filter_label_lower)) %>%
+  dplyr::select(-filter_label_lower)
 # add seasons to clean_subcore_join
 clean_subcore_join <- add_seasons_df(clean_subcore_join)
 clean_subcore_join$system_type <- plyr::mapvalues(clean_subcore_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))

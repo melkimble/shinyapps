@@ -45,7 +45,8 @@ function(input, output, session) {
       }
       if (input$tab_maps == "Env Measurements") {
         select_var_maps<-input$map_selectedvar_envmeas
-        perc_var_txt<-tools::toTitleCase(gsub("_"," ",select_var_maps))
+        #perc_var_txt<-tools::toTitleCase(gsub("_"," ",select_var_maps))
+        perc_var_txt <- var_fmt$var_fmt[var_fmt$var==select_var_maps]
         proxy <- leafletProxy("map_envmeas")
         df_map <- survey_envmeas_join  %>%
           dplyr::mutate(env_measurements=na_if(env_measurements, "")) %>%
@@ -781,7 +782,8 @@ function(input, output, session) {
         custom_height=function() input$height_envmeas
         depth_var<-"envmeas_depth"
         selected_var_plots<-input$plots_selectedvar_envmeas
-        selected_var_plots_fmt<-tools::toTitleCase(gsub("_", " ",selected_var_plots))
+        #selected_var_plots_fmt<-tools::toTitleCase(gsub("_", " ",selected_var_plots))
+        selected_var_plots_fmt <- var_fmt$var_fmt[var_fmt$var==selected_var_plots]
         selected_plot<-input$plots_selected_envmeas
         start_range<-input$range_start_envmeas
         end_range<-input$range_end_envmeas
@@ -805,7 +807,8 @@ function(input, output, session) {
         selected_plot<-input$plots_selected_col
         if (selected_plot_coltype == "water_sample"){
           depth_var<-selected_var_plots<-"water_depth"
-          selected_var_plots_fmt<-tools::toTitleCase(gsub("_", " ",selected_var_plots))
+          #selected_var_plots_fmt<-tools::toTitleCase(gsub("_", " ",selected_var_plots))
+          selected_var_plots_fmt <- var_fmt$var_fmt[var_fmt$var==selected_var_plots]
           start_range<-input$range_start_col
           end_range<-input$range_end_col
           df_summaryplot <- survey_collection_join %>%
@@ -822,7 +825,8 @@ function(input, output, session) {
                           survey_GlobalID)
         } else if (selected_plot_coltype == "sed_sample"){
           depth_var<-selected_var_plots<-"depth_core_collected"
-          selected_var_plots_fmt<-tools::toTitleCase(gsub("_", " ",selected_var_plots))
+          #selected_var_plots_fmt<-tools::toTitleCase(gsub("_", " ",selected_var_plots))
+          selected_var_plots_fmt <- var_fmt$var_fmt[var_fmt$var==selected_var_plots]
           start_range<-input$range_start_col
           end_range<-input$range_end_col
           df_summaryplot <- survey_collection_join %>%
@@ -943,9 +947,11 @@ function(input, output, session) {
               geom_jitter(width = 0.25, height = 2) +
               scale_x_discrete(name ="Month") +
               scale_y_continuous(name="Depth (M)") +
-              labs(color=selected_var_plots_fmt) +
+              labs(color="") +
               ggtitle(plotTitle) +
               theme(legend.position="top", legend.box = "horizontal") +
+              theme(legend.key.height= unit(1, 'cm'),
+                    legend.key.width= unit(2, 'cm')) +
               transparent_theme +
               facet_grid(system_type ~ .)
           } else return(NULL)
