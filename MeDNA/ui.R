@@ -63,6 +63,8 @@ htmlpage_css <- ".multicol {height: 175px;-webkit-column-count: 2;
                 -moz-column-count: 2;column-count: 2;
                 -moz-column-fill: auto;-column-fill: auto;}"
 hr_css <- "border-top: 1px solid #000000;width: 100%"
+#hr_css <- "width: 100%"
+
 
 navbarPage(
   id="navbar",
@@ -93,7 +95,7 @@ navbarPage(
                                 bootstrapPage(
                                   column(12, leafletOutput("map_survey")),
                                   column(12, htmlOutput("maps_text_survey")),
-                                  hr(style = hr_css),
+                                  hr(style=hr_css),
                                   column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                  DT::dataTableOutput('table_map_survey')))
                                 )
@@ -102,7 +104,7 @@ navbarPage(
                                 bootstrapPage(
                                   column(12, leafletOutput("map_crew")),
                                   column(12, htmlOutput("maps_text_crew")),
-                                  hr(style = hr_css),
+                                  hr(style=hr_css),
                                   column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                  DT::dataTableOutput('table_map_crew')))
                                 )                          
@@ -118,7 +120,7 @@ navbarPage(
                                     ),
                                     column(9, htmlOutput("maps_text_envmeas")),
                                   ),
-                                  hr(style = hr_css),
+                                  hr(style=hr_css),
                                   column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                  DT::dataTableOutput('table_map_envmeas')))
                                 )
@@ -134,7 +136,7 @@ navbarPage(
                                     ),
                                     column(9, htmlOutput("maps_text_col")),
                                   ),
-                                  hr(style = hr_css),
+                                  hr(style=hr_css),
                                   column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                  DT::dataTableOutput('table_map_col')))
                                 )
@@ -150,7 +152,7 @@ navbarPage(
                                     ),
                                     column(9, htmlOutput("maps_text_filters")),
                                   ),
-                                  hr(style = hr_css),
+                                  hr(style=hr_css),
                                   column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                  DT::dataTableOutput('table_map_filters')))
                                 )                          
@@ -159,7 +161,7 @@ navbarPage(
                                 bootstrapPage(
                                   column(12, leafletOutput("map_subcores")),
                                   column(12, htmlOutput("maps_text_subcores")),
-                                  hr(style = hr_css),
+                                  hr(style=hr_css),
                                   column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                  DT::dataTableOutput('table_map_subcores')))
                                 )                          
@@ -173,7 +175,8 @@ navbarPage(
                        tabPanel("Surveys",
                                 bootstrapPage(tags$head(tags$style(HTML(htmlpage_css))),
                                               column(12, plotOutput("barplot_survey")),
-                                              hr(style = hr_css),
+                                              
+                                              hr(style=hr_css),
                                               fluidRow(
                                                 column(3, selectInput("barplot_selected_survey", 
                                                                       label="Plot", 
@@ -186,9 +189,9 @@ navbarPage(
                                                                                       choices=project_choices,
                                                                                       selected="Index Sites (T3)"))),
                                               ),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               textOutput("barplot_sum_survey"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                              DT::dataTableOutput('table_barplot_survey')))
                                 )
@@ -196,7 +199,7 @@ navbarPage(
                        tabPanel("Crew", 
                                 bootstrapPage(tags$head(tags$style(HTML(htmlpage_css))),
                                               column(12, plotOutput("barplot_crew")),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               fluidRow(
                                                 column(3, selectInput("barplot_selected_crew", 
                                                                       label="Plot", 
@@ -209,9 +212,9 @@ navbarPage(
                                                                                       choices=project_choices,
                                                                                       selected="Index Sites (T3)"))),
                                               ),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               textOutput("barplot_sum_crew"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                              DT::dataTableOutput('table_barplot_crew')))
                                 )
@@ -219,7 +222,7 @@ navbarPage(
                        tabPanel("Env Measurements",
                                 bootstrapPage(tags$head(tags$style(HTML(htmlpage_css))),
                                               column(12, plotOutput("barplot_envmeas")),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               fluidRow(
                                                 column(3, selectInput("barplot_selected_envmeas", 
                                                                       label="Plot", 
@@ -232,9 +235,9 @@ navbarPage(
                                                                                       choices=project_choices,
                                                                                       selected="Index Sites (T3)"))),
                                               ),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               textOutput("barplot_sum_envmeas"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                              DT::dataTableOutput('table_barplot_envmeas')))
                                 )
@@ -242,7 +245,7 @@ navbarPage(
                        tabPanel("Collections", 
                                 bootstrapPage(tags$head(tags$style(HTML(htmlpage_css))),
                                               column(12, plotOutput("barplot_col")),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               fluidRow(
                                                 column(6, selectInput("barplot_selected_col", 
                                                                       label="Plot", 
@@ -262,9 +265,9 @@ navbarPage(
                                                                                        choices=project_choices,
                                                                                        selected="Index Sites (T3)")))
                                               ),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               textOutput("barplot_sum_col"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                              DT::dataTableOutput('table_barplot_col')))
                                 )
@@ -273,7 +276,7 @@ navbarPage(
                                 bootstrapPage(tags$head(tags$style(HTML(htmlpage_css))),
                                               column(12, plotOutput("barplot_filters")),
                                               htmlOutput("barplot_perc_filters"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               fluidRow(
                                                 column(6, selectInput("barplot_selected_filters", 
                                                                       label="Plot", 
@@ -293,9 +296,9 @@ navbarPage(
                                                                                        choices=project_choices,
                                                                                        selected="Index Sites (T3)")))
                                               ),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               textOutput("barplot_sum_filters"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                              DT::dataTableOutput('table_barplot_filters')))
                                 )                          
@@ -303,7 +306,7 @@ navbarPage(
                        tabPanel("SubCores", 
                                 bootstrapPage(tags$head(tags$style(HTML(htmlpage_css))),
                                               column(12, plotOutput("barplot_subcores")),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               fluidRow(
                                                 column(3, selectInput("barplot_selected_subcores", 
                                                                       label="Plot", 
@@ -316,9 +319,9 @@ navbarPage(
                                                                                       choices=project_choices,
                                                                                       selected="Index Sites (T3)"))),
                                               ),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               textOutput("barplot_sum_subcores"),
-                                              hr(style = hr_css),
+                                              hr(style=hr_css),
                                               column(12, div(style = "margin-top: 30px; font-size: 1em;",
                                                              DT::dataTableOutput('table_barplot_subcores')))
                                 )
@@ -347,7 +350,7 @@ navbarPage(
                                   ),
                                   mainPanel(
                                     plotOutput("plots_envmeas", height = "auto"),
-                                    hr(style = hr_css),
+                                    hr(style=hr_css),
                                     div(style = "margin-top: 30px; font-size: 1em;",
                                         DT::dataTableOutput('table_plots_envmeas'))
                                   )
@@ -371,7 +374,7 @@ navbarPage(
                                   ),
                                   mainPanel(
                                     plotOutput("plots_col", height = "auto"),
-                                    hr(style = hr_css),
+                                    hr(style=hr_css),
                                     div(style = "margin-top: 30px; font-size: 1em;",
                                         DT::dataTableOutput('table_plots_col'))
                                   )

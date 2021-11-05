@@ -80,7 +80,8 @@ clean_subcore_join <- data.table::fread(paste0(inputFolder,'clean_subcore_join.c
 # FORMAT DATA
 ################################################################################
 site_ids_spdf <- site_ids_gsheet %>%
-  dplyr::select(SiteID, `General Location Name`, `Intended Purpose`, `Latitude`, `Longitude`, `System Type`, `Watershed Code`, 
+  dplyr::select(SiteID, `General Location Name`, `Intended Purpose`, `Latitude`, `Longitude`, 
+                `System Type`, `Watershed Code`, `Region Name`, 
                 `Survey123 Filter Count`, `Survey123 Core Count`) %>%
   sf::st_as_sf(.,coords=c('Longitude', 'Latitude'), crs=WGS84_SRID) %>% # st_as_sf combines fields into geometry field to create sf object
   dplyr::mutate(geom = gsub(geometry, pattern="(\\))|(\\()|c",replacement = "")) %>% # remove geometry characters
@@ -90,6 +91,7 @@ site_ids_spdf <- site_ids_gsheet %>%
   dplyr::rename(projects = `Intended Purpose`) %>%
   dplyr::rename(system_type = `System Type`) %>%
   dplyr::rename(watershed_code = `Watershed Code`) %>%
+  dplyr::rename(region_name = `Region Name`) %>%
   dplyr::rename(s123_filter_count = `Survey123 Filter Count`) %>%
   dplyr::rename(s123_core_count = `Survey123 Core Count`) %>%
   sf::as_Spatial()
@@ -105,23 +107,27 @@ boundingbox_sids<-raster::extent(site_ids_spdf@bbox)
 rm(site_ids_gsheet)
 
 # add seasons to survey_sub
-# add seasons to survey_sub
 survey_sub <- add_seasons_df(survey_sub)
 survey_sub$system_type <- plyr::mapvalues(survey_sub$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
+survey_sub <- survey_sub %>% dplyr::rename(gid=survey_GlobalID)
 # add seasons to survey_crew_join
 survey_crew_join <- add_seasons_df(survey_crew_join)
 survey_crew_join$system_type <- plyr::mapvalues(survey_crew_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
+survey_crew_join <- survey_crew_join %>% dplyr::rename(gid=crew_GlobalID)
 # add seasons to survey_collection_join
 survey_collection_join <- add_seasons_df(survey_collection_join)
 survey_collection_join$system_type <- plyr::mapvalues(survey_collection_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
+survey_collection_join <- survey_collection_join %>% dplyr::rename(gid=collection_GlobalID)
 # add seasons to survey_envmeas_join
 survey_envmeas_join <- add_seasons_df(survey_envmeas_join)
 survey_envmeas_join$system_type <- plyr::mapvalues(survey_envmeas_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
+survey_envmeas_join <- survey_envmeas_join %>% dplyr::rename(gid=envmeas_GlobalID)
 # add seasons to clean_filter_join
 clean_filter_join <- add_seasons_df(clean_filter_join)
 clean_filter_join$system_type <- plyr::mapvalues(clean_filter_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
+clean_filter_join <- clean_filter_join %>% dplyr::rename(gid=filter_GlobalID)
 # add seasons to clean_subcore_join
 clean_subcore_join <- add_seasons_df(clean_subcore_join)
 clean_subcore_join$system_type <- plyr::mapvalues(clean_subcore_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
-
+clean_subcore_join <- clean_subcore_join %>% dplyr::rename(gid=sample_global_id)
 ################################################################################
