@@ -100,7 +100,7 @@ function(input, output, session) {
         dplyr::mutate(id = paste0("s",id)) %>%
         dplyr::mutate(RecordsExist = ifelse(is.na(RecordsExist), "No", RecordsExist)) %>%
         dplyr::select(id, site_id, general_location_name, RecordsExist, 
-                      projects, system_type, watershed_code, lon, lat) %>%
+                      projects, system_type, region_name, watershed_code, lon, lat) %>%
         dplyr::arrange(site_id) 
       
       rcdext_sids_other <- df_map %>%
@@ -113,6 +113,7 @@ function(input, output, session) {
         dplyr::rename(lon=long_manual) %>%
         dplyr::mutate(RecordsExist="Yes") %>%
         dplyr::mutate(watershed_code="other") %>%
+        dplyr::mutate(region_name="other") %>%
         dplyr::mutate(system_type="other") %>%
         dplyr::mutate(id = row_number()) %>%
         dplyr::mutate(id = paste0("o",id)) %>%
