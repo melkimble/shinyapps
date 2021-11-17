@@ -5,6 +5,8 @@ Beard, Kimble, Yuan, Evans, Liu, Brady, & Moore. (2020). A Method for Heterogene
 
 Support for this project is provided through a National Science Foundation award #11A-1355457 to [Maine EPSCoR at the University of Maine](https://umaine.edu/edna/) and is part of the RII Track-1: Sustainable Ecological Aquaculture Network (SEANET).
 
+- [x] Adapted from [RShiny examples](https://github.com/rstudio/shiny-examples)
+
  ```R
 if (!require(devtools))
   install.packages("devtools")
