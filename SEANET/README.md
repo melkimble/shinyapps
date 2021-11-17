@@ -2,7 +2,7 @@
 
 Data compiled for _Maine Department of Marine Resources Lease Site Profiles by Melissa Kimble (SEANET, 2018)_. Bathymetric data obtained from the University of New Hampshire (UNH) Joint Hydrographic Center/Center for Coastal and Ocean Mapping (JHC/CCOM). Sea Surface Temperature data obtained from the Coastal Satellite Oceanography team at the University of Maine Aquaculture lease data obtained from the Maine Department of Marine Resources. Support for this project is provided through a National Science Foundation award #11A-1355457 to [Maine EPSCoR at the University of Maine](https://umaine.edu/edna/) and is part of the RII Track-1: Sustainable Ecological Aquaculture Network (SEANET).
 
-- [x] RShiny applications adapted from [RShiny examples](https://github.com/rstudio/shiny-examples)
+- [x] Adapted from [RShiny examples](https://github.com/rstudio/shiny-examples)
 
 Live SEANET Map: https://rshiny.spatialmsk.com/SEANET/
 
