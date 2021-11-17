@@ -1,5 +1,5 @@
 You can run this with:
-```
+```R
 if (!require(devtools))
   install.packages("devtools")
 devtools::install_github("rstudio/leaflet")
