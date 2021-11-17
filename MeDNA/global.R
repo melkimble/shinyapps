@@ -99,7 +99,7 @@ site_ids_spdf <- site_ids_gsheet %>%
   tidyr::separate(geom, into=c("lon","lat"),sep=",") %>% # reseparate out lat, long
   dplyr::rename(site_id = SiteID) %>%
   dplyr::rename(general_location_name = `General Location Name`) %>%
-  dplyr::rename(projects = `Intended Purpose`) %>%
+  dplyr::rename(project_ids = `Intended Purpose`) %>%
   dplyr::rename(system_type = `System Type`) %>%
   dplyr::rename(watershed_code = `Watershed Code`) %>%
   dplyr::rename(region_name = `Region Name`) %>%
@@ -120,11 +120,11 @@ rm(site_ids_gsheet)
 # add seasons to survey_sub
 survey_sub <- add_seasons_df(survey_sub)
 survey_sub$system_type <- plyr::mapvalues(survey_sub$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
-survey_sub <- survey_sub %>% dplyr::rename(gid=survey_GlobalID)
+survey_sub <- survey_sub %>% dplyr::rename(gid=survey_global_id)
 # add seasons to survey_crew_join
 survey_crew_join <- add_seasons_df(survey_crew_join)
 survey_crew_join$system_type <- plyr::mapvalues(survey_crew_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
-survey_crew_join <- survey_crew_join %>% dplyr::rename(gid=crew_GlobalID)
+survey_crew_join <- survey_crew_join %>% dplyr::rename(gid=crew_global_id)
 # add seasons to survey_collection_join
 survey_collection_join <- add_seasons_df(survey_collection_join)
 survey_collection_join$system_type <- plyr::mapvalues(survey_collection_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
