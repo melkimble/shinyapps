@@ -24,7 +24,9 @@ The data from UMaineGIS are provided "as is", and UMaineGIS assumes no responsib
 
 The information contained in these data are dynamic and may change over time.
   
+ ```R
 if (!require(devtools))
   install.packages("devtools")
 devtools::install_github("rstudio/leaflet")
 shiny::runApp("shinyapps/", subdir="MeDNA")
+```
