@@ -1,5 +1,5 @@
 # shinyapps
-RShiny applications adapted from RShiny examples (https://github.com/rstudio/shiny-examples).
+- [x] Adapted from [RShiny examples](https://github.com/rstudio/shiny-examples)
 
 CosSim Map: https://rshiny.spatialmsk.com/CosSim/
 
