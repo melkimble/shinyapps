@@ -6,7 +6,9 @@ This application was built with RShiny and the field data were collected through
 - [x] [FitText.js](https://github.com/davatron5000/FitText.js)
 - [x] [jQuery](http://jquery.com/)
 - [x] [Font Awesome](http://fontawesome.io/)
+- [x] [RShiny Examples](https://github.com/rstudio/shiny-examples)
 
+Live MeDNA Map: https://rshiny.spatialmsk.com/MeDNA/ 
 
 The following R packages were used to build this RShiny application:
 |   |   |   |   |   |   |
