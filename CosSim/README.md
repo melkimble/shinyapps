@@ -3,6 +3,8 @@ CosSim Map: https://rshiny.spatialmsk.com/CosSim/
 
 Beard, Kimble, Yuan, Evans, Liu, Brady, & Moore. (2020). A Method for Heterogeneous Spatio-Temporal Data Integration in Support of Marine Aquaculture Site Selection. Journal of Marine Science and Engineering, 8(2), 96. https://doi.org/10.3390/jmse8020096
 
+Support for this project is provided through a National Science Foundation award #11A-1355457 to [Maine EPSCoR at the University of Maine](https://umaine.edu/edna/) and is part of the RII Track-1: Sustainable Ecological Aquaculture Network (SEANET).
+
  ```R
 if (!require(devtools))
   install.packages("devtools")
