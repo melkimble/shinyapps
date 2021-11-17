@@ -7,6 +7,9 @@ SEANET Map: https://rshiny.spatialmsk.com/SEANET/
 
 MeDNA Application: https://rshiny.spatialmsk.com/MeDNA/
 
+
+----------------------------------
+
 > ### Data Disclaimer
 > The data on spatialmsk or github.com/melkimble are provided "as is", and spatialmsk or github.com/melkimble assumes no responsibility for errors or omissions. The User assumes the entire risk associated with its use of these data. Spatialmsk or github.com/melkimble shall not be held liable for any use or misuse of the data described and/or contained herein. The User bears all responsibility in determining whether these data are fit for the User's intended use.
 > The information contained in these data is dynamic and may change over time. The data are not better than the original sources from which they were derived, and both scale and accuracy may vary across the data set. These data may not have the accuracy, resolution, completeness, timeliness, or other characteristics appropriate for applications that potential users of the data may contemplate. The User is encouraged to carefully consider the content of the metadata file associated with these data when available. These data are neither official records, nor legal documents and must not be used as such.
