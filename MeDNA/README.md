@@ -9,7 +9,7 @@ This application was built with RShiny and the field data were collected through
 
 
 The following R packages were used in to build this RShiny application:
-
+|   |   |   |   |   |   |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |base|dplyr|data.table|DT|shinythemes|viridis|
 |leaflet|lubridate|plyr|raster|rgdal|rgeos|
