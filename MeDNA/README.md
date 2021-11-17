@@ -1,4 +1,4 @@
-# Maine-eDNA Survey123 Site summaries
+# Maine-eDNA Survey123 Site Summaries
 
 Support for this project is provided through a National Science Foundation award to [Maine EPSCoR at the University of Maine](https://umaine.edu/edna/) and is part of the RII Track-1: Molecule to Ecosystem: Environmental DNA as a Nexus of Coastal Ecosystem Sustainability for Maine (Maine-eDNA).
 
