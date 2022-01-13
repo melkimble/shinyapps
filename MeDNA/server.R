@@ -84,7 +84,7 @@ function(input, output, session) {
         perc_var_txt<-input$tab_maps
         proxy <- leafletProxy("map_subcores")
         df_map <- clean_subcore_join %>%
-          dplyr::filter(!if_any(c(gid, survey_global_id, collection_GlobalID), is.na))
+          dplyr::filter(!if_any(c(gid, survey_global_id, collection_global_id), is.na))
       }
       
       ## SURVEY SUMMARY MAP SETUP
@@ -295,21 +295,21 @@ function(input, output, session) {
         if (selected_filtertype=="filter_type") {
           df_bplot <- clean_filter_join %>%
             dplyr::mutate(filter_type=na_if(filter_type, "")) %>%
-            filter(!if_any(c(collection_GlobalID, gid, filter_type, filter_label), is.na))
+            filter(!if_any(c(collection_global_id, gid, filter_type, filter_label), is.na))
         } else {
           df_bplot <- clean_filter_join %>%
             dplyr::mutate(filter_type=na_if(filter_type, "")) %>%
-            filter(!if_any(c(collection_GlobalID, gid, filter_type, filter_label), is.na) & filter_type==selected_filtertype)
+            filter(!if_any(c(collection_global_id, gid, filter_type, filter_label), is.na) & filter_type==selected_filtertype)
         }
         cids <- df_bplot %>%
-          distinct(collection_GlobalID)
+          distinct(collection_global_id)
         
         cids_filter <- df_bplot %>%
-          dplyr::select(collection_GlobalID, filter_type) %>% 
+          dplyr::select(collection_global_id, filter_type) %>% 
           dplyr::mutate(is_nitex=factor(ifelse(filter_type=="nitex", "nitex", "not_nitex"))) %>%
-          dplyr::distinct(collection_GlobalID, is_nitex) %>%
-          dplyr::group_by(collection_GlobalID) %>%
-          dplyr::count(collection_GlobalID) %>%
+          dplyr::distinct(collection_global_id, is_nitex) %>%
+          dplyr::group_by(collection_global_id) %>%
+          dplyr::count(collection_global_id) %>%
           dplyr::group_by(n) %>%
           dplyr::count(n) %>%
           dplyr::mutate(perc_prefilter=(nn/nrow(cids))*100)
@@ -325,7 +325,7 @@ function(input, output, session) {
         selected_barplot <- input$barplot_selected_subcores
         selected_projects <- input$barplot_selprj_subcores
         df_bplot <- clean_subcore_join %>%
-          dplyr::filter(!if_any(c(gid, survey_global_id, collection_GlobalID), is.na))
+          dplyr::filter(!if_any(c(gid, survey_global_id, collection_global_id), is.na))
       }
       selected_projects <- gsub("[()]", "", selected_projects)
       selected_projects <- tolower(selected_projects)

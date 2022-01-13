@@ -128,15 +128,15 @@ survey_crew_join <- survey_crew_join %>% dplyr::rename(gid=crew_global_id)
 # add seasons to survey_collection_join
 survey_collection_join <- add_seasons_df(survey_collection_join)
 survey_collection_join$system_type <- plyr::mapvalues(survey_collection_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
-survey_collection_join <- survey_collection_join %>% dplyr::rename(gid=collection_GlobalID)
+survey_collection_join <- survey_collection_join %>% dplyr::rename(gid=collection_global_id)
 # add seasons to survey_envmeas_join
 survey_envmeas_join <- add_seasons_df(survey_envmeas_join)
 survey_envmeas_join$system_type <- plyr::mapvalues(survey_envmeas_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
-survey_envmeas_join <- survey_envmeas_join %>% dplyr::rename(gid=envmeas_GlobalID)
+survey_envmeas_join <- survey_envmeas_join %>% dplyr::rename(gid=envmeas_global_id)
 # add seasons to clean_filter_join
 clean_filter_join <- add_seasons_df(clean_filter_join)
 clean_filter_join$system_type <- plyr::mapvalues(clean_filter_join$system_type, from=c("P", "C", "E", "S", "L", "A", "other"), to=c("Pelagic", "Coast", "Estuary", "Stream", "Lake", "Aquarium", "other"))
-clean_filter_join <- clean_filter_join %>% dplyr::rename(gid=filter_GlobalID)
+clean_filter_join <- clean_filter_join %>% dplyr::rename(gid=filter_global_id)
 # remove any filter_labels with "delete"
 clean_filter_join <- clean_filter_join %>% 
   dplyr::mutate(filter_label_lower=tolower(filter_label)) %>%
