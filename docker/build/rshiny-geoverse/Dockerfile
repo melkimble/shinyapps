@@ -33,21 +33,21 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   tk-dev \
   libv8-dev \
   libharfbuzz-dev \
-  libfribidi-dev 
+  libfribidi-dev
 ## required for spatialmsk
 RUN  install2.r --error \
     --deps TRUE \
     devtools \
 ## tidyverse includes dplyr and ggplot2
-    tidyverse \ 
+    tidyverse \
     RColorBrewer \
-    rgdal \ 
-    leaflet \ 
-    spdplyr \ 
-    lsa \ 
+    rgdal \
+    leaflet \
+    spdplyr \
+    lsa \
     stringr \
-    DT \ 
-    htmlTable \ 
+    DT \
+    htmlTable \
     lattice \
     scales \
     googlesheets4 \
@@ -61,7 +61,7 @@ RUN  install2.r --error \
 #    --skipinstalled TRUE \
 #    formatR \
 #    remotes \
-#    selectr 
+#    selectr
 ## start rocker/geospatial
 #RUN  install2.r --error FALSE \
 #    --deps TRUE \
@@ -93,4 +93,3 @@ RUN  install2.r --error \
 ## from bioconductor
 #    && R -e "BiocManager::install('rhdf5', update=FALSE, ask=FALSE)"
 RUN rm -rf /tmp/downloaded_packages
-

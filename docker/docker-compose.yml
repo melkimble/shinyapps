@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+    shiny:
+        build: build/rshiny-geoverse
+        container_name: rshiny
+        user: 'shiny'
+        environment:
+            - APPLICATION_LOGS_TO_STDOUT=false
+        volumes:
+            - '/home/shiny/shinyapps:/srv/shiny-server'
+            - '/home/shiny/logs:/var/log/shiny-server'
+        ports:
+            - '3838:3838'        
+        restart: unless-stopped
