@@ -64,6 +64,7 @@ install2.r --error --skipmissing --skipinstalled -n "$NCPUS" \
     rlas \
     sf \
     sp \
+    spdplyr \
     spacetime \
     spatstat \
     spatialreg \
