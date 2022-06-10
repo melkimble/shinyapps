@@ -45,6 +45,11 @@ apt_install \
     unixodbc-dev
 
 install2.r --error --skipmissing --skipinstalled -n "$NCPUS" \
+    DT \
+    shinythemes \
+    shinyjs \
+    formattable \
+    spdplyr \
     RColorBrewer \
     RandomFields \
     RNetCDF \
@@ -64,7 +69,6 @@ install2.r --error --skipmissing --skipinstalled -n "$NCPUS" \
     rlas \
     sf \
     sp \
-    spdplyr \
     spacetime \
     spatstat \
     spatialreg \
