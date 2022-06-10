@@ -8,7 +8,7 @@ services:
             - APPLICATION_LOGS_TO_STDOUT=false
         volumes:
             - '/home/shiny/shinyapps:/srv/shiny-server'
-            - '/home/shiny/logs:/var/log/shiny-server'
+            - '/home/shiny/logs/shiny:/var/log/shiny-server'
             - '/home/shiny/.secrets:/.secrets'
             - '/home/shiny/data:/data'
         ports:
