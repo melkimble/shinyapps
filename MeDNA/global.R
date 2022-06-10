@@ -22,10 +22,10 @@ add_seasons_df <- function(df) {
 # LOAD PROJECT VARIABLES
 ################################################################################
 overwrite = FALSE
-inputFolder = "/data/02_Working/PyOutput/"
-originalFolder = "/data/01_Original/"
-outputFolder = "/data/02_Working/"
-outputPngFolder = "/data/figures/"
+inputFolder = "data/02_Working/PyOutput/"
+originalFolder = "data/01_Original/"
+outputFolder = "data/02_Working/"
+outputPngFolder = "data/figures/"
 
 todaysDateFn = format(Sys.Date(), "%Y%m%d")
 
@@ -68,7 +68,7 @@ existsPal <- colorFactor(c("antiquewhite", "forestgreen"), as.factor(c("Yes","No
 # https://googlesheets4.tidyverse.org/reference/gs4_auth_configure.html
 # https://googlesheets4.tidyverse.org/reference/index.html#section-auth
 
-googlesheets4::gs4_auth(email="melissa.kimble@maine.edu", path="/.secrets/survey123-fefda012b951.json")
+googlesheets4::gs4_auth(email="melissa.kimble@maine.edu", path="/srv/shiny-server/.secrets/survey123-fefda012b951.json")
 
 # load gsheet
 sid_gsheet_url = "https://docs.google.com/spreadsheets/d/1TzlvUuaedzW0Q8JgPepYvmos0M4y1f-M_TMvLy6ZaJI/edit?usp=sharing"

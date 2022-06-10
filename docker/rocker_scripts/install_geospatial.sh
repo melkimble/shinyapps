@@ -84,7 +84,7 @@ install2.r --error --skipmissing --skipinstalled -n "$NCPUS" \
 R -e "BiocManager::install('rhdf5')"
 
 ## install wgrib2 for NOAA's NOMADS / rNOMADS forecast files
-rocker_scripts/install_wgrib2.sh
+RUN install_wgrib2.sh
 
 # Clean up
 rm -rf /var/lib/apt/lists/*
