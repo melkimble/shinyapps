@@ -1,11 +1,7 @@
 # shinyapps
 - [x] Adapted from [RShiny examples](https://github.com/rstudio/shiny-examples)
 
-CosSim Map: https://rshiny.spatialmsk.com/CosSim/
-
-SEANET Map: https://rshiny.spatialmsk.com/SEANET/
-
-MeDNA Application: https://rshiny.spatialmsk.com/MeDNA/
+MeDNA Application: https://rshiny.maine-edna.org/MeDNA/
 
 
 ----------------------------------
