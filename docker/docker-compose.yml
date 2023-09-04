@@ -1,6 +1,10 @@
 version: "3.5"
 services:
-    shiny:
+ # docker-compose up -d
+ # ----------------------------------------
+ # SHINYAPPS
+ # ----------------------------------------
+    rshiny:
         build: build/rshiny-geoverse
         container_name: rshiny
         user: 'shiny'
